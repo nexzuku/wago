@@ -1,10 +1,8 @@
-import { createRequire } from 'module';
 import { Content, AuditLog, Topic } from '../models/index.js';
 import { successResponse, errorResponse, paginatedResponse, ErrorCodes } from '../utils/response.js';
 import storageService from '../services/storage.service.js';
 import deepinfraService from '../services/deepinfra.service.js';
-
-const _require = createRequire(import.meta.url);
+import { extractPdfText } from '../utils/pdfText.js';
 
 export const listContent = async (req, res, next) => {
   try {
@@ -12,25 +10,37 @@ export const listContent = async (req, res, next) => {
     const skip = (page - 1) * limit;
 
     const query = { companyId: req.companyId, isActive: true };
-    
+
     if (type) query.type = type;
     if (topicId) query.topicIds = topicId;
+
+    // Search and visibility are independent filters and must BOTH apply.
+    // They were previously both written to query.$or, so the visibility rules
+    // silently overwrote the user's search term.
+    const filters = [];
+
     if (search) {
-      query.$or = [
-        { title: new RegExp(search, 'i') },
-        { description: new RegExp(search, 'i') }
-      ];
+      filters.push({
+        $or: [
+          { title: new RegExp(search, 'i') },
+          { description: new RegExp(search, 'i') }
+        ]
+      });
     }
 
     // Filter by visibility based on user role
     if (req.user.role === 'employee') {
-      query.$or = [
-        { visibility: 'all' },
-        { visibility: 'specific', visibleTo: req.user._id }
-      ];
+      filters.push({
+        $or: [
+          { visibility: 'all' },
+          { visibility: 'specific', visibleTo: req.user._id }
+        ]
+      });
     } else if (req.user.role === 'manager') {
       query.visibility = { $in: ['all', 'managers'] };
     }
+
+    if (filters.length > 0) query.$and = filters;
 
     const [content, total] = await Promise.all([
       Content.find(query)
@@ -197,12 +207,8 @@ export const detectTopics = async (req, res, next) => {
 
     let text = '';
     if (req.file.mimetype === 'application/pdf') {
-      try {
-        const pdfParse = _require('pdf-parse/lib/pdf-parse.js');
-        const pdfData = await pdfParse(req.file.buffer);
-        text = pdfData.text || '';
-      } catch (pdfErr) {
-        console.error('PDF parse error:', pdfErr.message);
+      text = await extractPdfText(req.file.buffer);
+      if (!text) {
         return errorResponse(res, 'Could not extract text from PDF', ErrorCodes.VALIDATION_ERROR, null, 422);
       }
     } else if (req.file.mimetype.startsWith('text/') || req.file.mimetype === 'application/msword') {

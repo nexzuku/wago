@@ -4,34 +4,61 @@ import { Company, Topic } from '../models/index.js';
 import { successResponse, errorResponse, ErrorCodes } from '../utils/response.js';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-// PDF text extraction via raw binary parsing - Node 18 compatible, no native deps
-function extractPdfText(buffer) {
-  const raw = buffer.toString('latin1');
-  const textParts = [];
+import { extractPdfText } from '../utils/pdfText.js';
 
-  // Extract text from BT...ET blocks (PDF text objects) - most reliable source
-  const btRegex = /BT\s*([\s\S]*?)\s*ET/g;
-  let match;
-  while ((match = btRegex.exec(raw)) !== null) {
-    const block = match[1];
-    // Match both (text) and <hex> string types
-    const strMatch = block.match(/\(([^)\\]*(?:\\.[^)\\]*)*)\)/g);
-    if (strMatch) {
-      const text = strMatch
-        .map(s => s.slice(1, -1).replace(/\\n/g, '\n').replace(/\\r/g, '').replace(/\\\\/g, '\\').replace(/\\(.)/g, '$1'))
-        .join(' ');
-      if (text.trim().length > 3) textParts.push(text);
-    }
+// Hosts that must never be fetched. This endpoint is reachable without auth
+// (it powers onboarding), so an unrestricted fetcher would let anyone probe the
+// server's own network — including cloud instance metadata endpoints.
+const isBlockedHost = (hostname) => {
+  const host = hostname.toLowerCase();
+
+  if (host === 'localhost' || host.endsWith('.localhost') || host.endsWith('.internal') || host.endsWith('.local')) {
+    return true;
   }
 
-  // Fallback: scan for readable ASCII runs if BT/ET yielded nothing
-  if (textParts.length === 0) {
-    const readable = raw.replace(/[^\x20-\x7E\n\r\t]/g, ' ').replace(/\s+/g, ' ').trim();
-    if (readable.length > 50) textParts.push(readable.substring(0, 5000));
+  // IPv6 loopback / link-local / unique-local
+  if (host === '::1' || host.startsWith('fe80:') || host.startsWith('fc') || host.startsWith('fd')) {
+    return true;
   }
 
-  return textParts.join('\n');
-}
+  const ipv4 = host.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+  if (!ipv4) return false;
+
+  const [a, b] = ipv4.slice(1).map(Number);
+  return (
+    a === 0 ||                          // "this" network
+    a === 10 ||                         // private
+    a === 127 ||                        // loopback
+    (a === 169 && b === 254) ||         // link-local (cloud metadata)
+    (a === 172 && b >= 16 && b <= 31) ||    // private
+    (a === 192 && b === 168)            // private
+  );
+};
+
+// Accepts "example.com" as well as a full URL, and rejects anything we must not fetch.
+const normalizeUrl = (input) => {
+  const raw = String(input || '').trim();
+  if (!raw) throw new Error('URL is required');
+
+  const withScheme = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+
+  let parsed;
+  try {
+    parsed = new URL(withScheme);
+  } catch {
+    throw new Error('That does not look like a valid URL');
+  }
+
+  if (!['http:', 'https:'].includes(parsed.protocol)) {
+    throw new Error('Only http and https URLs are supported');
+  }
+
+  if (isBlockedHost(parsed.hostname)) {
+    throw new Error('That URL points to a private or local address and cannot be fetched');
+  }
+
+  return parsed.toString();
+};
 
 export const extractCompanyInfo = async (req, res, next) => {
   try {
@@ -40,15 +67,39 @@ export const extractCompanyInfo = async (req, res, next) => {
 
     // Handle URL scraping
     if (type === 'url' && url) {
+      let target;
       try {
-        const response = await axios.get(url, {
-          timeout: 10000,
+        target = normalizeUrl(url);
+      } catch (err) {
+        return errorResponse(res, err.message, ErrorCodes.VALIDATION_ERROR, null, 400);
+      }
+
+      try {
+        const response = await axios.get(target, {
+          timeout: 15000,
+          maxRedirects: 5,
+          maxContentLength: 5 * 1024 * 1024,
+          responseType: 'text',
+          // Read the body ourselves so non-2xx pages still surface a clear message
+          validateStatus: (status) => status >= 200 && status < 400,
           headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
           }
         });
-        
-        const $ = cheerio.load(response.data);
+
+        const contentType = String(response.headers['content-type'] || '');
+        if (contentType && !/text\/html|text\/plain|application\/xhtml/i.test(contentType)) {
+          return errorResponse(
+            res,
+            `That URL returned ${contentType.split(';')[0]} — please provide a link to a normal web page.`,
+            ErrorCodes.VALIDATION_ERROR,
+            null,
+            400
+          );
+        }
+
+        const $ = cheerio.load(String(response.data || ''));
         // Remove non-content elements
         $('script, style, noscript, iframe, nav, footer, header').remove();
         
@@ -72,7 +123,19 @@ export const extractCompanyInfo = async (req, res, next) => {
 
         extractionContent = bodyText.substring(0, 3000);
       } catch (urlError) {
-        return errorResponse(res, 'Failed to fetch content from URL', ErrorCodes.EXTERNAL_SERVICE_ERROR, null, 400);
+        console.warn('URL fetch failed:', target, '-', urlError.message);
+        const reason =
+          urlError.code === 'ENOTFOUND' ? 'that domain could not be found'
+          : urlError.code === 'ECONNABORTED' || /timeout/i.test(urlError.message) ? 'the site took too long to respond'
+          : urlError.response ? `the site responded with ${urlError.response.status}`
+          : 'the site could not be reached';
+        return errorResponse(
+          res,
+          `Failed to fetch content from URL — ${reason}.`,
+          ErrorCodes.EXTERNAL_SERVICE_ERROR,
+          null,
+          400
+        );
       }
     }
 
@@ -97,7 +160,6 @@ export const extractFromPDF = async (req, res, next) => {
       return errorResponse(res, 'PDF file is required', ErrorCodes.VALIDATION_ERROR, null, 400);
     }
 
-    // Parse PDF content (works on Node 18 with pdf-parse v1/v2 or raw fallback)
     const textContent = await extractPdfText(req.file.buffer);
 
     if (!textContent || textContent.trim().length < 50) {
@@ -188,10 +250,16 @@ export const conversation = async (req, res, next) => {
       (response.segments || []).map(async (seg, i) => {
         if (!voiceId) return { ...seg, audioUrl: null };
         try {
-          const buffer = await deepinfraService.textToSpeech(seg.text, seg.lang, voiceId);
-          const fileInfo = await storageService.saveAudio(buffer, `conv-${i}-${Date.now()}.mp3`, req.companyId.toString());
+          // Japanese uses the company/user voice clone; English uses the default voice
+          const segVoiceId = seg.lang === 'ja' ? voiceId : null;
+          const { buffer, mimeType } = await deepinfraService.textToSpeech(seg.text, seg.lang, segVoiceId);
+          const ext = mimeType === 'audio/mpeg' ? 'mp3' : 'wav';
+          const fileInfo = await storageService.saveAudio(buffer, `conv-${i}-${Date.now()}.${ext}`, req.companyId.toString());
           return { ...seg, audioUrl: fileInfo.url };
-        } catch { return { ...seg, audioUrl: null }; }
+        } catch (err) {
+          console.warn('Conversation TTS failed:', err.message);
+          return { ...seg, audioUrl: null };
+        }
       })
     );
 

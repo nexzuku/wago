@@ -58,7 +58,10 @@ api.interceptors.response.use(
 export const authAPI = {
   register: (data) => api.post('/auth/register', data),
   login: (data) => api.post('/auth/login', data),
-  logout: () => api.post('/auth/logout'),
+  // The backend revokes the supplied refresh token, so it must be sent
+  logout: () => api.post('/auth/logout', {
+    refreshToken: localStorage.getItem('refreshToken')
+  }),
   forgotPassword: (email) => api.post('/auth/forgot-password', { email }),
   resetPassword: (token, password) => api.post('/auth/reset-password', { token, password }),
   getMe: () => api.get('/auth/me'),
@@ -110,7 +113,8 @@ export const phrasesAPI = {
   update: (id, data) => api.put(`/phrases/${id}`, data),
   delete: (id) => api.delete(`/phrases/${id}`),
   getEmergency: () => api.get('/phrases/emergency'),
-  generateAudio: (id) => api.post(`/phrases/${id}/generate-audio`)
+  generateAudio: (id) => api.post(`/phrases/${id}/generate-audio`),
+  pregenerateTopicAudio: (topicId) => api.post(`/phrases/topic/${topicId}/pregenerate-audio`)
 };
 
 // Voice API
@@ -177,8 +181,8 @@ export const trainingAPI = {
 export const analyticsAPI = {
   getCompanyAnalytics: (period) => api.get('/analytics/company', { params: { period } }),
   getCompanyAudioMetrics: (period) => api.get('/analytics/audio-metrics', { params: { period } }),
-  getCompanyStats: (period) => api.get('/companies/stats', { params: { period } }),
-  getCompanyAnalyticsV2: (period) => api.get('/analytics/company', { params: { period } })
+  // Backend mounts company stats under /companies/current/stats
+  getCompanyStats: (period) => api.get('/companies/current/stats', { params: { period } })
 };
 
 // Speech API
@@ -202,7 +206,8 @@ export const aiAPI = {
   },
   getPronunciationFeedback: (expected, actual, context) => 
     api.post('/ai/pronunciation-feedback', { expected, actual, ...context }),
-  conversation: (messages) => api.post('/ai/conversation', { messages }),
+  // Backend also accepts topicId + conversationStarter to scope the conversation
+  conversation: (messages, context = {}) => api.post('/ai/conversation', { messages, ...context }),
   generatePhrases: (topic, difficulty, count) => 
     api.post('/ai/generate-phrases', { topic, difficulty, count })
 };

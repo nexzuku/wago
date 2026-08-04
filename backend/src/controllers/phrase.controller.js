@@ -148,8 +148,9 @@ export const batchGenerateTopicAudio = async (req, res, next) => {
     // Generate TTS in parallel (up to all at once — DeepInfra handles concurrency)
     const results = await Promise.allSettled(
       phrases.map(async (phrase) => {
-        const audioBuffer = await deepinfraService.textToSpeech(phrase.japanese, 'ja', voiceId);
-        const fileInfo = await storageService.saveAudio(audioBuffer, `${phrase._id}.mp3`, req.companyId.toString());
+        const { buffer, mimeType } = await deepinfraService.textToSpeech(phrase.japanese, 'ja', voiceId);
+        const ext = mimeType === 'audio/mpeg' ? 'mp3' : 'wav';
+        const fileInfo = await storageService.saveAudio(buffer, `${phrase._id}.${ext}`, req.companyId.toString());
         phrase.audioUrl = fileInfo.url;
         phrase.audioGeneratedAt = new Date();
         await phrase.save();
@@ -174,6 +175,11 @@ export const generatePhraseAudio = async (req, res, next) => {
       return errorResponse(res, 'Phrase not found', ErrorCodes.NOT_FOUND, null, 404);
     }
 
+    // Same tenant guard as updatePhrase/deletePhrase — global phrases have no companyId
+    if (phrase.companyId && phrase.companyId.toString() !== req.companyId.toString()) {
+      return errorResponse(res, 'Phrase not found', ErrorCodes.NOT_FOUND, null, 404);
+    }
+
     const company = req.user.companyId;
     const voiceId = deepinfraService.resolveVoiceId(req.user, company);
 
@@ -181,8 +187,9 @@ export const generatePhraseAudio = async (req, res, next) => {
       return errorResponse(res, 'No voice clone configured for this company', ErrorCodes.VALIDATION_ERROR, null, 400);
     }
 
-    const audioBuffer = await deepinfraService.textToSpeech(phrase.japanese, 'ja', voiceId);
-    const fileInfo = await storageService.saveAudio(audioBuffer, `${phrase._id}.mp3`, req.companyId.toString());
+    const { buffer, mimeType } = await deepinfraService.textToSpeech(phrase.japanese, 'ja', voiceId);
+    const ext = mimeType === 'audio/mpeg' ? 'mp3' : 'wav';
+    const fileInfo = await storageService.saveAudio(buffer, `${phrase._id}.${ext}`, req.companyId.toString());
 
     phrase.audioUrl = fileInfo.url;
     phrase.audioGeneratedAt = new Date();

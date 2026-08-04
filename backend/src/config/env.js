@@ -1,6 +1,26 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
+// Browsers send `Origin` without a trailing slash, so a configured value like
+// "https://app.example.com/" would never match. Normalise and allow a
+// comma-separated list so one deployment can serve several front-ends.
+const parseOrigins = (value) =>
+  String(value || '')
+    .split(',')
+    .map(o => o.trim().replace(/\/+$/, ''))
+    .filter(Boolean);
+
+const configuredOrigins = parseOrigins(process.env.FRONTEND_URL);
+const devOrigins = ['http://localhost:5173', 'http://127.0.0.1:5173'];
+
+const allowedOrigins = [
+  ...new Set([
+    ...configuredOrigins,
+    // Keep local dev working even when FRONTEND_URL points at production
+    ...(process.env.NODE_ENV === 'production' ? [] : devOrigins)
+  ])
+];
+
 export default {
   port: process.env.PORT || 5000,
   nodeEnv: process.env.NODE_ENV || 'development',
@@ -52,5 +72,6 @@ export default {
     fromName: process.env.SMTP_FROM_NAME || 'WaGo Training'
   },
   
-  frontendUrl: process.env.FRONTEND_URL || 'http://localhost:5173'
+  frontendUrl: configuredOrigins[0] || 'http://localhost:5173',
+  allowedOrigins: allowedOrigins.length > 0 ? allowedOrigins : devOrigins
 };

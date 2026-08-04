@@ -6,7 +6,25 @@ export const notFoundHandler = (req, res) => {
 
 export const errorHandler = (err, req, res, next) => {
   console.error('Error:', err);
-  
+
+  // Multer upload errors (file too large, unexpected field, ...) are client errors
+  if (err.name === 'MulterError') {
+    const message = err.code === 'LIMIT_FILE_SIZE'
+      ? 'File is too large'
+      : `Upload failed: ${err.message}`;
+    return errorResponse(res, message, ErrorCodes.VALIDATION_ERROR, null, 400);
+  }
+
+  // Rejections thrown from a multer fileFilter arrive as plain Errors
+  if (/Only .* (are|is) allowed|Invalid file type/i.test(err.message || '')) {
+    return errorResponse(res, err.message, ErrorCodes.VALIDATION_ERROR, null, 400);
+  }
+
+  // Blocked cross-origin request
+  if (/not allowed by CORS/i.test(err.message || '')) {
+    return errorResponse(res, err.message, ErrorCodes.FORBIDDEN, null, 403);
+  }
+
   // Mongoose validation error
   if (err.name === 'ValidationError') {
     const details = Object.values(err.errors).map(e => ({

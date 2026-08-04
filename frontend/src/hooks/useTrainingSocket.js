@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { io } from 'socket.io-client';
 
-const socketBaseUrl = import.meta.env.PROD
-  ? window.location.origin
-  : window.location.origin.replace(':5173', ':5000');
+// Always connect same-origin: in dev Vite proxies /socket.io (including the
+// websocket upgrade) to the backend, in prod the backend serves the app itself.
+// This keeps the socket working regardless of which port the backend runs on.
+const socketBaseUrl = window.location.origin;
 
 const getInterSegmentDelayMs = (seg, nextSeg = null) => {
   // Allow server override if present.

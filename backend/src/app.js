@@ -43,11 +43,22 @@ const isJapaneseLang = (lang) => {
 const app = express();
 const httpServer = createServer(app);
 
+// Shared CORS origin check for both Express and Socket.io.
+// Requests without an Origin header (curl, server-to-server, same-origin
+// navigations) are allowed through — CORS only guards browser cross-origin calls.
+const corsOrigin = (origin, callback) => {
+  if (!origin) return callback(null, true);
+  const normalized = origin.replace(/\/+$/, '');
+  if (config.allowedOrigins.includes(normalized)) return callback(null, true);
+  return callback(new Error(`Origin ${origin} not allowed by CORS`));
+};
+
 // Socket.io setup
 const io = new Server(httpServer, {
   cors: {
-    origin: config.frontendUrl,
-    methods: ['GET', 'POST']
+    origin: corsOrigin,
+    methods: ['GET', 'POST'],
+    credentials: true
   },
   // Allow sending base64 WAV blobs over sockets (default is ~1MB and can drop events)
   maxHttpBufferSize: 20 * 1024 * 1024
@@ -69,7 +80,7 @@ app.use(helmet({
   }
 }));
 app.use(cors({
-  origin: config.frontendUrl,
+  origin: corsOrigin,
   credentials: true
 }));
 app.use(morgan('dev'));
@@ -104,9 +115,18 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// SPA fallback (serve index.html for non-API routes)
-app.get('*', (req, res) => {
-  res.sendFile(path.join(publicDir, 'index.html'));
+// SPA fallback (serve index.html for non-API routes).
+// API paths must fall through to notFoundHandler so unknown endpoints return a
+// JSON 404 instead of the HTML shell — otherwise every typo'd route looks like
+// a successful page load to the client.
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api/') || req.path.startsWith('/uploads/')) return next();
+
+  const indexPath = path.join(publicDir, 'index.html');
+  res.sendFile(indexPath, (err) => {
+    // No built frontend present (dev runs Vite separately) — fall through to 404
+    if (err) next();
+  });
 });
 
 // Socket.io events for real-time training
