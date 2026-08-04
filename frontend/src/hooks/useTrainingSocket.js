@@ -116,6 +116,10 @@ const useTrainingSocket = () => {
   // Streaming segments accumulator (for display + free-talk conversation reconstruction)
   const [segments, setSegments] = useState([]);
   const [currentSegment, setCurrentSegment] = useState(null);
+  // True while AI audio is actually playing or still expected — the UI must not
+  // report "ready" just because the LLM finished, since audio trails behind it.
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [aiError, setAiError] = useState(null);
 
   const socketRef = useRef(null);
   // We can receive segments out-of-order AND we can have overlapping "runs" (user triggers a new
@@ -208,6 +212,19 @@ const useTrainingSocket = () => {
     }
   }, []);
 
+  // A turn is still "speaking" while audio plays, while queued segments remain,
+  // or while more segments are still expected from the server.
+  const recomputeSpeaking = useCallback(() => {
+    const run = runsRef.current.current;
+    const pending = runsRef.current.pendingQueue || [];
+    const runBusy = (r) => !!r && (
+      Object.keys(r.segmentMap).length > 0 ||
+      r.totalSegments == null ||
+      r.nextExpected < r.totalSegments
+    );
+    setIsSpeaking(isPlayingRef.current || runBusy(run) || pending.some(runBusy));
+  }, []);
+
   // Drain the ordered audio queue — only plays segment at nextExpectedRef.current
   const drainQueue = useCallback(() => {
     if (isPlayingRef.current) return;
@@ -216,11 +233,11 @@ const useTrainingSocket = () => {
     maybeSwapToPendingRun();
 
     const run = runsRef.current.current;
-    if (!run) return;
+    if (!run) { recomputeSpeaking(); return; }
 
     const nextIdx = run.nextExpected;
     const seg = run.segmentMap[nextIdx];
-    if (!seg) return; // next expected segment not yet received — wait
+    if (!seg) { recomputeSpeaking(); return; } // next expected segment not yet received — wait
 
     // Remove from map and advance pointer
     delete run.segmentMap[nextIdx];
@@ -228,6 +245,7 @@ const useTrainingSocket = () => {
 
     isPlayingRef.current = true;
     setCurrentSegment(seg);
+    recomputeSpeaking();
 
     // Peek at the next segment (may not have arrived yet) for context-aware gap timing
     const nextSeg = run.segmentMap[run.nextExpected] || null;
@@ -267,7 +285,7 @@ const useTrainingSocket = () => {
       drainQueue();
     }, 800 + getInterSegmentDelayMs(seg, nextSeg));
     currentAudioRef.current = { pause: () => clearTimeout(timer) };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [recomputeSpeaking]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const enqueueSegment = useCallback((seg) => {
     const requestId = seg?.requestId || null;
@@ -300,7 +318,8 @@ const useTrainingSocket = () => {
     }
 
     drainQueue();
-  }, [drainQueue, findRunById, startRun]);
+    recomputeSpeaking();
+  }, [drainQueue, findRunById, startRun, recomputeSpeaking]);
 
   const resetQueue = useCallback(() => {
     if (currentAudioRef.current) { try { currentAudioRef.current.pause(); } catch { /* */ } }
@@ -309,7 +328,27 @@ const useTrainingSocket = () => {
     isPlayingRef.current = false;
     setSegments([]);
     setCurrentSegment(null);
+    setIsSpeaking(false);
   }, []);
+
+  // Barge-in: the learner starts talking over the AI. Cut the audio locally and
+  // tell the server to abandon the turn so no further segments are generated,
+  // billed, or played on top of the learner's new turn.
+  const interrupt = useCallback(() => {
+    const activeIds = [
+      runsRef.current.current?.id,
+      ...(runsRef.current.pendingQueue || []).map(r => r.id)
+    ].filter(Boolean);
+
+    resetQueue();
+    setIsAiTyping(false);
+
+    if (activeIds.length === 0) {
+      socketRef.current?.emit('cancel_turn', {});
+      return;
+    }
+    activeIds.forEach(requestId => socketRef.current?.emit('cancel_turn', { requestId }));
+  }, [resetQueue]);
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
@@ -353,7 +392,16 @@ const useTrainingSocket = () => {
       setAiResponseEnd(data);
       // If we were waiting for completion to swap, let the player re-check.
       drainQueue();
+      recomputeSpeaking();
     });
+
+    socket.on('ai_error', (data) => {
+      setIsAiTyping(false);
+      setAiError(data?.message || 'The AI assistant is temporarily unavailable.');
+    });
+
+    // Server confirms a turn was abandoned — make sure nothing keeps "speaking"
+    socket.on('turn_cancelled', () => recomputeSpeaking());
 
     // Shared segment event (context: 'free_talk' | 'feedback')
     socket.on('ai_segment', (seg) => enqueueSegment(seg));
@@ -364,7 +412,7 @@ const useTrainingSocket = () => {
 
     socketRef.current = socket;
     return () => { socket.disconnect(); socketRef.current = null; };
-  }, [enqueueSegment, resetQueue]);
+  }, [enqueueSegment, resetQueue, recomputeSpeaking]);
 
   const joinSession = useCallback((sessionId) => {
     socketRef.current?.emit('join_session', { sessionId });
@@ -377,10 +425,14 @@ const useTrainingSocket = () => {
   }, [startRun]);
 
   const sendFreeTalkMessage = useCallback(({ sessionId, text, conversationHistory, topicId, conversationStarter, audioData, audioMime }) => {
+    // A new learner turn always supersedes whatever the AI was still saying
+    interrupt();
     const requestId = startRun('free_talk');
     setAiResponseEnd(null);
+    setAiError(null);
+    setIsSpeaking(true);
     socketRef.current?.emit('free_talk_message', { requestId, sessionId, text, conversationHistory, topicId, conversationStarter, audioData, audioMime });
-  }, [startRun]);
+  }, [startRun, interrupt]);
 
   const requestTTS = useCallback(({ text, phraseId, language = 'ja' }) => {
     setTtsAudio(null);
@@ -403,7 +455,12 @@ const useTrainingSocket = () => {
     // Free Talk (segments stream in, ai_response_end signals done)
     isAiTyping,
     aiResponseEnd,
+    aiError,
     sendFreeTalkMessage,
+    // True while AI audio is playing or still pending — drives the "speaking" UI
+    isSpeaking,
+    // Barge-in: stop the AI mid-sentence and abandon its turn server-side
+    interrupt,
     // Shared streaming segments + current playing segment
     segments,
     currentSegment,

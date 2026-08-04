@@ -15,6 +15,7 @@ import { analyzeAudioBuffer } from './services/audioAnalysis.service.js';
 import { verifyAccessToken } from './utils/jwt.js';
 import { User, TrainingSession, Topic } from './models/index.js';
 import emailService from './services/email.service.js';
+import { createTurnRegistry } from './utils/turns.js';
 
 // Routes
 import authRoutes from './routes/auth.routes.js';
@@ -151,6 +152,18 @@ io.use(async (socket, next) => {
 io.on('connection', (socket) => {
   console.log(`Client connected: ${socket.id} (${socket.user.email})`);
 
+  // Tracks the live AI turn so a barge-in can silence the previous one
+  const turnRegistry = createTurnRegistry((event, payload) => socket.emit(event, payload));
+  const beginTurn = (requestId) => turnRegistry.begin(requestId);
+  const endTurn = (requestId) => turnRegistry.end(requestId);
+  const emitForTurn = (turn, event, payload) => turnRegistry.emitFor(turn, event, payload);
+
+  // Client asks to abandon the current AI turn (learner started talking again)
+  socket.on('cancel_turn', ({ requestId } = {}) => {
+    turnRegistry.cancel(requestId);
+    socket.emit('turn_cancelled', { requestId: requestId || null });
+  });
+
   // Join a training session room
   socket.on('join_session', async ({ sessionId }) => {
     socket.join(`session:${sessionId}`);
@@ -251,8 +264,10 @@ io.on('connection', (socket) => {
 
   // Free Talk conversation
   socket.on('free_talk_message', async ({ requestId, sessionId, text, conversationHistory, topicId, conversationStarter, audioData }) => {
+    // Supersedes any turn still in flight
+    const turn = beginTurn(requestId);
     try {
-      socket.emit('ai_typing', { requestId });
+      emitForTurn(turn, 'ai_typing', { requestId });
 
       const messages = (conversationHistory || []).map(m => ({
         role: m.role,
@@ -291,30 +306,44 @@ io.on('connection', (socket) => {
       let segIndex = 0;
       let correction = null;
       const jaTexts = [];
+      const ttsJobs = [];
 
       for await (const seg of deepinfraService.streamFreeTalkConversation(messages, aiContext)) {
+        // Learner interrupted — stop pulling tokens and drop this turn
+        if (turn.cancelled) break;
         if ('correction' in seg) { correction = seg.correction; continue; }
         const idx = segIndex++;
         if (isJapaneseLang(seg.lang)) jaTexts.push(seg.text);
 
-        // Fire TTS immediately (non-blocking IIFE) — pushes ai_segment when audio is ready
-        (async (segment, index) => {
+        // Fire TTS immediately (non-blocking) — pushes ai_segment when audio is ready.
+        // Collected so we can report the turn as finished only once audio has been sent.
+        ttsJobs.push((async (segment, index) => {
           try {
             // Japanese uses company/user voice clone; English uses default voice
             const segVoiceId = isJapaneseLang(segment.lang) ? voiceId : null;
             const { buffer, mimeType } = await deepinfraService.textToSpeech(segment.text, segment.lang, segVoiceId);
-            socket.emit('ai_segment', {
+            emitForTurn(turn, 'ai_segment', {
               index, text: segment.text, lang: segment.lang, context: 'free_talk',
               audioData: buffer.toString('base64'), audioMime: mimeType,
               requestId
             });
-          } catch {
-            socket.emit('ai_segment', { index, text: segment.text, lang: segment.lang, context: 'free_talk', audioData: null, requestId });
+          } catch (err) {
+            console.warn(`Free talk TTS failed (segment ${index}):`, err.message);
+            // Still emit so the client's ordered queue never stalls on a missing index
+            emitForTurn(turn, 'ai_segment', { index, text: segment.text, lang: segment.lang, context: 'free_talk', audioData: null, requestId });
           }
-        })(seg, idx);
+        })(seg, idx));
       }
 
-      socket.emit('ai_response_end', { requestId, totalSegments: segIndex, correction });
+      if (turn.cancelled) { endTurn(requestId); return; }
+
+      // Announce the turn only after every segment has been pushed, so the client
+      // knows exactly how many to expect and can tell when the AI is truly done.
+      await Promise.allSettled(ttsJobs);
+      if (turn.cancelled) { endTurn(requestId); return; }
+
+      emitForTurn(turn, 'ai_response_end', { requestId, totalSegments: segIndex, correction });
+      endTurn(requestId);
 
       // Session save — fire and forget
       if (sessionId && sessionId !== 'demo') {
@@ -329,9 +358,15 @@ io.on('connection', (socket) => {
       }
     } catch (error) {
       console.error('Free talk error:', error.message);
-      socket.emit('ai_segment', { index: 0, text: 'すみません、もう一度お願いします。', lang: 'ja', context: 'free_talk', audioData: null, requestId });
-      socket.emit('ai_segment', { index: 1, text: 'Sorry, please try again.', lang: 'en', context: 'free_talk', audioData: null, requestId });
-      socket.emit('ai_response_end', { requestId, totalSegments: 2, correction: null });
+      // Report the reason so the UI can distinguish "AI unavailable" from a bad reply
+      emitForTurn(turn, 'ai_error', {
+        requestId,
+        message: error.isUpstreamAIError ? error.message : 'The AI assistant is temporarily unavailable.'
+      });
+      emitForTurn(turn, 'ai_segment', { index: 0, text: 'すみません、もう一度お願いします。', lang: 'ja', context: 'free_talk', audioData: null, requestId });
+      emitForTurn(turn, 'ai_segment', { index: 1, text: 'Sorry, please try again.', lang: 'en', context: 'free_talk', audioData: null, requestId });
+      emitForTurn(turn, 'ai_response_end', { requestId, totalSegments: 2, correction: null });
+      endTurn(requestId);
     }
   });
 

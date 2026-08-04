@@ -82,7 +82,10 @@ const LearnPage = () => {
     sendPronunciationAttempt,
     isAiTyping,
     aiResponseEnd,
+    aiError,
     sendFreeTalkMessage,
+    isSpeaking,
+    interrupt,
     segments,
     currentSegment,
     ttsAudio,
@@ -186,8 +189,8 @@ const LearnPage = () => {
   // When ai_response_end fires, reconstruct the conversation message from accumulated segments
   useEffect(() => {
     if (!aiResponseEnd || !showFreeTalk) return;
-    // Always reset status — ai_response_end means the AI is done regardless of segments
-    setFreeTalkStatus('ready');
+    // Transcript is complete here, but the AI may still be speaking the queued
+    // audio — the status is driven by `isSpeaking` below, not by this event.
     const freeSegs = freeTalkSegmentsRef.current;
     const jaText = freeSegs.filter(s => s.lang === 'ja').map(s => s.text).join(' ');
     const enText = freeSegs.filter(s => s.lang === 'en').map(s => s.text).join(' ');
@@ -204,6 +207,23 @@ const LearnPage = () => {
     ]));
     freeTalkSegmentsRef.current = [];
   }, [aiResponseEnd, showFreeTalk]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Free Talk status follows real audio state: 'speaking' while the AI talks,
+  // back to 'ready' only once it has actually finished. Listening/processing are
+  // owned by the panel itself, so don't stomp on them here.
+  useEffect(() => {
+    if (!showFreeTalk) return;
+    setFreeTalkStatus(prev => {
+      if (prev === 'listening') return prev;
+      if (isSpeaking) return 'speaking';
+      return prev === 'speaking' || prev === 'processing' ? 'ready' : prev;
+    });
+  }, [isSpeaking, showFreeTalk]);
+
+  // Surface AI provider failures instead of leaving the user on a silent spinner
+  useEffect(() => {
+    if (aiError) toast.error(aiError);
+  }, [aiError]);
 
   // tts_audio now carries base64 audioData instead of a URL
   useEffect(() => {
@@ -777,6 +797,7 @@ const LearnPage = () => {
               setStatus={setFreeTalkStatus}
               isAiTyping={isAiTyping}
               unlockAudio={unlockAudio}
+              onInterrupt={interrupt}
               conversationStarter={conversationStarter}
               setConversationStarter={setConversationStarter}
               onSendMessage={async (text, wavBlob, latencyMs) => {
@@ -953,7 +974,7 @@ const TopicSheet = ({ topics, selectedTopic, filter, setFilter, onSelect, onClos
 };
 
 /* ─── Free Talk Panel ─── */
-const FreeTalkPanel = ({ topic, conversation, status, setStatus, isAiTyping, onSendMessage, unlockAudio, conversationStarter, setConversationStarter }) => {
+const FreeTalkPanel = ({ topic, conversation, status, setStatus, isAiTyping, onSendMessage, unlockAudio, conversationStarter, setConversationStarter, onInterrupt }) => {
   const {
     isListening, fullTranscript, isSupported,
     startListening, stopListening, resetTranscript,
@@ -973,6 +994,18 @@ const FreeTalkPanel = ({ topic, conversation, status, setStatus, isAiTyping, onS
   }, [conversation]);
 
   const handleAction = async () => {
+    // Barge-in: tapping the mic while the AI is talking cuts it off and hands
+    // the turn straight back to the learner, the way a real conversation works.
+    if (status === 'speaking' || status === 'processing') {
+      onInterrupt?.();
+      resetTranscript();
+      recordingStartRef.current = Date.now();
+      try { await startRecording(); } catch (err) { console.error('Mic access error:', err); }
+      startListening();
+      setStatus('listening');
+      return;
+    }
+
     if (status === 'ready' || status === 'idle') {
       resetTranscript();
       recordingStartRef.current = Date.now();
@@ -1126,10 +1159,12 @@ const FreeTalkPanel = ({ topic, conversation, status, setStatus, isAiTyping, onS
           onClick={handleAction}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          disabled={!isSupported || status === 'processing'}
+          disabled={!isSupported}
           className={`flex items-center gap-2.5 px-8 py-3.5 rounded-2xl font-semibold text-sm transition-all ${status === 'listening'
             ? 'bg-rose-500 text-white shadow-lg shadow-rose-500/20'
-            : 'bg-gradient-to-r from-primary-600 to-primary-500 text-white shadow-lg shadow-primary-600/20 hover:shadow-xl'
+            : status === 'speaking'
+              ? 'bg-slate-700 text-white shadow-lg shadow-slate-900/20 hover:bg-slate-600'
+              : 'bg-gradient-to-r from-primary-600 to-primary-500 text-white shadow-lg shadow-primary-600/20 hover:shadow-xl'
             } disabled:opacity-50`}
         >
           {status === 'listening' ? (
@@ -1138,6 +1173,16 @@ const FreeTalkPanel = ({ topic, conversation, status, setStatus, isAiTyping, onS
               <div className="flex items-center gap-0.5 ml-1">
                 {[0, 1, 2].map(i => (
                   <motion.span key={i} className="w-1 bg-white/60 rounded-full" animate={{ height: [4, 12, 4] }} transition={{ duration: 0.5, repeat: Infinity, delay: i * 0.1 }} />
+                ))}
+              </div>
+            </>
+          ) : status === 'speaking' ? (
+            // Stays enabled: tapping here is the barge-in that cuts the AI off
+            <>
+              <Mic className="w-4 h-4" /> Interrupt & Reply
+              <div className="flex items-center gap-0.5 ml-1">
+                {[0, 1, 2].map(i => (
+                  <motion.span key={i} className="w-1 bg-white/60 rounded-full" animate={{ height: [4, 12, 4] }} transition={{ duration: 0.7, repeat: Infinity, delay: i * 0.15 }} />
                 ))}
               </div>
             </>
