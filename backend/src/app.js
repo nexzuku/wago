@@ -15,6 +15,7 @@ import { analyzeAudioBuffer } from './services/audioAnalysis.service.js';
 import { verifyAccessToken } from './utils/jwt.js';
 import { User, TrainingSession, Topic } from './models/index.js';
 import emailService from './services/email.service.js';
+import storageService from './services/storage.service.js';
 import { createTurnRegistry } from './utils/turns.js';
 
 // Routes
@@ -88,8 +89,9 @@ app.use(morgan('dev'));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Static files for uploads
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+// Static files for uploads — served from the same directory storageService
+// writes to, so the two can never drift apart
+app.use('/uploads', express.static(storageService.uploadDir));
 
 // Serve frontend from public directory
 const publicDir = path.join(__dirname, '../public');

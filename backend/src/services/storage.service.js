@@ -1,10 +1,17 @@
 import fs from 'fs/promises';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { v4 as uuidv4 } from 'uuid';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 class StorageService {
   constructor() {
-    this.uploadDir = path.join(process.cwd(), 'uploads');
+    // Anchored to the backend package root, NOT process.cwd(): app.js serves
+    // this exact directory, so deriving it from the working directory meant
+    // uploads silently landed somewhere unserved unless you happened to start
+    // the server from backend/.
+    this.uploadDir = path.resolve(__dirname, '../../uploads');
   }
 
   async ensureDir(dir) {

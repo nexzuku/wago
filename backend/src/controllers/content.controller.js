@@ -129,7 +129,9 @@ export const getContent = async (req, res, next) => {
       if (content.visibility === 'managers') {
         return errorResponse(res, 'Access denied', ErrorCodes.FORBIDDEN, null, 403);
       }
-      if (content.visibility === 'specific' && !content.visibleTo.includes(req.user._id)) {
+      // .includes() compares ObjectIds by reference and is always false — use .equals()
+      const isShared = content.visibleTo.some(id => id.equals(req.user._id));
+      if (content.visibility === 'specific' && !isShared) {
         return errorResponse(res, 'Access denied', ErrorCodes.FORBIDDEN, null, 403);
       }
     }

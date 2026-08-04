@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import useAuthStore from './store/authStore';
 
 // Layouts
@@ -7,40 +7,48 @@ import AuthLayout from './components/auth/AuthLayout';
 import DashboardLayout from './components/dashboard/DashboardLayout';
 import UserLayout from './components/user/UserLayout';
 
-// Admin Pages
+// Landing and Login stay eager — they are the first paint for signed-out users,
+// so lazy-loading them would only add a round trip.
 import Landing from './pages/Landing';
 import Login from './pages/Login';
-import ForgotPassword from './pages/ForgotPassword';
-import ResetPassword from './pages/ResetPassword';
-import Onboarding from './pages/Onboarding';
-import Dashboard from './pages/Dashboard';
-import Employees from './pages/Employees';
-import VoiceManagement from './pages/VoiceManagement';
-import ContentManagement from './pages/ContentManagement';
-import Settings from './pages/Settings';
-import CultureManagement from './pages/CultureManagement';
-import LearningPathsManagement from './pages/LearningPathsManagement';
-import ScenariosManagement from './pages/ScenariosManagement';
-import TopicManagement from './pages/TopicManagement';
-import Analytics from './pages/Analytics';
+
+// Everything else is split per route: an employee should not download the
+// admin dashboard, and vice versa.
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
+const ResetPassword = lazy(() => import('./pages/ResetPassword'));
+const Onboarding = lazy(() => import('./pages/Onboarding'));
+
+// Admin Pages
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const Employees = lazy(() => import('./pages/Employees'));
+const VoiceManagement = lazy(() => import('./pages/VoiceManagement'));
+const ContentManagement = lazy(() => import('./pages/ContentManagement'));
+const Settings = lazy(() => import('./pages/Settings'));
+const CultureManagement = lazy(() => import('./pages/CultureManagement'));
+const LearningPathsManagement = lazy(() => import('./pages/LearningPathsManagement'));
+const ScenariosManagement = lazy(() => import('./pages/ScenariosManagement'));
+const TopicManagement = lazy(() => import('./pages/TopicManagement'));
+const Analytics = lazy(() => import('./pages/Analytics'));
 
 // User (Employee) Pages
-import LearnPage from './pages/user/LearnPage';
-import CulturePage from './pages/user/CulturePage';
-import ScenariosPage from './pages/user/ScenariosPage';
-import PathsPage from './pages/user/PathsPage';
-import ProgressPage from './pages/user/ProgressPage';
+const LearnPage = lazy(() => import('./pages/user/LearnPage'));
+const CulturePage = lazy(() => import('./pages/user/CulturePage'));
+const ScenariosPage = lazy(() => import('./pages/user/ScenariosPage'));
+const PathsPage = lazy(() => import('./pages/user/PathsPage'));
+const ProgressPage = lazy(() => import('./pages/user/ProgressPage'));
 
 // Protected Route Component
+const RouteSpinner = () => (
+  <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+    <div className="w-10 h-10 border-3 border-primary-600 border-t-transparent rounded-full animate-spin" />
+  </div>
+);
+
 const ProtectedRoute = ({ children, roles = [] }) => {
   const { isAuthenticated, isLoading, user } = useAuthStore();
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="w-10 h-10 border-3 border-primary-600 border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
+    return <RouteSpinner />;
   }
 
   if (!isAuthenticated) {
@@ -210,6 +218,7 @@ function App() {
   }
 
   return (
+    <Suspense fallback={<RouteSpinner />}>
     <Routes>
       {/* Public Routes */}
       <Route path="/" element={<Landing />} />
@@ -263,6 +272,7 @@ function App() {
       {/* Fallback - redirect based on auth state */}
       <Route path="*" element={<FallbackRedirect />} />
     </Routes>
+    </Suspense>
   );
 }
 
