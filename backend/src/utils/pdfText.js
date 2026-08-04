@@ -36,11 +36,31 @@ function extractRawPdfText(buffer) {
   }
 
   if (textParts.length === 0) {
-    const readable = raw.replace(/[^\x20-\x7E\n\r\t]/g, ' ').replace(/\s+/g, ' ').trim();
-    if (readable.length > 50) textParts.push(readable.substring(0, 5000));
+    const readable = raw
+      // Drop PDF syntax so we don't hand object headers and dictionaries to the LLM
+      .replace(/\d+\s+\d+\s+obj|endobj|stream|endstream|xref|trailer|startxref/g, ' ')
+      .replace(/<<[\s\S]*?>>/g, ' ')
+      .replace(/[^\x20-\x7E\n\r\t]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    if (looksLikeProse(readable)) textParts.push(readable.substring(0, 5000));
   }
 
   return textParts.join('\n');
+}
+
+// Guards the last-ditch fallback: a corrupt PDF otherwise yields a wall of
+// structural noise that reads as "text" but is worthless as extraction input.
+function looksLikeProse(text) {
+  if (text.length < 100) return false;
+
+  const words = text.split(/\s+/).filter(Boolean);
+  if (words.length < 20) return false;
+
+  // Real prose is mostly alphabetic words of a few characters
+  const wordLike = words.filter(w => /^[A-Za-z][A-Za-z'.,-]{2,}$/.test(w)).length;
+  return wordLike / words.length >= 0.5;
 }
 
 /**

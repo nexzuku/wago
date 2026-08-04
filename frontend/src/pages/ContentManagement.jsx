@@ -372,7 +372,9 @@ const UploadModal = ({ topics: initialTopics, onClose, onSuccess }) => {
       const total = result.matchedTopics.length + result.suggestedTopics.length;
       toast.success(`Detected ${total} topic${total !== 1 ? 's' : ''} from your content`);
     } catch (error) {
-      toast.error('Failed to detect topics. Please try again.');
+      toast.error(
+        error.response?.data?.error?.message || 'Failed to detect topics. Please try again.'
+      );
     } finally {
       setIsDetecting(false);
     }

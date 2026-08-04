@@ -25,6 +25,12 @@ export const errorHandler = (err, req, res, next) => {
     return errorResponse(res, err.message, ErrorCodes.FORBIDDEN, null, 403);
   }
 
+  // Upstream AI provider failure — keep the real reason, it is operator-actionable
+  // and otherwise gets masked as a generic 500 in production.
+  if (err.isUpstreamAIError) {
+    return errorResponse(res, err.message, ErrorCodes.EXTERNAL_SERVICE_ERROR, null, 502);
+  }
+
   // Mongoose validation error
   if (err.name === 'ValidationError') {
     const details = Object.values(err.errors).map(e => ({

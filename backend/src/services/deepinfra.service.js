@@ -38,6 +38,30 @@ function normalizeBase64Audio(input) {
   return b64;
 }
 
+// Marks provider failures so the error handler can return a 502 with a usable
+// message instead of a generic 500 that hides why AI features stopped working.
+function tagUpstreamError(err) {
+  const status = err?.status ?? err?.response?.status;
+  const detail = err?.error?.message || err?.message || 'unknown error';
+
+  let message;
+  if (status === 401 || status === 403) {
+    message = 'AI service rejected the API key — check DEEPINFRA_API_KEY.';
+  } else if (status === 402) {
+    message = 'AI service refused the request for billing reasons — add a payment method to the DeepInfra account.';
+  } else if (status === 429) {
+    message = 'AI service is rate limiting requests — please retry shortly.';
+  } else {
+    message = `AI service request failed: ${detail}`;
+  }
+
+  const tagged = new Error(message);
+  tagged.isUpstreamAIError = true;
+  tagged.upstreamStatus = status;
+  tagged.cause = err;
+  return tagged;
+}
+
 function extractJSON(text) {
   // Strip markdown code fences
   let cleaned = text.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
@@ -168,14 +192,18 @@ class DeepInfraService {
     if (systemPrompt) formattedMessages.push({ role: 'system', content: systemPrompt });
     formattedMessages.push(...messages);
 
-    const _raw = await this.client.chat.completions.create({
-      model: this.model,
-      messages: formattedMessages,
-      temperature: 0.7,
-      max_tokens: maxTokens
-    });
+    try {
+      const _raw = await this.client.chat.completions.create({
+        model: this.model,
+        messages: formattedMessages,
+        temperature: 0.7,
+        max_tokens: maxTokens
+      });
 
-    return _raw.choices[0].message.content || '';
+      return _raw.choices[0].message.content || '';
+    } catch (err) {
+      throw tagUpstreamError(err);
+    }
   }
 
   // ── Streaming: LLM → NDJSON segments → yields {text,lang} or {correction} ───

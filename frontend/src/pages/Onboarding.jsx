@@ -128,7 +128,10 @@ const Onboarding = () => {
         setCurrentStep(1); // Move to review step
       }
     } catch (error) {
-      toast.error('Failed to load company information from URL');
+      // The API explains *why* (bad URL, unreachable site, AI service down) — show it
+      toast.error(
+        error.response?.data?.error?.message || 'Failed to load company information from URL'
+      );
       console.error('URL extraction error:', error);
     } finally {
       setIsExtracting(false);
@@ -164,7 +167,9 @@ const Onboarding = () => {
         setCurrentStep(1); // Move to review step
       }
     } catch (error) {
-      toast.error('Failed to extract information from PDF');
+      toast.error(
+        error.response?.data?.error?.message || 'Failed to extract information from PDF'
+      );
       console.error('PDF extraction error:', error);
     } finally {
       setIsExtracting(false);

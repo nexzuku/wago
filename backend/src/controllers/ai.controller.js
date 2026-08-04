@@ -40,7 +40,14 @@ const normalizeUrl = (input) => {
   const raw = String(input || '').trim();
   if (!raw) throw new Error('URL is required');
 
-  const withScheme = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+  // Reject any explicit non-web scheme (file:, ftp:, data:, ...) rather than
+  // letting it get rewritten into a bogus https URL.
+  const scheme = raw.match(/^([a-z][a-z0-9+.-]*):/i)?.[1]?.toLowerCase();
+  if (scheme && scheme !== 'http' && scheme !== 'https') {
+    throw new Error('Only http and https URLs are supported');
+  }
+
+  const withScheme = scheme ? raw : `https://${raw}`;
 
   let parsed;
   try {
