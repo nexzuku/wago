@@ -1,0 +1,1008 @@
+/* WaGo User UI - Black & White Low-Fidelity Theme Override */
+
+/* ==================== GLOBAL OVERRIDES ==================== */
+* {
+    border-radius: 0 !important;
+}
+
+:root {
+    --bg-dark: #ffffff !important;
+    --bg-card: #ffffff !important;
+    --text-light: #000000 !important;
+    --text-gray: #666666 !important;
+    --text-dark: #000000 !important;
+    --border-color: #000000 !important;
+    --primary-color: #000000 !important;
+    --secondary-color: #666666 !important;
+    --success-color: #000000 !important;
+    --danger-color: #000000 !important;
+}
+
+html, body {
+    background: #ffffff !important;
+    color: #000000 !important;
+}
+
+/* ==================== HEADER ==================== */
+.app-header {
+    background: #ffffff !important;
+    border-bottom: 2px solid #000000 !important;
+}
+
+.logo-icon {
+    background: #000000 !important;
+    border: 2px solid #000000 !important;
+    color: #ffffff !important;
+}
+
+.app-title {
+    color: #000000 !important;
+}
+
+.btn-notification,
+.btn-profile {
+    background: #ffffff !important;
+    border: 2px solid #000000 !important;
+    color: #000000 !important;
+}
+
+.btn-notification:hover,
+.btn-profile:hover {
+    background: #e0e0e0 !important;
+}
+
+.notification-badge {
+    background: #000000 !important;
+    border: 2px solid #ffffff !important;
+    color: #ffffff !important;
+}
+
+/* ==================== MAIN TRAINING AREA ==================== */
+.training-main {
+    background: #ffffff !important;
+}
+
+/* ==================== TOPIC SELECTOR ==================== */
+.topic-selector-btn {
+    background: #ffffff !important;
+    border: 2px solid #000000 !important;
+    color: #000000 !important;
+}
+
+.topic-selector-btn:hover {
+    background: #e0e0e0 !important;
+    border-color: #000000 !important;
+}
+
+.topic-icon {
+    filter: grayscale(100%);
+}
+
+.topic-label {
+    color: #666666 !important;
+}
+
+.topic-name {
+    color: #000000 !important;
+}
+
+.topic-progress-mini {
+    color: #000000 !important;
+    background: #e0e0e0 !important;
+    border: 1px solid #000000 !important;
+}
+
+/* ==================== TRAINING MODE PILLS ==================== */
+.mode-pill {
+    background: #ffffff !important;
+    border: 2px solid #000000 !important;
+    color: #000000 !important;
+}
+
+.mode-pill:hover {
+    background: #e0e0e0 !important;
+}
+
+.mode-pill.active {
+    background: #000000 !important;
+    border-color: #000000 !important;
+    color: #ffffff !important;
+}
+
+/* ==================== PHRASE CARD ==================== */
+.phrase-container {
+    background: transparent !important;
+}
+
+.phrase-header {
+    background: transparent !important;
+}
+
+.category-badge {
+    background: #000000 !important;
+    color: #ffffff !important;
+    border: 2px solid #000000 !important;
+}
+
+.difficulty-badge {
+    color: #000000 !important;
+}
+
+.difficulty-badge i {
+    color: #000000 !important;
+}
+
+.btn-icon {
+    background: #ffffff !important;
+    border: 2px solid #000000 !important;
+    color: #000000 !important;
+}
+
+.btn-icon:hover {
+    background: #e0e0e0 !important;
+}
+
+.btn-icon.active {
+    background: #000000 !important;
+    color: #ffffff !important;
+}
+
+.phrase-card {
+    background: #ffffff !important;
+    border: 2px solid #000000 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.phrase-card.playing {
+    box-shadow: 0 0 0 3px #000000 !important;
+}
+
+.phrase-card.playing .phrase-japanese {
+    color: #000000 !important;
+}
+
+.phrase-japanese {
+    color: #000000 !important;
+}
+
+.phrase-romaji {
+    color: #666666 !important;
+}
+
+.phrase-english {
+    color: #666666 !important;
+}
+
+.phrase-context {
+    color: #000000 !important;
+    background: #f5f5f5 !important;
+    border-left: 3px solid #000000 !important;
+}
+
+.phrase-context i {
+    color: #000000 !important;
+}
+
+/* ==================== WAVEFORM ==================== */
+.waveform-comparison {
+    background: #f5f5f5 !important;
+    border: 2px solid #000000 !important;
+}
+
+.waveform-label {
+    color: #000000 !important;
+}
+
+.wave-bar {
+    background: #000000 !important;
+}
+
+/* ==================== TRAINING STEPS ==================== */
+.step-circle {
+    background: #ffffff !important;
+    border: 3px solid #000000 !important;
+    color: #000000 !important;
+}
+
+.step-item.completed .step-circle {
+    background: #000000 !important;
+    border-color: #000000 !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+}
+
+.step-item.current .step-circle {
+    background: #000000 !important;
+    border-color: #000000 !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2) !important;
+}
+
+.step-label {
+    color: #666666 !important;
+}
+
+.step-item.completed .step-label {
+    color: #000000 !important;
+}
+
+.step-item.current .step-label {
+    color: #000000 !important;
+}
+
+.step-connector {
+    background: #e0e0e0 !important;
+}
+
+.connector-progress {
+    background: #000000 !important;
+    box-shadow: none !important;
+}
+
+/* ==================== AUDIO CONTROLS ==================== */
+.btn-audio-control {
+    background: #000000 !important;
+    border: 2px solid #000000 !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.btn-audio-control:hover {
+    background: #333333 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+.btn-audio-control.secondary {
+    background: #ffffff !important;
+    border-color: #000000 !important;
+    color: #000000 !important;
+}
+
+.btn-audio-control.secondary:hover {
+    background: #e0e0e0 !important;
+}
+
+.btn-audio-control.playing {
+    background: #000000 !important;
+}
+
+/* ==================== MIC BUTTON ==================== */
+.mic-zone {
+    background: transparent !important;
+}
+
+.pronunciation-score {
+    background: transparent !important;
+}
+
+.score-circle {
+    background: #000000 !important;
+    border: 3px solid #000000 !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+}
+
+.score-value,
+.score-label {
+    color: #ffffff !important;
+}
+
+.score-feedback {
+    color: #000000 !important;
+}
+
+.mic-button {
+    background: #000000 !important;
+    border: 5px solid #000000 !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
+}
+
+.mic-button:hover {
+    background: #333333 !important;
+    border-color: #000000 !important;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4) !important;
+}
+
+.mic-button.is-recording,
+.mic-button.recording {
+    background: #000000 !important;
+    border-color: #000000 !important;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4) !important;
+}
+
+.mic-icon {
+    color: #ffffff !important;
+}
+
+.mic-ripple,
+.mic-ripple-2,
+.mic-pulse,
+.mic-pulse-2 {
+    border-color: #000000 !important;
+}
+
+.mic-label {
+    color: #000000 !important;
+}
+
+/* Recording Indicator */
+.recording-indicator {
+    background: transparent !important;
+}
+
+.recording-indicator p {
+    color: #000000 !important;
+}
+
+.sound-wave .bar {
+    background: #000000 !important;
+}
+
+/* ==================== VOICE INDICATOR ==================== */
+.voice-indicator {
+    color: #000000 !important;
+    background: #f5f5f5 !important;
+    border: 1px solid #000000 !important;
+}
+
+.voice-indicator strong {
+    color: #000000 !important;
+}
+
+.btn-change-voice {
+    background: #ffffff !important;
+    border: 2px solid #000000 !important;
+    color: #000000 !important;
+}
+
+.btn-change-voice:hover {
+    background: #e0e0e0 !important;
+}
+
+/* ==================== PROGRESS BAR ==================== */
+.progress-container {
+    background: transparent !important;
+}
+
+.progress-info {
+    color: #000000 !important;
+}
+
+.progress-text,
+.phrases-count {
+    color: #000000 !important;
+}
+
+.progress-bar {
+    background: #e0e0e0 !important;
+    border: 2px solid #000000 !important;
+}
+
+.progress-fill {
+    background: #000000 !important;
+}
+
+.next-phrase-preview {
+    background: #f5f5f5 !important;
+    border: 1px solid #000000 !important;
+}
+
+.next-label {
+    color: #666666 !important;
+}
+
+.next-phrase {
+    color: #000000 !important;
+}
+
+.btn-skip {
+    background: #ffffff !important;
+    border: 2px solid #000000 !important;
+    color: #000000 !important;
+}
+
+.btn-skip:hover {
+    background: #e0e0e0 !important;
+}
+
+/* ==================== BOTTOM NAVIGATION ==================== */
+.bottom-nav {
+    background: #ffffff !important;
+    border-top: 2px solid #000000 !important;
+}
+
+.nav-item {
+    color: #666666 !important;
+}
+
+.nav-item:hover {
+    color: #000000 !important;
+    background: #f5f5f5 !important;
+}
+
+.nav-item.active {
+    color: #000000 !important;
+    background: #e0e0e0 !important;
+    border-bottom: 3px solid #000000 !important;
+}
+
+/* ==================== EMERGENCY SOS BUTTON ==================== */
+.emergency-sos-btn {
+    background: #000000 !important;
+    border: 3px solid #000000 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.emergency-sos-btn:hover {
+    background: #333333 !important;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* ==================== OVERLAYS & SCREENS ==================== */
+.screen-overlay {
+    background: #ffffff !important;
+}
+
+.overlay-header {
+    background: #ffffff !important;
+    border-bottom: 2px solid #000000 !important;
+}
+
+.overlay-title {
+    color: #000000 !important;
+}
+
+.btn-back {
+    background: #ffffff !important;
+    border: 2px solid #000000 !important;
+    color: #000000 !important;
+}
+
+.btn-back:hover {
+    background: #e0e0e0 !important;
+}
+
+.overlay-content {
+    background: #ffffff !important;
+}
+
+/* ==================== EMERGENCY OVERLAY ==================== */
+.emergency-overlay {
+    background: #ffffff !important;
+}
+
+.emergency-header {
+    background: #000000 !important;
+    border-bottom: 2px solid #000000 !important;
+}
+
+.emergency-header .overlay-title {
+    color: #ffffff !important;
+}
+
+.emergency-header .btn-close {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 2px solid #ffffff !important;
+}
+
+.emergency-list {
+    background: #ffffff !important;
+}
+
+.emergency-phrase {
+    background: #ffffff !important;
+    border: 2px solid #000000 !important;
+}
+
+.emergency-phrase:hover {
+    background: #f5f5f5 !important;
+}
+
+.emergency-icon {
+    background: #000000 !important;
+    color: #ffffff !important;
+}
+
+.emergency-text .jp {
+    color: #000000 !important;
+}
+
+.emergency-text .en {
+    color: #666666 !important;
+}
+
+.emergency-note {
+    background: #f5f5f5 !important;
+    border-left: 3px solid #000000 !important;
+    color: #000000 !important;
+}
+
+/* ==================== TOPIC SHEET ==================== */
+.bottom-sheet {
+    background: #ffffff !important;
+    border-top: 2px solid #000000 !important;
+}
+
+.sheet-header {
+    background: #ffffff !important;
+    border-bottom: 2px solid #000000 !important;
+}
+
+.sheet-title {
+    color: #000000 !important;
+}
+
+.btn-close-sheet {
+    background: #ffffff !important;
+    border: 2px solid #000000 !important;
+    color: #000000 !important;
+}
+
+.btn-close-sheet:hover {
+    background: #e0e0e0 !important;
+}
+
+.topic-filter-tabs {
+    border-bottom: 2px solid #000000 !important;
+}
+
+.filter-tab {
+    color: #666666 !important;
+}
+
+.filter-tab.active {
+    color: #000000 !important;
+}
+
+.filter-tab.active::after {
+    background: #000000 !important;
+}
+
+.topics-list {
+    background: #ffffff !important;
+}
+
+.category-group-title {
+    color: #000000 !important;
+    border-bottom: 1px solid #000000 !important;
+}
+
+.topic-item {
+    background: #ffffff !important;
+    border: 2px solid #000000 !important;
+}
+
+.topic-item:hover {
+    background: #f5f5f5 !important;
+    border-color: #000000 !important;
+}
+
+.topic-item.active {
+    background: #e0e0e0 !important;
+    border-color: #000000 !important;
+}
+
+.topic-item.locked {
+    opacity: 0.5;
+}
+
+.topic-item-icon {
+    filter: grayscale(100%);
+}
+
+.topic-item-header h5 {
+    color: #000000 !important;
+}
+
+.topic-status {
+    border: 1px solid #000000 !important;
+}
+
+.topic-status.assigned {
+    background: #000000 !important;
+    color: #ffffff !important;
+}
+
+.topic-status.available {
+    background: #ffffff !important;
+    color: #000000 !important;
+}
+
+.topic-status.locked {
+    background: #e0e0e0 !important;
+    color: #666666 !important;
+}
+
+.topic-description {
+    color: #666666 !important;
+}
+
+.topic-stats {
+    color: #666666 !important;
+}
+
+.topic-progress {
+    color: #000000 !important;
+}
+
+.btn-request-topic {
+    background: #ffffff !important;
+    border: 2px dashed #000000 !important;
+    color: #000000 !important;
+}
+
+.btn-request-topic:hover {
+    background: #f5f5f5 !important;
+}
+
+/* ==================== SCENARIOS ==================== */
+.scenario-note,
+.visual-note,
+.culture-intro,
+.paths-intro {
+    background: #f5f5f5 !important;
+    border-left: 3px solid #000000 !important;
+    color: #000000 !important;
+}
+
+.scenario-note i,
+.visual-note i,
+.culture-intro i,
+.paths-intro i {
+    color: #000000 !important;
+}
+
+.scenario-card {
+    background: #ffffff !important;
+    border: 2px solid #000000 !important;
+}
+
+.scenario-card:hover {
+    background: #f5f5f5 !important;
+}
+
+.scenario-icon {
+    filter: grayscale(100%);
+}
+
+.scenario-info h3 {
+    color: #000000 !important;
+}
+
+.scenario-info p {
+    color: #666666 !important;
+}
+
+.scenario-preview {
+    color: #666666 !important;
+}
+
+.btn-start {
+    background: #000000 !important;
+    border: 2px solid #000000 !important;
+    color: #ffffff !important;
+}
+
+.btn-start:hover {
+    background: #333333 !important;
+}
+
+/* ==================== CULTURE SCREEN ==================== */
+.culture-section {
+    background: #ffffff !important;
+    border: 2px solid #000000 !important;
+}
+
+.culture-section-header {
+    background: #f5f5f5 !important;
+    border-bottom: 1px solid #000000 !important;
+}
+
+.culture-icon {
+    filter: grayscale(100%);
+}
+
+.culture-section-header h3 {
+    color: #000000 !important;
+}
+
+.culture-subtitle {
+    color: #666666 !important;
+}
+
+.btn-watch-demo {
+    background: #000000 !important;
+    border: 2px solid #000000 !important;
+    color: #ffffff !important;
+}
+
+.btn-watch-demo:hover {
+    background: #333333 !important;
+}
+
+.culture-details {
+    background: #ffffff !important;
+}
+
+.bow-type {
+    background: #f5f5f5 !important;
+    border: 1px solid #000000 !important;
+}
+
+.bow-type strong {
+    color: #000000 !important;
+}
+
+.bow-type p {
+    color: #666666 !important;
+}
+
+.culture-rules li {
+    background: #f5f5f5 !important;
+    color: #000000 !important;
+}
+
+.culture-rules li .fa-check {
+    color: #000000 !important;
+}
+
+.culture-rules li .fa-times {
+    color: #000000 !important;
+}
+
+.culture-rules li .fa-exclamation-triangle {
+    color: #000000 !important;
+}
+
+.tip-card {
+    background: #f5f5f5 !important;
+    border-left: 3px solid #000000 !important;
+}
+
+.tip-card strong {
+    color: #000000 !important;
+}
+
+/* ==================== LEARNING PATHS ==================== */
+.path-card {
+    background: #ffffff !important;
+    border: 3px solid #000000 !important;
+}
+
+.path-badge {
+    background: #000000 !important;
+    color: #ffffff !important;
+    border: 1px solid #000000 !important;
+}
+
+.path-header h3 {
+    color: #000000 !important;
+}
+
+.path-duration {
+    color: #666666 !important;
+}
+
+.path-progress .progress-text {
+    color: #000000 !important;
+}
+
+.module-item {
+    background: #f5f5f5 !important;
+    border: 1px solid #000000 !important;
+    color: #000000 !important;
+}
+
+.module-item.completed {
+    background: #e0e0e0 !important;
+    border-color: #000000 !important;
+}
+
+.module-item.completed i {
+    color: #000000 !important;
+}
+
+.module-item.current {
+    background: #000000 !important;
+    border-color: #000000 !important;
+    color: #ffffff !important;
+}
+
+.module-item.current i {
+    color: #ffffff !important;
+}
+
+.module-item.locked i {
+    color: #666666 !important;
+}
+
+.btn-continue-path {
+    background: #000000 !important;
+    border: 2px solid #000000 !important;
+    color: #ffffff !important;
+}
+
+.btn-continue-path:hover {
+    background: #333333 !important;
+}
+
+/* ==================== VISUAL CARDS ==================== */
+.visual-grid {
+    background: transparent !important;
+}
+
+.visual-card {
+    background: #ffffff !important;
+    border: 2px solid #000000 !important;
+}
+
+.visual-card:hover {
+    background: #f5f5f5 !important;
+}
+
+.visual-image {
+    filter: grayscale(100%);
+}
+
+.visual-label {
+    color: #000000 !important;
+}
+
+.visual-romaji {
+    color: #666666 !important;
+}
+
+.visual-english {
+    color: #666666 !important;
+}
+
+/* ==================== TEAM SCREEN ==================== */
+.team-stats {
+    background: #ffffff !important;
+    border: 2px solid #000000 !important;
+}
+
+.stat-card {
+    background: #f5f5f5 !important;
+    border: 1px solid #000000 !important;
+}
+
+.stat-icon {
+    color: #000000 !important;
+}
+
+.stat-label {
+    color: #666666 !important;
+}
+
+.stat-value {
+    color: #000000 !important;
+}
+
+.tab-btn {
+    background: #ffffff !important;
+    border: 2px solid #000000 !important;
+    color: #000000 !important;
+}
+
+.tab-btn.active {
+    background: #000000 !important;
+    color: #ffffff !important;
+}
+
+.leaderboard-list {
+    background: #ffffff !important;
+}
+
+.leaderboard-item {
+    background: #ffffff !important;
+    border: 2px solid #000000 !important;
+}
+
+.leaderboard-item:hover {
+    background: #f5f5f5 !important;
+}
+
+.rank-badge {
+    background: #000000 !important;
+    color: #ffffff !important;
+    border: 2px solid #000000 !important;
+}
+
+.rank-badge.gold {
+    background: #000000 !important;
+    border-color: #000000 !important;
+}
+
+.rank-badge.silver {
+    background: #666666 !important;
+    border-color: #666666 !important;
+}
+
+.rank-badge.bronze {
+    background: #999999 !important;
+    border-color: #999999 !important;
+}
+
+.user-name {
+    color: #000000 !important;
+}
+
+.user-score {
+    color: #666666 !important;
+}
+
+.team-motivation {
+    background: #f5f5f5 !important;
+    border: 2px solid #000000 !important;
+}
+
+.team-motivation p {
+    color: #000000 !important;
+}
+
+/* ==================== PERFORMANCE SCREEN ==================== */
+.stats-grid {
+    background: transparent !important;
+}
+
+.stat-box {
+    background: #ffffff !important;
+    border: 2px solid #000000 !important;
+}
+
+.stat-box:hover {
+    background: #f5f5f5 !important;
+}
+
+.stat-number {
+    color: #000000 !important;
+}
+
+.stat-description {
+    color: #666666 !important;
+}
+
+/* ==================== NOTIFICATIONS ==================== */
+.notification-toast {
+    background: #000000 !important;
+    border: 2px solid #000000 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Remove colorful gradients and glows */
+.mic-button,
+.btn-audio-control,
+.step-circle,
+.score-circle,
+.emergency-sos-btn {
+    background-image: none !important;
+}
+
+/* Disable glow animations */
+@keyframes stepPulse {
+    0%, 100% { transform: scale(1.15); box-shadow: none !important; }
+    50% { transform: scale(1.25); box-shadow: none !important; }
+}
+
+@keyframes connectorGlow {
+    0%, 100% { box-shadow: none !important; }
+    50% { box-shadow: none !important; }
+}
+
+@keyframes pulse-recording {
+    0%, 100% { transform: scale(1); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important; }
+    50% { transform: scale(1.08); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4) !important; }
+}
+
+/* Make all emoji icons grayscale */
+.topic-icon,
+.scenario-icon,
+.culture-icon,
+.visual-image,
+.emergency-icon,
+.topic-item-icon {
+    filter: grayscale(100%) !important;
+}

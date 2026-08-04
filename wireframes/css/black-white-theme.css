@@ -1,0 +1,442 @@
+/* Black & White Low Fidelity Theme Override */
+
+/* Override Bulma Colors */
+
+/* Primary Button */
+.button.is-primary {
+    background-color: #000 !important;
+    border-color: #000 !important;
+    color: #fff !important;
+}
+
+.button.is-primary:hover {
+    background-color: #333 !important;
+    border-color: #333 !important;
+}
+
+/* Info Button */
+.button.is-info {
+    background-color: #666 !important;
+    border-color: #666 !important;
+    color: #fff !important;
+}
+
+.button.is-info:hover {
+    background-color: #888 !important;
+}
+
+/* Success Button */
+.button.is-success {
+    background-color: #000 !important;
+    border-color: #000 !important;
+    color: #fff !important;
+}
+
+/* Warning Button */
+.button.is-warning {
+    background-color: #999 !important;
+    border-color: #999 !important;
+    color: #000 !important;
+}
+
+/* Danger Button */
+.button.is-danger {
+    background-color: #000 !important;
+    border-color: #000 !important;
+    color: #fff !important;
+}
+
+/* Light Button */
+.button.is-light {
+    background-color: #f5f5f5 !important;
+    border-color: #000 !important;
+    color: #000 !important;
+}
+
+.button.is-light:hover {
+    background-color: #e0e0e0 !important;
+}
+
+/* Default Button */
+.button {
+    border-radius: 0 !important;
+    border: 2px solid #000 !important;
+}
+
+/* Tags */
+.tag {
+    border-radius: 0 !important;
+    border: 1px solid #000 !important;
+}
+
+.tag.is-success {
+    background-color: #000 !important;
+    color: #fff !important;
+}
+
+.tag.is-info {
+    background-color: #666 !important;
+    color: #fff !important;
+}
+
+.tag.is-warning {
+    background-color: #999 !important;
+    color: #000 !important;
+}
+
+.tag.is-primary {
+    background-color: #333 !important;
+    color: #fff !important;
+}
+
+.tag.is-light {
+    background-color: #e0e0e0 !important;
+    color: #000 !important;
+    border: 1px solid #000 !important;
+}
+
+.tag.is-danger {
+    background-color: #000 !important;
+    color: #fff !important;
+}
+
+/* Progress Bars */
+.progress {
+    border-radius: 0 !important;
+    background-color: #e0e0e0 !important;
+}
+
+.progress::-webkit-progress-bar {
+    background-color: #e0e0e0 !important;
+}
+
+.progress::-webkit-progress-value {
+    background-color: #000 !important;
+}
+
+.progress::-moz-progress-bar {
+    background-color: #000 !important;
+}
+
+.progress.is-success::-webkit-progress-value {
+    background-color: #000 !important;
+}
+
+.progress.is-info::-webkit-progress-value {
+    background-color: #666 !important;
+}
+
+.progress.is-warning::-webkit-progress-value {
+    background-color: #999 !important;
+}
+
+.progress.is-primary::-webkit-progress-value {
+    background-color: #333 !important;
+}
+
+.progress.is-danger::-webkit-progress-value {
+    background-color: #000 !important;
+}
+
+/* Notification */
+.notification {
+    border-radius: 0 !important;
+    border: 2px solid #000 !important;
+}
+
+.notification.is-success {
+    background-color: #e0e0e0 !important;
+    color: #000 !important;
+}
+
+.notification.is-info {
+    background-color: #f5f5f5 !important;
+    color: #000 !important;
+}
+
+.notification.is-warning {
+    background-color: #e0e0e0 !important;
+    color: #000 !important;
+}
+
+.notification.is-light {
+    background-color: #f5f5f5 !important;
+    color: #000 !important;
+}
+
+/* Box */
+.box {
+    border-radius: 0 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+    border: 2px solid #000 !important;
+}
+
+/* Input Fields */
+.input, .textarea, .select select {
+    border-radius: 0 !important;
+    border: 2px solid #000 !important;
+    background-color: #fff !important;
+    color: #000 !important;
+}
+
+.input::placeholder, .textarea::placeholder {
+    color: #999 !important;
+}
+
+.input:focus, .textarea:focus, .select select:focus {
+    border-color: #000 !important;
+    box-shadow: 0 0 0 0.125em rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Modal */
+.modal-card-head {
+    background-color: #000 !important;
+    color: #fff !important;
+    border-radius: 0 !important;
+    border-bottom: 2px solid #000 !important;
+}
+
+.modal-card-head .modal-card-title {
+    color: #fff !important;
+    font-weight: bold !important;
+}
+
+.modal-card-head .delete {
+    background-color: #fff !important;
+}
+
+.modal-card-head .delete::before,
+.modal-card-head .delete::after {
+    background-color: #000 !important;
+}
+
+.modal-card {
+    border-radius: 0 !important;
+    border: 3px solid #000 !important;
+}
+
+.modal-card-foot {
+    border-top: 2px solid #000 !important;
+    border-radius: 0 !important;
+    background-color: #f5f5f5 !important;
+}
+
+/* Table */
+.table {
+    border: 2px solid #000 !important;
+}
+
+.table thead th {
+    background-color: #2a2a2a !important;
+    color: #fff !important;
+    border: 1px solid #000 !important;
+}
+
+.table td, .table th {
+    border: 1px solid #000 !important;
+}
+
+.table.is-striped tbody tr:nth-child(odd) {
+    background-color: #f9f9f9 !important;
+}
+
+.table.is-hoverable tbody tr:hover {
+    background-color: #e0e0e0 !important;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #fff !important;
+    border-bottom: 2px solid #000 !important;
+}
+
+.navbar-item {
+    color: #000 !important;
+}
+
+/* Dropdown */
+.dropdown-menu {
+    border-radius: 0 !important;
+    border: 2px solid #000 !important;
+}
+
+.dropdown-item:hover {
+    background-color: #e0e0e0 !important;
+    color: #000 !important;
+}
+
+/* File Upload */
+.file-cta {
+    background-color: #fff !important;
+    border: 2px solid #000 !important;
+    border-radius: 0 !important;
+    color: #000 !important;
+}
+
+.file-cta:hover {
+    background-color: #e0e0e0 !important;
+}
+
+.file-name {
+    border: 2px solid #000 !important;
+    border-left: none !important;
+    border-radius: 0 !important;
+}
+
+/* Radio & Checkbox */
+.radio, .checkbox {
+    color: #000 !important;
+}
+
+/* Labels */
+.label {
+    color: #000 !important;
+    font-weight: 600 !important;
+}
+
+/* Hero */
+.hero.is-primary {
+    background-color: #2a2a2a !important;
+    color: #fff !important;
+}
+
+.hero.is-info {
+    background-color: #666 !important;
+    color: #fff !important;
+}
+
+/* Section backgrounds */
+.section.has-background-light {
+    background-color: #f5f5f5 !important;
+}
+
+/* Icons - make them black or white based on context */
+.icon {
+    color: inherit !important;
+}
+
+.has-text-info {
+    color: #666 !important;
+}
+
+.has-text-success {
+    color: #000 !important;
+}
+
+.has-text-warning {
+    color: #666 !important;
+}
+
+.has-text-primary {
+    color: #000 !important;
+}
+
+.has-text-danger {
+    color: #000 !important;
+}
+
+.has-text-light {
+    color: #999 !important;
+}
+
+.has-text-white {
+    color: #fff !important;
+}
+
+.has-text-grey, .has-text-gray {
+    color: #999 !important;
+}
+
+/* Sidebar specific text colors */
+.admin-sidebar .has-text-white,
+.admin-sidebar .title {
+    color: #fff !important;
+}
+
+.admin-sidebar .has-text-light,
+.admin-sidebar .subtitle {
+    color: #ccc !important;
+}
+
+/* Background colors */
+.has-background-light {
+    background-color: #f5f5f5 !important;
+}
+
+/* Tabs */
+.tabs li.is-active a {
+    border-bottom-color: #000 !important;
+    color: #000 !important;
+}
+
+.tabs a {
+    border-bottom-width: 2px !important;
+    color: #666 !important;
+}
+
+.tabs a:hover {
+    border-bottom-color: #666 !important;
+    color: #000 !important;
+}
+
+/* Pagination */
+.pagination-link, .pagination-previous, .pagination-next {
+    border-radius: 0 !important;
+    border: 2px solid #000 !important;
+}
+
+.pagination-link.is-current {
+    background-color: #000 !important;
+    border-color: #000 !important;
+    color: #fff !important;
+}
+
+/* Menu */
+.menu-list a {
+    border-radius: 0 !important;
+}
+
+.menu-list a:hover {
+    background-color: #e0e0e0 !important;
+    color: #000 !important;
+}
+
+.menu-list a.is-active {
+    background-color: #000 !important;
+    color: #fff !important;
+}
+
+/* Sidebar Menu Specific */
+.admin-sidebar .menu-list a {
+    color: #fff !important;
+}
+
+.admin-sidebar .menu-list a.has-text-danger {
+    color: #fff !important;
+    border: 1px solid #666 !important;
+}
+
+.admin-sidebar .menu-list a.has-text-danger:hover {
+    background-color: #000 !important;
+    border: 1px solid #fff !important;
+}
+
+/* Select dropdown */
+.select::after {
+    border-color: #000 !important;
+}
+
+/* Modal Content Styling */
+.modal-card-body .label {
+    color: #000 !important;
+    font-weight: 600 !important;
+}
+
+.modal-card-body {
+    background-color: #fff !important;
+}
+
+/* Remove all border-radius globally for sharp corners */
+* {
+    border-radius: 0 !important;
+}

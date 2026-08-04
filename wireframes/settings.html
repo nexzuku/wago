@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Japanese Training App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/admin-styles.css">
+    <link rel="stylesheet" href="css/enterprise-theme.css">
+</head>
+
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="menu admin-sidebar">
+            <div class="sidebar-header p-4">
+                <h1 class="title is-5 has-text-white">
+                    <i class="fas fa-graduation-cap"></i> 日本語 Training
+                </h1>
+                <p class="subtitle is-7 has-text-light">Admin Panel</p>
+            </div>
+
+            <ul class="menu-list">
+                <li><a href="dashboard.html">
+                        <i class="fas fa-chart-line"></i> Dashboard
+                    </a></li>
+                <li><a href="employees.html">
+                        <i class="fas fa-users"></i> Employees
+                    </a></li>
+                <li><a href="voice.html">
+                        <i class="fas fa-microphone"></i> Voice Management
+                    </a></li>
+                <li><a href="content-management.html">
+                        <i class="fas fa-folder-open"></i> Content Management
+                    </a></li>
+                <li><a href="settings.html" class="is-active">
+                        <i class="fas fa-cog"></i> Settings
+                    </a></li>
+                <li><a href="index.html" class="has-text-danger">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="admin-content">
+            <!-- Top Navigation -->
+            <nav class="navbar">
+                <div class="navbar-brand">
+                    <div class="navbar-item">
+                        <h2 class="title is-4">Settings</h2>
+                    </div>
+                </div>
+                <div class="navbar-menu">
+                    <div class="navbar-end">
+                        <div class="navbar-item">
+                            <span class="tag is-light is-medium">
+                                <i class="fas fa-building mr-2"></i> ABC Construction Co.
+                            </span>
+                        </div>
+                        <div class="navbar-item">
+                            <div class="dropdown is-hoverable is-right">
+                                <div class="dropdown-trigger">
+                                    <button class="button is-light" aria-haspopup="true">
+                                        <span class="icon">
+                                            <i class="fas fa-user-circle"></i>
+                                        </span>
+                                        <span>Admin</span>
+                                    </button>
+                                </div>
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-content">
+                                        <a href="settings.html" class="dropdown-item is-active">
+                                            <i class="fas fa-cog mr-2"></i> Settings
+                                        </a>
+                                        <hr class="dropdown-divider">
+                                        <a href="index.html" class="dropdown-item">
+                                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Page Content -->
+            <section class="section">
+                <div class="container-fluid">
+                    <div class="columns">
+                        <!-- Settings Menu -->
+                        <div class="column is-3">
+                            <aside class="menu">
+                                <p class="menu-label">General</p>
+                                <ul class="menu-list">
+                                    <li><a class="is-active" onclick="showSection('company')">Company Profile</a></li>
+                                    <li><a onclick="showSection('branding')">Branding & Theme</a></li>
+                                </ul>
+                                <p class="menu-label">Access & Security</p>
+                                <ul class="menu-list">
+                                    <li><a onclick="showSection('users')">User Management</a></li>
+                                    <li><a onclick="showSection('sso')">SSO & Security</a></li>
+                                </ul>
+                                <p class="menu-label">Subscription</p>
+                                <ul class="menu-list">
+                                    <li><a onclick="showSection('billing')">Billing & Plan</a></li>
+                                    <li><a onclick="showSection('invoices')">Invoices</a></li>
+                                </ul>
+                            </aside>
+                        </div>
+
+                        <!-- Settings Content -->
+                        <div class="column is-9">
+
+                            <!-- Company Profile Section -->
+                            <div id="section-company" class="settings-section">
+                                <div class="box">
+                                    <div class="level">
+                                        <div class="level-left">
+                                            <h3 class="title is-5">Company Profile</h3>
+                                        </div>
+                                        <div class="level-right">
+                                            <button class="button is-primary is-small">Save Changes</button>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="columns">
+                                        <div class="column is-4 has-text-centered">
+                                            <figure class="image is-128x128 is-inline-block mb-3">
+                                                <img class="is-rounded" src="https://via.placeholder.com/128"
+                                                    alt="Company Logo">
+                                            </figure>
+                                            <div class="file is-small is-centered">
+                                                <label class="file-label">
+                                                    <input class="file-input" type="file" name="resume">
+                                                    <span class="file-cta">
+                                                        <span class="file-icon"><i class="fas fa-upload"></i></span>
+                                                        <span class="file-label">Upload Logo</span>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="column is-8">
+                                            <div class="field">
+                                                <label class="label">Company Name</label>
+                                                <div class="control">
+                                                    <input class="input" type="text" value="ABC Construction Co.">
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <label class="label">Industry</label>
+                                                <div class="control">
+                                                    <div class="select is-fullwidth">
+                                                        <select>
+                                                            <option>Construction</option>
+                                                            <option>Manufacturing</option>
+                                                            <option>Technology</option>
+                                                            <option>Healthcare</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <label class="label">Contact Email</label>
+                                                <div class="control has-icons-left">
+                                                    <input class="input" type="email"
+                                                        value="admin@abc-construction.co.jp">
+                                                    <span class="icon is-small is-left">
+                                                        <i class="fas fa-envelope"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Branding Section -->
+                            <div id="section-branding" class="settings-section" style="display: none;">
+                                <div class="box">
+                                    <h3 class="title is-5">Branding & Theme</h3>
+                                    <hr>
+                                    <div class="field">
+                                        <label class="label">Primary Color</label>
+                                        <div class="control">
+                                            <input class="input" type="color" value="#00d1b2" style="width: 100px;">
+                                        </div>
+                                        <p class="help">Main color for buttons and highlights</p>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label">Login Page Message</label>
+                                        <div class="control">
+                                            <textarea class="textarea"
+                                                placeholder="Welcome to [Company Name] Training Portal"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label class="checkbox">
+                                            <input type="checkbox" checked>
+                                            Show Company Logo on Training Interface
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- SSO Section -->
+                            <div id="section-sso" class="settings-section" style="display: none;">
+                                <div class="box">
+                                    <h3 class="title is-5">SSO & Security</h3>
+                                    <div class="notification is-info">
+                                        <button class="delete"></button>
+                                        Enterprise SSO requires the <strong>Business Pro</strong> plan.
+                                    </div>
+                                    <div class="field">
+                                        <label class="label">SAML 2.0 Configuration</label>
+                                        <div class="control">
+                                            <button class="button is-light" disabled>Configure SSO</button>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <h4 class="title is-6">Password Policy</h4>
+                                    <div class="field">
+                                        <label class="checkbox">
+                                            <input type="checkbox" checked>
+                                            Require strong passwords (min 8 chars, special char)
+                                        </label>
+                                    </div>
+                                    <div class="field">
+                                        <label class="checkbox">
+                                            <input type="checkbox">
+                                            Force password rotation every 90 days
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Placeholder for other sections -->
+                            <div id="section-users" class="settings-section" style="display: none;">
+                                <div class="box">
+                                    <div class="level">
+                                        <div class="level-left">
+                                            <h3 class="title is-5">User Roles & Permissions</h3>
+                                        </div>
+                                        <div class="level-right">
+                                            <button class="button is-small is-info"><i class="fas fa-plus mr-1"></i>
+                                                Create Custom Role</button>
+                                        </div>
+                                    </div>
+
+                                    <table class="table is-fullwidth is-hoverable">
+                                        <thead>
+                                            <tr>
+                                                <th>Role Name</th>
+                                                <th>Users</th>
+                                                <th>Access Level</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <span class="has-text-weight-bold">Administrator</span>
+                                                    <p class="is-size-7 has-text-grey">Full system access</p>
+                                                </td>
+                                                <td>2</td>
+                                                <td><span class="tag is-danger">Full Control</span></td>
+                                                <td><span class="is-size-7 has-text-grey">System Role</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="has-text-weight-bold">Manager</span>
+                                                    <p class="is-size-7 has-text-grey">Can manage content & employees
+                                                    </p>
+                                                </td>
+                                                <td>5</td>
+                                                <td><span class="tag is-warning">High</span></td>
+                                                <td>
+                                                    <button class="button is-small is-light"><i
+                                                            class="fas fa-edit"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="has-text-weight-bold">Reviewer</span>
+                                                    <p class="is-size-7 has-text-grey">Can view reports & analytics</p>
+                                                </td>
+                                                <td>1</td>
+                                                <td><span class="tag is-info">Read Only</span></td>
+                                                <td>
+                                                    <button class="button is-small is-light"><i
+                                                            class="fas fa-edit"></i></button>
+                                                    <button class="button is-small is-light has-text-danger"><i
+                                                            class="fas fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="has-text-weight-bold">Employee</span>
+                                                    <p class="is-size-7 has-text-grey">Standard learner access</p>
+                                                </td>
+                                                <td>148</td>
+                                                <td><span class="tag is-light">Basic</span></td>
+                                                <td><span class="is-size-7 has-text-grey">Default</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <h4 class="title is-6 mt-5">Default New User Role</h4>
+                                    <div class="field">
+                                        <div class="control">
+                                            <div class="select">
+                                                <select>
+                                                    <option>Employee</option>
+                                                    <option>Reviewer</option>
+                                                    <option>No Access (Approval Required)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="section-billing" class="settings-section" style="display: none;">
+                                <div class="box">
+                                    <h3 class="title is-5">Billing</h3>
+                                    <p>Manage your subscription plan...</p>
+                                </div>
+                            </div>
+                            <div id="section-invoices" class="settings-section" style="display: none;">
+                                <div class="box">
+                                    <h3 class="title is-5">Invoices</h3>
+                                    <p>View past invoices...</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            var sections = document.getElementsByClassName('settings-section');
+            for (var i = 0; i < sections.length; i++) {
+                sections[i].style.display = 'none';
+            }
+
+            // Deactivate all sidebar items
+            var items = document.querySelectorAll('.menu-list a');
+            for (var i = 0; i < items.length; i++) {
+                items[i].classList.remove('is-active');
+            }
+
+            // Active clicked item (this logic is a bit simplified, usually you'd pass the element 'this')
+            // For now, let's just show the section. Ideally we update the sidebar active state too.
+            const sidebarLinks = document.querySelectorAll('.menu-list a');
+            sidebarLinks.forEach(link => {
+                if (link.getAttribute('onclick').includes(sectionId)) {
+                    link.classList.add('is-active');
+                }
+            });
+
+            // Show selected section
+            document.getElementById('section-' + sectionId).style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>

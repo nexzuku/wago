@@ -1,0 +1,528 @@
+/* WaGo Learning Interface - Enterprise Dark Theme */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+    /* Enterprise Dark Palette - Matching enterprise-theme.css */
+    --primary-bg: #0f172a;
+    --secondary-bg: #1e293b;
+    --surface-bg: #1e293b;
+
+    --primary-accent: #3b82f6;
+    /* Blue */
+    --primary-accent-hover: #2563eb;
+
+    --secondary-accent: #10b981;
+    /* Emerald */
+    --danger-accent: #ef4444;
+    --warning-accent: #f59e0b;
+
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --text-inverse: #ffffff;
+
+    --border-color: rgba(255, 255, 255, 0.1);
+
+    /* Overriding Low-Fi Vars */
+    --bg-dark: var(--primary-bg);
+    --bg-card: var(--secondary-bg);
+    --text-light: var(--text-main);
+    --text-gray: var(--text-muted);
+    --text-dark: var(--text-main);
+    --primary-color: var(--primary-accent);
+    --secondary-color: var(--secondary-accent);
+    --success-color: var(--secondary-accent);
+    --danger-color: var(--danger-accent);
+
+    /* Shadows & Glows */
+    --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.15);
+    --shadow-glow-blue: 0 0 15px rgba(59, 130, 246, 0.5);
+    --shadow-glow-green: 0 0 15px rgba(16, 185, 129, 0.5);
+}
+
+/* ==================== GLOBAL OVERRIDES ==================== */
+* {
+    border-radius: unset !important;
+    /* Reset the reset */
+}
+
+/* Re-apply border radius generally */
+.btn,
+.button,
+.card,
+.box,
+.input,
+.modal-content,
+.phrase-card,
+.topic-selector-btn,
+.mode-pill,
+.btn-audio-control {
+    border-radius: 12px !important;
+}
+
+html,
+body {
+    background: var(--primary-bg) !important;
+    color: var(--text-main) !important;
+    font-family: 'Inter', sans-serif !important;
+}
+
+.app-container {
+    background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%) !important;
+}
+
+/* ==================== HEADER ==================== */
+.header-bar {
+    background: rgba(15, 23, 42, 0.8) !important;
+    backdrop-filter: blur(12px) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.logo-icon {
+    background: linear-gradient(135deg, var(--primary-accent), var(--primary-accent-hover)) !important;
+    border: none !important;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+    border-radius: 8px !important;
+}
+
+.session-timer {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 20px !important;
+    color: var(--text-muted) !important;
+}
+
+#timerText {
+    color: var(--primary-accent) !important;
+}
+
+/* Stats */
+.stat-mini {
+    color: var(--text-muted) !important;
+}
+
+.stat-mini strong {
+    color: var(--text-main) !important;
+}
+
+.streak-flame {
+    text-shadow: 0 0 10px rgba(255, 165, 0, 0.5);
+}
+
+/* Buttons in Header */
+.btn-notification,
+.btn-profile {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: var(--text-main) !important;
+    border-radius: 50% !important;
+}
+
+.btn-notification:hover,
+.btn-profile:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: var(--primary-accent) !important;
+    color: var(--primary-accent) !important;
+}
+
+.notification-badge {
+    background: var(--danger-accent) !important;
+    border: 2px solid var(--primary-bg) !important;
+    box-shadow: 0 0 5px rgba(239, 68, 68, 0.5);
+}
+
+/* ==================== MAIN AREA ==================== */
+.training-main {
+    background: transparent !important;
+}
+
+/* Topic Selector */
+.topic-selector-btn {
+    background: rgba(30, 41, 59, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(5px);
+    box-shadow: var(--shadow-card) !important;
+}
+
+.topic-selector-btn:hover {
+    background: rgba(30, 41, 59, 0.9) !important;
+    border-color: var(--primary-accent) !important;
+    box-shadow: var(--shadow-glow-blue) !important;
+}
+
+.topic-name {
+    color: var(--text-main) !important;
+}
+
+.topic-progress-mini {
+    background: rgba(59, 130, 246, 0.2) !important;
+    color: var(--primary-accent) !important;
+    border: 1px solid rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Mode Pills */
+.mode-pill {
+    background: rgba(30, 41, 59, 0.5) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    color: var(--text-muted) !important;
+}
+
+.mode-pill.active {
+    background: var(--primary-accent) !important;
+    border-color: var(--primary-accent) !important;
+    color: white !important;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.4) !important;
+}
+
+.mode-pill:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: var(--text-main) !important;
+}
+
+/* Phrase Card */
+.phrase-card {
+    background: rgba(30, 41, 59, 0.7) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.3) !important;
+    backdrop-filter: blur(10px);
+}
+
+.phrase-card::before {
+    background: linear-gradient(90deg, var(--primary-accent), var(--secondary-accent)) !important;
+    height: 3px !important;
+}
+
+.phrase-japanese {
+    color: var(--text-main) !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.phrase-romaji {
+    color: var(--primary-accent) !important;
+}
+
+.phrase-english {
+    color: var(--text-muted) !important;
+}
+
+.phrase-context {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-left: 3px solid var(--primary-accent) !important;
+    color: var(--text-muted) !important;
+}
+
+.phrase-context i {
+    color: var(--primary-accent) !important;
+}
+
+/* Action Buttons (Icons) */
+.btn-icon {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: var(--text-muted) !important;
+}
+
+.btn-icon:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: var(--text-main) !important;
+    border-color: var(--text-main) !important;
+    transform: scale(1.1);
+}
+
+.btn-icon.active {
+    background: var(--warning-accent) !important;
+    color: #000 !important;
+    border-color: transparent !important;
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+}
+
+.category-badge {
+    background: rgba(59, 130, 246, 0.15) !important;
+    border: 1px solid rgba(59, 130, 246, 0.3) !important;
+    color: var(--primary-accent) !important;
+}
+
+/* ==================== MIC BUTTON ==================== */
+.mic-button {
+    background: linear-gradient(135deg, #1e293b, #0f172a) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+.mic-button:hover {
+    border-color: var(--primary-accent) !important;
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.3), inset 0 0 10px rgba(59, 130, 246, 0.2) !important;
+}
+
+.mic-icon i {
+    color: var(--text-muted) !important;
+    transition: all 0.3s ease;
+}
+
+.mic-button:hover .mic-icon i {
+    color: var(--primary-accent) !important;
+    text-shadow: 0 0 10px var(--primary-accent);
+}
+
+.mic-button.is-recording {
+    background: linear-gradient(135deg, #ef4444, #b91c1c) !important;
+    border-color: #fca5a5 !important;
+    box-shadow: 0 0 50px rgba(239, 68, 68, 0.6) !important;
+}
+
+.mic-button.is-recording .mic-icon i {
+    color: white !important;
+}
+
+.mic-ripple,
+.mic-ripple-2 {
+    border-color: var(--primary-accent) !important;
+}
+
+.mic-hint {
+    color: var(--text-muted) !important;
+}
+
+/* ==================== WAVEFORMS ==================== */
+.waveform-comparison {
+    background: rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 12px !important;
+}
+
+.waveform-label {
+    color: var(--text-muted) !important;
+}
+
+.wave-bar {
+    background: var(--primary-accent) !important;
+    border-radius: 4px !important;
+    box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+}
+
+.user-wave .wave-bar {
+    background: var(--secondary-accent) !important;
+    box-shadow: 0 0 5px rgba(16, 185, 129, 0.5);
+}
+
+/* ==================== CONVERSATION INTERFACE ==================== */
+.conversation-interface {
+    background: rgba(30, 41, 59, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-radius: 16px !important;
+    backdrop-filter: blur(5px);
+}
+
+.free-talk-header {
+    background: transparent !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: var(--text-main) !important;
+}
+
+.live-status {
+    background: rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: var(--text-main) !important;
+    border-radius: 20px !important;
+}
+
+.current-card {
+    background: rgba(15, 23, 42, 0.8) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-left: 4px solid var(--primary-accent) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+    border-radius: 12px !important;
+}
+
+.currend-card.user {
+    border-left-color: var(--secondary-accent) !important;
+}
+
+.card-speaker {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    color: var(--text-muted) !important;
+}
+
+.card-japanese {
+    color: var(--text-main) !important;
+}
+
+.card-romaji {
+    color: var(--primary-accent) !important;
+}
+
+.card-english {
+    color: var(--text-muted) !important;
+}
+
+/* Recent Exchanges */
+.recent-exchanges {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-radius: 12px !important;
+}
+
+.exchanges-header {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    color: var(--text-muted) !important;
+}
+
+.exchange-item {
+    background: transparent !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.05) !important;
+    color: var(--text-main) !important;
+}
+
+.exchange-item:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.exchange-japanese {
+    color: var(--text-main) !important;
+}
+
+.exchange-romaji {
+    color: var(--text-muted) !important;
+}
+
+/* Main Action Button */
+.main-action-button {
+    background: var(--primary-accent) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.4) !important;
+}
+
+.main-action-button:hover {
+    background: var(--primary-accent-hover) !important;
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.6) !important;
+}
+
+/* ==================== BOTTOM NAV ==================== */
+.bottom-nav {
+    background: rgba(15, 23, 42, 0.95) !important;
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.nav-item {
+    color: var(--text-muted) !important;
+}
+
+.nav-item:hover {
+    color: var(--text-main) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.nav-item.active {
+    color: var(--primary-accent) !important;
+    background: transparent !important;
+    border-bottom: none !important;
+    position: relative;
+}
+
+.nav-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 3px;
+    background: var(--primary-accent);
+    border-radius: 3px 3px 0 0;
+    box-shadow: 0 -2px 10px rgba(59, 130, 246, 0.5);
+}
+
+.nav-item.active i {
+    filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6));
+}
+
+/* ==================== PROGRESS BAR ==================== */
+.progress-bar {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    height: 6px !important;
+    overflow: hidden;
+}
+
+.progress-fill {
+    background: linear-gradient(90deg, var(--primary-accent), var(--secondary-accent)) !important;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    border-radius: 10px !important;
+}
+
+.progress-info {
+    color: var(--text-muted) !important;
+}
+
+/* ==================== EMERGENCY SOS ==================== */
+.emergency-sos-btn {
+    background: var(--danger-accent) !important;
+    border: none !important;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4) !important;
+    border-radius: 50px !important;
+}
+
+.emergency-sos-btn:hover {
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.6) !important;
+}
+
+/* Overlay */
+.screen-overlay {
+    background: var(--primary-bg) !important;
+}
+
+.overlay-header {
+    background: rgba(15, 23, 42, 0.9) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.overlay-title {
+    color: var(--text-main) !important;
+}
+
+/* ==================== SKILLS & SHEETS ==================== */
+.bottom-sheet {
+    background: var(--secondary-bg) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+.sheet-header {
+    background: transparent !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.sheet-title {
+    color: var(--text-main) !important;
+}
+
+.topic-item {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-radius: 12px !important;
+}
+
+.topic-item:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: var(--primary-accent) !important;
+}
+
+.topic-item.active {
+    background: rgba(59, 130, 246, 0.1) !important;
+    border-color: var(--primary-accent) !important;
+}
+
+.topic-item-header h5 {
+    color: var(--text-main) !important;
+}
+
+.topic-description {
+    color: var(--text-muted) !important;
+}

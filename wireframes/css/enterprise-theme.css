@@ -1,0 +1,260 @@
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    /* Color Palette - Enterprise Dark Theme */
+    --primary-bg: #0f172a;
+    --secondary-bg: #1e293b;
+    --surface-bg: #1e293b;
+    /* For cards */
+    --surface-hover: #334155;
+
+    --primary-accent: #3b82f6;
+    /* Blue */
+    --primary-accent-hover: #2563eb;
+
+    --secondary-accent: #10b981;
+    /* Emerald */
+
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --text-inverse: #ffffff;
+
+    --border-color: #334155;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.5);
+
+    /* Radius */
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-main);
+    background-color: var(--primary-bg);
+}
+
+/* Typography Overrides */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.title,
+.subtitle {
+    font-family: 'Inter', sans-serif !important;
+    color: var(--text-main) !important;
+}
+
+.subtitle {
+    color: var(--text-muted) !important;
+}
+
+/* Landing Page Specifics */
+.hero-gradient {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-gradient::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+    animation: rotate 20s linear infinite;
+    z-index: 0;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.hero-body {
+    position: relative;
+    z-index: 1;
+}
+
+/* Premium Buttons */
+.button.is-primary {
+    background-color: var(--primary-accent);
+    border-color: transparent;
+    color: #fff;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
+}
+
+.button.is-primary:hover {
+    background-color: var(--primary-accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(59, 130, 246, 0.4);
+}
+
+.button.is-light {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-main);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.button.is-light:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+/* Cards & Boxes */
+.box,
+.card {
+    background-color: var(--surface-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
+    color: var(--text-main);
+    border-radius: var(--radius-lg);
+}
+
+.cta-box {
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cta-box:hover {
+    transform: translateY(-10px) scale(1.02);
+    background: rgba(30, 41, 59, 0.9);
+    border-color: var(--primary-accent);
+    box-shadow: var(--shadow-glow);
+}
+
+.cta-box .icon-wrapper i {
+    transition: all 0.3s ease;
+}
+
+.cta-box:hover .icon-wrapper i {
+    transform: scale(1.2) rotate(5deg);
+    text-shadow: 0 0 15px currentColor;
+}
+
+/* Navbar Overrides */
+.navbar {
+    background-color: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.navbar-item,
+.navbar-link {
+    color: var(--text-main) !important;
+}
+
+.navbar-item:hover,
+.navbar-link:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: var(--primary-accent) !important;
+}
+
+.navbar-menu {
+    background-color: transparent;
+}
+
+/* Inputs */
+.input,
+.textarea,
+.select select {
+    background-color: var(--secondary-bg);
+    border-color: var(--border-color);
+    color: var(--text-main);
+}
+
+.input:focus,
+.textarea:focus,
+.select select:focus {
+    border-color: var(--primary-accent);
+    box-shadow: 0 0 0 0.125em rgba(59, 130, 246, 0.25);
+}
+
+.input::placeholder,
+.textarea::placeholder {
+    color: var(--text-muted);
+}
+
+/* Tables */
+.table {
+    background-color: transparent;
+    color: var(--text-main);
+}
+
+.table thead td,
+.table thead th {
+    color: var(--text-muted);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.table td,
+.table th {
+    border-color: var(--border-color);
+}
+
+.table.is-striped tbody tr:not(.is-selected):nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.table.is-hoverable tbody tr:not(.is-selected):hover {
+    background-color: rgba(59, 130, 246, 0.05);
+}
+
+/* Admin Sidebar */
+.admin-sidebar {
+    background-color: var(--secondary-bg);
+    border-right: 1px solid var(--border-color);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.2);
+}
+
+.menu-list a {
+    color: var(--text-muted);
+    transition: all 0.2s;
+    border-radius: var(--radius-md);
+}
+
+.menu-list a:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
+}
+
+.menu-list a.is-active {
+    background-color: var(--primary-accent);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+/* Utility Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.section {
+    animation: fadeIn 0.5s ease-out forwards;
+}

@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Management - Japanese Training App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/admin-styles.css">
+    <link rel="stylesheet" href="css/enterprise-theme.css">
+</head>
+
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="menu admin-sidebar">
+            <div class="sidebar-header p-4">
+                <h1 class="title is-5 has-text-white">
+                    <i class="fas fa-graduation-cap"></i> 日本語 Training
+                </h1>
+                <p class="subtitle is-7 has-text-light">Admin Panel</p>
+            </div>
+
+            <ul class="menu-list">
+                <li><a href="dashboard.html">
+                        <i class="fas fa-chart-line"></i> Dashboard
+                    </a></li>
+                <li><a href="employees.html">
+                        <i class="fas fa-users"></i> Employees
+                    </a></li>
+                <li><a href="voice.html" class="is-active">
+                        <i class="fas fa-microphone"></i> Voice Management
+                    </a></li>
+                <li><a href="content-management.html">
+                        <i class="fas fa-folder-open"></i> Content Management
+                    </a></li>
+                <li><a href="settings.html">
+                        <i class="fas fa-cog"></i> Settings
+                    </a></li>
+                <li><a href="index.html" class="has-text-danger">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="admin-content">
+            <!-- Top Navigation -->
+            <nav class="navbar">
+                <div class="navbar-brand">
+                    <div class="navbar-item">
+                        <h2 class="title is-4">Voice Management</h2>
+                    </div>
+                </div>
+                <div class="navbar-menu">
+                    <div class="navbar-end">
+                        <div class="navbar-item">
+                            <span class="tag is-light is-medium">
+                                <i class="fas fa-building mr-2"></i> ABC Construction Co.
+                            </span>
+                        </div>
+                        <div class="navbar-item">
+                            <div class="dropdown is-hoverable is-right">
+                                <div class="dropdown-trigger">
+                                    <button class="button is-light" aria-haspopup="true">
+                                        <span class="icon">
+                                            <i class="fas fa-user-circle"></i>
+                                        </span>
+                                        <span>Admin</span>
+                                    </button>
+                                </div>
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-content">
+                                        <a href="settings.html" class="dropdown-item">
+                                            <i class="fas fa-cog mr-2"></i> Settings
+                                        </a>
+                                        <hr class="dropdown-divider">
+                                        <a href="index.html" class="dropdown-item">
+                                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <section class="section">
+                <div class="container-fluid">
+                    <!-- Current Voice Profile -->
+                    <div class="box">
+                        <h3 class="title is-4">
+                            <i class="fas fa-microphone-alt mr-2"></i> Active Voice Profile
+                        </h3>
+
+                        <div class="columns">
+                            <div class="column is-8">
+                                <article class="media">
+                                    <figure class="media-left">
+                                        <div class="icon is-large has-text-primary">
+                                            <i class="fas fa-volume-up fa-3x"></i>
+                                        </div>
+                                    </figure>
+                                    <div class="media-content">
+                                        <div class="content">
+                                            <p>
+                                                <strong class="is-size-5">Company Representative Voice</strong>
+                                                <br>
+                                                <span class="tag is-success">Active</span>
+                                                <span class="tag is-info">Tokyo Accent</span>
+                                                <span class="tag is-light">Cloned</span>
+                                            </p>
+                                            <p class="is-size-7 has-text-grey">
+                                                Uploaded: September 15, 2024 | Duration: 45 seconds | Quality: Excellent
+                                            </p>
+                                        </div>
+                                        <div class="level">
+                                            <div class="level-left">
+                                                <div class="level-item">
+                                                    <button class="button is-primary" onclick="playVoice()">
+                                                        <i class="fas fa-play mr-2"></i> Preview Voice
+                                                    </button>
+                                                </div>
+                                                <div class="level-item">
+                                                    <button class="button is-info" onclick="openUploadModal()">
+                                                        <i class="fas fa-upload mr-2"></i> Replace Voice
+                                                    </button>
+                                                </div>
+                                                <div class="level-item">
+                                                    <button class="button is-light">
+                                                        <i class="fas fa-download mr-2"></i> Download
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
+                            </div>
+                            <div class="column is-4">
+                                <div class="box">
+                                    <p class="heading">Voice Quality Metrics</p>
+                                    <div class="mb-3">
+                                        <p class="is-size-7 has-text-weight-semibold">Clarity</p>
+                                        <progress class="progress is-success" value="95" max="100">95%</progress>
+                                    </div>
+                                    <div class="mb-3">
+                                        <p class="is-size-7 has-text-weight-semibold">Naturalness</p>
+                                        <progress class="progress is-success" value="88" max="100">88%</progress>
+                                    </div>
+                                    <div class="mb-3">
+                                        <p class="is-size-7 has-text-weight-semibold">Consistency</p>
+                                        <progress class="progress is-info" value="92" max="100">92%</progress>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Japanese Accent Selection -->
+                    <div class="box">
+                        <h3 class="title is-4">
+                            <i class="fas fa-map-marker-alt mr-2"></i> Japanese Accent Selection
+                        </h3>
+                        <p class="subtitle is-6">Choose the regional accent for training content</p>
+
+                        <div class="columns is-multiline">
+                            <div class="column is-3">
+                                <div class="box accent-card is-selected">
+                                    <div class="has-text-centered">
+                                        <span class="icon is-large has-text-primary">
+                                            <i class="fas fa-building fa-2x"></i>
+                                        </span>
+                                        <h4 class="title is-5 mt-3">Tokyo Accent</h4>
+                                        <p class="is-size-7 mb-3">Standard Japanese (Hyōjungo)</p>
+                                        <span class="tag is-success">Active</span>
+                                        <p class="has-text-grey is-size-7 mt-3">Most commonly used in business and
+                                            formal settings</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="column is-3">
+                                <div class="box accent-card" onclick="selectAccent('kansai')">
+                                    <div class="has-text-centered">
+                                        <span class="icon is-large has-text-info">
+                                            <i class="fas fa-torii-gate fa-2x"></i>
+                                        </span>
+                                        <h4 class="title is-5 mt-3">Kansai Accent</h4>
+                                        <p class="is-size-7 mb-3">Osaka, Kyoto, Kobe region</p>
+                                        <button class="button is-small is-info">Select</button>
+                                        <p class="has-text-grey is-size-7 mt-3">Friendly and informal tone, popular in
+                                            western Japan</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="column is-3">
+                                <div class="box accent-card" onclick="selectAccent('kyushu')">
+                                    <div class="has-text-centered">
+                                        <span class="icon is-large has-text-warning">
+                                            <i class="fas fa-mountain fa-2x"></i>
+                                        </span>
+                                        <h4 class="title is-5 mt-3">Kyushu Accent</h4>
+                                        <p class="is-size-7 mb-3">Southern Japan region</p>
+                                        <button class="button is-small is-warning">Select</button>
+                                        <p class="has-text-grey is-size-7 mt-3">Distinctive southern dialect with unique
+                                            pronunciation</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="column is-3">
+                                <div class="box accent-card" onclick="selectAccent('neutral')">
+                                    <div class="has-text-centered">
+                                        <span class="icon is-large has-text-grey">
+                                            <i class="fas fa-robot fa-2x"></i>
+                                        </span>
+                                        <h4 class="title is-5 mt-3">Neutral</h4>
+                                        <p class="is-size-7 mb-3">Computer-generated</p>
+                                        <button class="button is-small">Select</button>
+                                        <p class="has-text-grey is-size-7 mt-3">Clear and consistent AI-generated voice
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Voice Bank / Audio Library -->
+                    <div class="box">
+                        <div class="level">
+                            <div class="level-left">
+                                <div class="level-item">
+                                    <h3 class="title is-4">
+                                        <i class="fas fa-folder-open mr-2"></i> Voice Bank & Audio Library
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="level-right">
+                                <div class="level-item">
+                                    <button class="button is-primary" onclick="openUploadModal()">
+                                        <i class="fas fa-plus mr-2"></i> Upload New Audio
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <table class="table is-fullwidth is-hoverable is-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Audio Name</th>
+                                        <th>Type</th>
+                                        <th>Accent</th>
+                                        <th>Duration</th>
+                                        <th>Upload Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><i class="fas fa-file-audio mr-2"></i> <strong>Company_Voice_Main</strong>
+                                        </td>
+                                        <td><span class="tag is-primary">Voice Clone</span></td>
+                                        <td>Tokyo</td>
+                                        <td>45s</td>
+                                        <td>2024-09-15</td>
+                                        <td><span class="tag is-success">Active</span></td>
+                                        <td>
+                                            <div class="buttons are-small">
+                                                <button class="button is-info" title="Play">
+                                                    <i class="fas fa-play"></i>
+                                                </button>
+                                                <button class="button is-light" title="Download">
+                                                    <i class="fas fa-download"></i>
+                                                </button>
+                                                <button class="button is-danger" title="Delete">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-file-audio mr-2"></i> <strong>Basic_Greetings</strong></td>
+                                        <td><span class="tag is-info">Phrase Set</span></td>
+                                        <td>Tokyo</td>
+                                        <td>2m 15s</td>
+                                        <td>2024-09-18</td>
+                                        <td><span class="tag is-success">Ready</span></td>
+                                        <td>
+                                            <div class="buttons are-small">
+                                                <button class="button is-info" title="Play">
+                                                    <i class="fas fa-play"></i>
+                                                </button>
+                                                <button class="button is-light" title="Download">
+                                                    <i class="fas fa-download"></i>
+                                                </button>
+                                                <button class="button is-danger" title="Delete">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-file-audio mr-2"></i> <strong>Emergency_Phrases</strong>
+                                        </td>
+                                        <td><span class="tag is-warning">Phrase Set</span></td>
+                                        <td>Tokyo</td>
+                                        <td>1m 48s</td>
+                                        <td>2024-09-20</td>
+                                        <td><span class="tag is-warning">Processing</span></td>
+                                        <td>
+                                            <div class="buttons are-small">
+                                                <button class="button is-info" title="Play" disabled>
+                                                    <i class="fas fa-play"></i>
+                                                </button>
+                                                <button class="button is-light" title="Download" disabled>
+                                                    <i class="fas fa-download"></i>
+                                                </button>
+                                                <button class="button is-danger" title="Delete">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-file-audio mr-2"></i>
+                                            <strong>Workplace_Communication</strong>
+                                        </td>
+                                        <td><span class="tag is-success">Phrase Set</span></td>
+                                        <td>Tokyo</td>
+                                        <td>3m 22s</td>
+                                        <td>2024-09-12</td>
+                                        <td><span class="tag is-success">Ready</span></td>
+                                        <td>
+                                            <div class="buttons are-small">
+                                                <button class="button is-info" title="Play">
+                                                    <i class="fas fa-play"></i>
+                                                </button>
+                                                <button class="button is-light" title="Download">
+                                                    <i class="fas fa-download"></i>
+                                                </button>
+                                                <button class="button is-danger" title="Delete">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-file-audio mr-2"></i> <strong>Cultural_Etiquette</strong>
+                                        </td>
+                                        <td><span class="tag is-link">Phrase Set</span></td>
+                                        <td>Tokyo</td>
+                                        <td>2m 55s</td>
+                                        <td>2024-09-10</td>
+                                        <td><span class="tag is-success">Ready</span></td>
+                                        <td>
+                                            <div class="buttons are-small">
+                                                <button class="button is-info" title="Play">
+                                                    <i class="fas fa-play"></i>
+                                                </button>
+                                                <button class="button is-light" title="Download">
+                                                    <i class="fas fa-download"></i>
+                                                </button>
+                                                <button class="button is-danger" title="Delete">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Voice Cloning Status -->
+                    <div class="columns">
+                        <div class="column is-6">
+                            <div class="box">
+                                <h3 class="title is-5">
+                                    <i class="fas fa-cogs mr-2"></i> Voice Cloning Status
+                                </h3>
+                                <div class="content">
+                                    <div class="notification is-success is-light">
+                                        <p><i class="fas fa-check-circle mr-2"></i> <strong>Voice cloning completed
+                                                successfully!</strong></p>
+                                        <p class="is-size-7">Your company voice is ready to use in training modules.</p>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="label is-small">Processing Status</label>
+                                        <progress class="progress is-success" value="100" max="100">100%</progress>
+                                    </div>
+
+                                    <div class="content is-small">
+                                        <ul>
+                                            <li><i class="fas fa-check has-text-success mr-2"></i> Voice sample uploaded
+                                            </li>
+                                            <li><i class="fas fa-check has-text-success mr-2"></i> Audio quality
+                                                validated</li>
+                                            <li><i class="fas fa-check has-text-success mr-2"></i> AI model trained</li>
+                                            <li><i class="fas fa-check has-text-success mr-2"></i> Voice cloning
+                                                completed</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="column is-6">
+                            <div class="box">
+                                <h3 class="title is-5">
+                                    <i class="fas fa-info-circle mr-2"></i> Voice Guidelines
+                                </h3>
+                                <div class="content is-small">
+                                    <p><strong>For best voice cloning results:</strong></p>
+                                    <ul>
+                                        <li>Record in a quiet environment</li>
+                                        <li>Use high-quality microphone (if possible)</li>
+                                        <li>Speak clearly and naturally</li>
+                                        <li>Recommended duration: 30-60 seconds</li>
+                                        <li>Avoid background noise</li>
+                                        <li>Supported formats: MP3, WAV, M4A</li>
+                                        <li>Maximum file size: 50MB</li>
+                                    </ul>
+                                    <p class="mt-3"><strong>Processing Time:</strong> Voice cloning typically takes 2-5
+                                        minutes after upload.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Upload Voice Modal -->
+    <div class="modal" id="uploadModal">
+        <div class="modal-background" onclick="closeUploadModal()"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Upload Voice Sample</p>
+                <button class="delete" aria-label="close" onclick="closeUploadModal()"></button>
+            </header>
+            <section class="modal-card-body">
+                <div class="field">
+                    <label class="label">Voice Name</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="e.g., Company_Voice_Main">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Type</label>
+                    <div class="control">
+                        <div class="select is-fullwidth">
+                            <select>
+                                <option>Voice Clone</option>
+                                <option>Phrase Set</option>
+                                <option>Training Audio</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Audio File</label>
+                    <div class="file is-boxed is-fullwidth has-name">
+                        <label class="file-label">
+                            <input class="file-input" type="file" accept="audio/*" onchange="handleAudioUpload(event)">
+                            <span class="file-cta">
+                                <span class="file-icon">
+                                    <i class="fas fa-microphone"></i>
+                                </span>
+                                <span class="file-label">
+                                    Choose audio file…
+                                </span>
+                            </span>
+                            <span class="file-name" id="audioFileName">
+                                No file selected
+                            </span>
+                        </label>
+                    </div>
+                    <p class="help">Supported formats: MP3, WAV, M4A (Max 50MB)</p>
+                </div>
+            </section>
+            <footer class="modal-card-foot">
+                <button class="button is-success">Upload & Process</button>
+                <button class="button" onclick="closeUploadModal()">Cancel</button>
+            </footer>
+        </div>
+    </div>
+
+    <script src="js/voice.js"></script>
+    <style>
+        .accent-card {
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .accent-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .accent-card.is-selected {
+            border-color: var(--primary-accent);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .accent-card.is-selected .title,
+        .accent-card.is-selected .icon {
+            color: var(--primary-accent) !important;
+        }
+
+        .timeline-item {
+            padding-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .timeline-marker {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            position: absolute;
+            left: -20px;
+        }
+
+        .timeline-marker.is-success {
+            background: #48c774;
+            box-shadow: 0 0 10px rgba(72, 199, 116, 0.4);
+        }
+
+        .timeline-marker.is-info {
+            background: #3298dc;
+            box-shadow: 0 0 10px rgba(50, 152, 220, 0.4);
+        }
+
+        .timeline-marker.is-warning {
+            background: #ffdd57;
+            box-shadow: 0 0 10px rgba(255, 221, 87, 0.4);
+        }
+
+        .timeline-marker.is-primary {
+            background: var(--primary-accent);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+        }
+    </style>
+</body>
+
+</html>

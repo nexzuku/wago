@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Management - Japanese Training App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/admin-styles.css">
+    <link rel="stylesheet" href="css/enterprise-theme.css">
+</head>
+
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="menu admin-sidebar">
+            <div class="sidebar-header p-4">
+                <h1 class="title is-5 has-text-white">
+                    <i class="fas fa-graduation-cap"></i> 日本語 Training
+                </h1>
+                <p class="subtitle is-7 has-text-light">Admin Panel</p>
+            </div>
+
+            <ul class="menu-list">
+                <li><a href="dashboard.html">
+                        <i class="fas fa-chart-line"></i> Dashboard
+                    </a></li>
+                <li><a href="employees.html">
+                        <i class="fas fa-users"></i> Employees
+                    </a></li>
+                <li><a href="voice.html">
+                        <i class="fas fa-microphone"></i> Voice Management
+                    </a></li>
+                <li><a href="content-management.html" class="is-active">
+                        <i class="fas fa-folder-open"></i> Content Management
+                    </a></li>
+                <li><a href="settings.html">
+                        <i class="fas fa-cog"></i> Settings
+                    </a></li>
+                <li><a href="index.html" class="has-text-danger">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="admin-content">
+            <!-- Top Navigation -->
+            <nav class="navbar">
+                <div class="navbar-brand">
+                    <div class="navbar-item">
+                        <h2 class="title is-4">Content Management</h2>
+                    </div>
+                </div>
+                <div class="navbar-menu">
+                    <div class="navbar-end">
+                        <div class="navbar-item">
+                            <span class="tag is-light is-medium">
+                                <i class="fas fa-building mr-2"></i> ABC Construction Co.
+                            </span>
+                        </div>
+                        <div class="navbar-item">
+                            <div class="dropdown is-hoverable is-right">
+                                <div class="dropdown-trigger">
+                                    <button class="button is-light" aria-haspopup="true">
+                                        <span class="icon">
+                                            <i class="fas fa-user-circle"></i>
+                                        </span>
+                                        <span>Admin</span>
+                                    </button>
+                                </div>
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-content">
+                                        <a href="settings.html" class="dropdown-item">
+                                            <i class="fas fa-cog mr-2"></i> Settings
+                                        </a>
+                                        <hr class="dropdown-divider">
+                                        <a href="index.html" class="dropdown-item">
+                                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Page Content -->
+            <section class="section">
+                <div class="container-fluid">
+
+                    <!-- Tabs -->
+                    <div class="tabs is-boxed">
+                        <ul>
+                            <li class="is-active" id="tab-content-link" onclick="switchTab('content')">
+                                <a>
+                                    <span class="icon is-small"><i class="fas fa-file-alt"></i></span>
+                                    <span>Materials</span>
+                                </a>
+                            </li>
+                            <li id="tab-topics-link" onclick="switchTab('topics')">
+                                <a>
+                                    <span class="icon is-small"><i class="fas fa-tags"></i></span>
+                                    <span>Topics & Categories</span>
+                                </a>
+                            </li>
+                            <li id="tab-upload-link" onclick="switchTab('upload')">
+                                <a>
+                                    <span class="icon is-small"><i class="fas fa-upload"></i></span>
+                                    <span>Upload New</span>
+                                </a>
+                            </li>
+                            <li id="tab-analytics-link" onclick="switchTab('analytics')">
+                                <a>
+                                    <span class="icon is-small"><i class="fas fa-chart-bar"></i></span>
+                                    <span>Content Analytics</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Content Tab -->
+                    <div id="tab-content" class="tab-content">
+                        <div class="box">
+                            <div class="level">
+                                <div class="level-left">
+                                    <div class="field has-addons">
+                                        <p class="control">
+                                            <input class="input" type="text" placeholder="Search materials...">
+                                        </p>
+                                        <p class="control">
+                                            <button class="button is-info">
+                                                Search
+                                            </button>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="level-right">
+                                    <div class="select">
+                                        <select>
+                                            <option>All Types</option>
+                                            <option>Audio</option>
+                                            <option>PDF</option>
+                                            <option>Video</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table class="table is-fullwidth is-hoverable is-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Type</th>
+                                        <th>Topic</th>
+                                        <th>Date Added</th>
+                                        <th>Size</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span class="icon-text">
+                                                <span class="icon has-text-danger"><i
+                                                        class="fas fa-file-pdf"></i></span>
+                                                <span class="has-text-weight-bold">Site Safety Protocol V2</span>
+                                            </span>
+                                        </td>
+                                        <td>PDF Document</td>
+                                        <td>Safety Procedures</td>
+                                        <td>Jan 15, 2024</td>
+                                        <td>2.4 MB</td>
+                                        <td>
+                                            <div class="buttons are-small">
+                                                <button class="button is-info is-light"><i
+                                                        class="fas fa-edit"></i></button>
+                                                <button class="button is-danger is-light"><i
+                                                        class="fas fa-trash"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="icon-text">
+                                                <span class="icon has-text-info"><i
+                                                        class="fas fa-file-audio"></i></span>
+                                                <span class="has-text-weight-bold">Morning Greetings Drill</span>
+                                            </span>
+                                        </td>
+                                        <td>Audio Clip</td>
+                                        <td>Basic Greetings</td>
+                                        <td>Jan 12, 2024</td>
+                                        <td>4.1 MB</td>
+                                        <td>
+                                            <div class="buttons are-small">
+                                                <button class="button is-info is-light"><i
+                                                        class="fas fa-edit"></i></button>
+                                                <button class="button is-danger is-light"><i
+                                                        class="fas fa-trash"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="icon-text">
+                                                <span class="icon has-text-success"><i
+                                                        class="fas fa-file-video"></i></span>
+                                                <span class="has-text-weight-bold">Proper Bowing Technique</span>
+                                            </span>
+                                        </td>
+                                        <td>Video</td>
+                                        <td>Business Etiquette</td>
+                                        <td>Jan 10, 2024</td>
+                                        <td>45.0 MB</td>
+                                        <td>
+                                            <div class="buttons are-small">
+                                                <button class="button is-info is-light"><i
+                                                        class="fas fa-edit"></i></button>
+                                                <button class="button is-danger is-light"><i
+                                                        class="fas fa-trash"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+                                <a class="pagination-previous">Previous</a>
+                                <a class="pagination-next">Next page</a>
+                                <ul class="pagination-list">
+                                    <li><a class="pagination-link is-current" aria-label="Page 1"
+                                            aria-current="page">1</a></li>
+                                    <li><a class="pagination-link" aria-label="Goto page 2">2</a></li>
+                                    <li><a class="pagination-link" aria-label="Goto page 3">3</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+
+                    <!-- Topics Tab -->
+                    <div id="tab-topics" class="tab-content" style="display: none;">
+                        <div class="columns">
+                            <div class="column is-4">
+                                <div class="box">
+                                    <h3 class="title is-5">Create New Topic</h3>
+                                    <div class="field">
+                                        <label class="label">Topic Name</label>
+                                        <div class="control">
+                                            <input class="input" type="text" placeholder="e.g., Office Supplies">
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label">Category</label>
+                                        <div class="control">
+                                            <div class="select is-fullwidth">
+                                                <select>
+                                                    <option>Safety & Emergency</option>
+                                                    <option>Basic Communication</option>
+                                                    <option>Business & Culture</option>
+                                                    <option>Workplace Specific</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label">Description</label>
+                                        <div class="control">
+                                            <!-- Mock WYSIWYG Editor -->
+                                            <div class="box p-0"
+                                                style="border: 1px solid rgba(255,255,255,0.1); overflow: hidden;">
+                                                <div class="editor-toolbar has-background-grey-darker p-2"
+                                                    style="border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; gap: 0.5rem;">
+                                                    <button class="button is-small is-dark"><i
+                                                            class="fas fa-bold"></i></button>
+                                                    <button class="button is-small is-dark"><i
+                                                            class="fas fa-italic"></i></button>
+                                                    <button class="button is-small is-dark"><i
+                                                            class="fas fa-underline"></i></button>
+                                                    <span
+                                                        style="border-left: 1px solid rgba(255,255,255,0.1); margin: 0 4px;"></span>
+                                                    <button class="button is-small is-dark"><i
+                                                            class="fas fa-list-ul"></i></button>
+                                                    <button class="button is-small is-dark"><i
+                                                            class="fas fa-list-ol"></i></button>
+                                                </div>
+                                                <textarea class="textarea has-background-transparent is-shadowless"
+                                                    style="border: none; min-height: 150px; resize: vertical;"
+                                                    placeholder="Describe the learning objectives, grammatical points covered, and key vocabulary..."></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <button class="button is-primary is-fullwidth">Create Topic</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column is-8">
+                                <div class="box">
+                                    <h3 class="title is-5">Existing Topics</h3>
+                                    <div class="content">
+                                        <div class="panel">
+                                            <p class="panel-heading">
+                                                Active Topics
+                                            </p>
+                                            <div class="panel-block">
+                                                <p class="control has-icons-left">
+                                                    <input class="input" type="text" placeholder="Search topics">
+                                                    <span class="icon is-left">
+                                                        <i class="fas fa-search"></i>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                            <a class="panel-block is-active">
+                                                <span class="panel-icon">
+                                                    <i class="fas fa-hard-hat"></i>
+                                                </span>
+                                                Safety Procedures (24 items)
+                                            </a>
+                                            <a class="panel-block">
+                                                <span class="panel-icon">
+                                                    <i class="fas fa-comments"></i>
+                                                </span>
+                                                Basic Greetings (15 items)
+                                            </a>
+                                            <a class="panel-block">
+                                                <span class="panel-icon">
+                                                    <i class="fas fa-briefcase"></i>
+                                                </span>
+                                                Business Norms (18 items)
+                                            </a>
+                                            <a class="panel-block">
+                                                <span class="panel-icon">
+                                                    <i class="fas fa-tools"></i>
+                                                </span>
+                                                Equipment Handling (10 items)
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Upload Tab -->
+                    <div id="tab-upload" class="tab-content" style="display: none;">
+                        <div class="box upload-zone-container">
+                            <div class="upload-zone has-text-centered p-6"
+                                style="border: 2px dashed #dbdbdb; border-radius: 6px; cursor: pointer;">
+                                <span class="icon is-large has-text-grey-light mb-3">
+                                    <i class="fas fa-cloud-upload-alt fa-3x"></i>
+                                </span>
+                                <h3 class="title is-4 has-text-grey">Drop files here or click to upload</h3>
+                                <p class="subtitle is-6 has-text-grey-light">Supports .pdf, .mp3, .mp4, .docx (Max
+                                    100MB)</p>
+                                <input type="file" multiple style="display: none;" id="fileInput">
+                            </div>
+
+                            <hr>
+
+                            <h4 class="title is-6">Upload Settings</h4>
+                            <div class="columns">
+                                <div class="column is-6">
+                                    <div class="field">
+                                        <label class="label">Assign to Topic</label>
+                                        <div class="control">
+                                            <div class="select is-fullwidth">
+                                                <select>
+                                                    <option>Select Topic...</option>
+                                                    <option>Safety Procedures</option>
+                                                    <option>Basic Greetings</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="column is-6">
+                                    <div class="field">
+                                        <label class="label">Visibility</label>
+                                        <div class="control">
+                                            <label class="radio">
+                                                <input type="radio" name="visibility" checked>
+                                                Published
+                                            </label>
+                                            <label class="radio">
+                                                <input type="radio" name="visibility">
+                                                Draft
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="field is-grouped is-grouped-right mt-5">
+                                <div class="control">
+                                    <button class="button is-light">Cancel</button>
+                                </div>
+                                <div class="control">
+                                    <button class="button is-primary">Upload Files</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Analytics Tab -->
+                    <div id="tab-analytics" class="tab-content" style="display: none;">
+                        <div class="columns is-multiline">
+                            <div class="column is-4">
+                                <div class="box has-text-centered">
+                                    <p class="heading">Total Downloads</p>
+                                    <p class="title">1,245</p>
+                                </div>
+                            </div>
+                            <div class="column is-4">
+                                <div class="box has-text-centered">
+                                    <p class="heading">Avg. Time on Page</p>
+                                    <p class="title">4m 30s</p>
+                                </div>
+                            </div>
+                            <div class="column is-4">
+                                <div class="box has-text-centered">
+                                    <p class="heading">Completion Rate</p>
+                                    <p class="title">87%</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box">
+                            <h3 class="title is-5">Engagement Over Time</h3>
+                            <!-- Placeholder for chart -->
+                            <div
+                                style="height: 300px; background-color: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; border-radius: 4px;">
+                                <p class="has-text-grey">Chart Visualization Area</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            // Hide all tabs
+            var tabs = document.getElementsByClassName('tab-content');
+            for (var i = 0; i < tabs.length; i++) {
+                tabs[i].style.display = 'none';
+            }
+
+            // Deactivate all links
+            var links = document.querySelectorAll('.tabs li');
+            for (var i = 0; i < links.length; i++) {
+                links[i].classList.remove('is-active');
+            }
+
+            // Show selected tab
+            document.getElementById('tab-' + tabName).style.display = 'block';
+            document.getElementById('tab-' + tabName + '-link').classList.add('is-active');
+
+            // Update URL query param if needed (optional)
+        }
+
+        // Check URL params for initial tab
+        window.onload = function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const tab = urlParams.get('tab');
+            if (tab) {
+                switchTab(tab);
+            }
+        };
+    </script>
+</body>
+
+</html>

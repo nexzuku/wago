@@ -1,0 +1,496 @@
+/* Admin Panel Layout */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    height: 100%;
+}
+
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+    position: relative;
+}
+
+/* Sidebar */
+.admin-sidebar {
+    width: 260px;
+    background: #2a2a2a;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 30;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-right: 2px solid #000;
+}
+
+.sidebar-header {
+    border-bottom: 2px solid #000;
+    position: sticky;
+    top: 0;
+    background: inherit;
+    z-index: 10;
+}
+
+.sidebar-header .has-text-white,
+.sidebar-header .title {
+    color: #fff !important;
+}
+
+.sidebar-header .has-text-light,
+.sidebar-header .subtitle {
+    color: #ccc !important;
+}
+
+.admin-sidebar .menu-list a {
+    color: #fff;
+    border-radius: 0;
+    margin: 0.3rem 1rem;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.admin-sidebar .menu-list a:hover {
+    background-color: #3a3a3a;
+    color: white;
+    border: 1px solid #fff;
+}
+
+.admin-sidebar .menu-list a.is-active {
+    background-color: #fff;
+    color: #000;
+    font-weight: 600;
+    border: 2px solid #000;
+}
+
+.admin-sidebar .menu-list a.has-text-danger {
+    color: #fff !important;
+    border: 1px solid #666;
+}
+
+.admin-sidebar .menu-list a.has-text-danger:hover {
+    background-color: #000;
+    color: #fff !important;
+    border: 1px solid #fff;
+}
+
+.admin-sidebar .menu-list a i {
+    margin-right: 0.5rem;
+    width: 20px;
+}
+
+/* Main Content Area */
+.admin-content {
+    margin-left: 260px;
+    flex: 1;
+    width: calc(100% - 260px);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container-fluid {
+    max-width: 100%;
+    padding: 0 1.5rem;
+}
+
+/* Top Navigation */
+.admin-content .navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 0;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: white;
+}
+
+.admin-content .section {
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* KPI Cards */
+.kpi-card {
+    transition: all 0.3s ease;
+    border-left: 4px solid #000;
+    border: 2px solid #000;
+}
+
+.kpi-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    background: #f0f0f0;
+}
+
+.kpi-card:nth-child(1) {
+    border-left-width: 6px;
+}
+
+.kpi-card:nth-child(2) {
+    border-left-width: 6px;
+}
+
+.kpi-card:nth-child(3) {
+    border-left-width: 6px;
+}
+
+.kpi-card:nth-child(4) {
+    border-left-width: 6px;
+}
+
+/* Timeline */
+.timeline {
+    position: relative;
+    padding-left: 2rem;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #000;
+}
+
+.timeline-item {
+    position: relative;
+    padding-bottom: 1.5rem;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -1.95rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid #000;
+    box-shadow: 0 0 0 2px #000;
+}
+
+.timeline-marker.is-success {
+    background: #000;
+    box-shadow: 0 0 0 2px #000;
+}
+
+.timeline-marker.is-info {
+    background: #666;
+    box-shadow: 0 0 0 2px #666;
+}
+
+.timeline-marker.is-warning {
+    background: #999;
+    box-shadow: 0 0 0 2px #999;
+}
+
+.timeline-marker.is-primary {
+    background: #333;
+    box-shadow: 0 0 0 2px #333;
+}
+
+.timeline-content {
+    padding-left: 0.5rem;
+}
+
+.timeline-content .heading {
+    font-size: 0.75rem;
+    color: #7a7a7a;
+    margin-bottom: 0.25rem;
+}
+
+/* Table Styling */
+.table-container {
+    overflow-x: auto;
+}
+
+.table th {
+    font-weight: 600;
+    color: #363636;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+/* Settings Navigation */
+.settings-section {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Progress bars in tables */
+.progress.is-small {
+    height: 0.5rem;
+    margin-bottom: 0;
+}
+
+/* Responsive */
+@media screen and (max-width: 1216px) {
+    .container-fluid {
+        padding: 0 1rem;
+    }
+    
+    .columns.is-multiline > .column {
+        padding: 0.5rem;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .admin-sidebar {
+        width: 220px;
+    }
+    
+    .admin-content {
+        margin-left: 220px;
+        width: calc(100% - 220px);
+    }
+    
+    .sidebar-header h1 {
+        font-size: 1rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .admin-sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        width: 260px;
+    }
+    
+    .admin-sidebar.is-active {
+        transform: translateX(0);
+    }
+    
+    .admin-content {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .admin-content .navbar {
+        padding: 0.5rem;
+    }
+    
+    .navbar-item {
+        font-size: 0.9rem;
+    }
+    
+    /* Make tables scrollable on mobile */
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Stack columns on mobile */
+    .columns {
+        display: block !important;
+    }
+    
+    .column {
+        width: 100% !important;
+        padding: 0.75rem !important;
+    }
+    
+    /* Adjust box padding on mobile */
+    .box {
+        padding: 1rem;
+    }
+    
+    /* Make buttons full width on mobile */
+    .field.is-grouped {
+        display: block;
+    }
+    
+    .field.is-grouped .control {
+        margin-bottom: 0.5rem;
+    }
+    
+    .field.is-grouped .button {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .container-fluid {
+        padding: 0 0.5rem;
+    }
+    
+    .title {
+        font-size: 1.5rem;
+    }
+    
+    .subtitle {
+        font-size: 1rem;
+    }
+    
+    /* Smaller KPI cards on very small screens */
+    .kpi-card .title {
+        font-size: 1.75rem;
+    }
+}
+
+/* Accent Card Styling */
+.accent-card {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid #000;
+    height: 100%;
+    background: #fff;
+}
+
+.accent-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    background: #f5f5f5;
+}
+
+.accent-card.is-selected {
+    border: 4px solid #000;
+    background: #e0e0e0;
+}
+
+/* Chips */
+.chip {
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 4px;
+    border: 2px solid #000;
+    border-radius: 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #fff;
+    color: #000;
+    font-weight: 500;
+}
+
+.chip:hover {
+    border: 2px solid #000;
+    background: #e0e0e0;
+    color: #000;
+}
+
+.chip.is-selected {
+    background: #000;
+    color: #fff;
+    border: 2px solid #000;
+}
+
+.chip i {
+    margin-right: 6px;
+    color: inherit;
+}
+
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+    display: none;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 40;
+    background: #000;
+    color: white;
+    border: 2px solid #000;
+    padding: 0.75rem;
+    border-radius: 0;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.mobile-menu-toggle:hover {
+    background: #333;
+    border: 2px solid #000;
+}
+
+@media screen and (max-width: 768px) {
+    .mobile-menu-toggle {
+        display: block;
+    }
+}
+
+/* Sidebar overlay for mobile */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 25;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.is-active {
+    display: block;
+    opacity: 1;
+}
+
+/* Improve table responsiveness */
+@media screen and (max-width: 768px) {
+    .table {
+        font-size: 0.875rem;
+    }
+    
+    .table td, .table th {
+        padding: 0.5rem;
+        white-space: nowrap;
+    }
+    
+    .buttons.are-small .button {
+        padding: 0.25rem 0.5rem;
+    }
+}
+
+/* Fix modal on mobile */
+@media screen and (max-width: 768px) {
+    .modal-card {
+        margin: 0 1rem;
+        max-height: calc(100vh - 2rem);
+        overflow-y: auto;
+    }
+}
+
+/* Scrollbar styling */
+.admin-sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.admin-sidebar::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+
+.admin-sidebar::-webkit-scrollbar-thumb {
+    background: #666;
+    border-radius: 0;
+}
+
+.admin-sidebar::-webkit-scrollbar-thumb:hover {
+    background: #999;
+}

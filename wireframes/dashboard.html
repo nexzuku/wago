@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Japanese Training App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/admin-styles.css">
+    <link rel="stylesheet" href="css/enterprise-theme.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="menu admin-sidebar">
+            <div class="sidebar-header p-4">
+                <h1 class="title is-5 has-text-white">
+                    <i class="fas fa-graduation-cap"></i> 日本語 Training
+                </h1>
+                <p class="subtitle is-7 has-text-light">Admin Panel</p>
+            </div>
+
+            <ul class="menu-list">
+                <li><a href="dashboard.html" class="is-active">
+                        <i class="fas fa-chart-line"></i> Dashboard
+                    </a></li>
+                <li><a href="employees.html">
+                        <i class="fas fa-users"></i> Employees
+                    </a></li>
+                <li><a href="voice.html">
+                        <i class="fas fa-microphone"></i> Voice Management
+                    </a></li>
+                <li><a href="content-management.html">
+                        <i class="fas fa-folder-open"></i> Content Management
+                    </a></li>
+                <li><a href="settings.html">
+                        <i class="fas fa-cog"></i> Settings
+                    </a></li>
+                <li><a href="index.html" class="has-text-danger">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="admin-content">
+            <!-- Top Navigation -->
+            <nav class="navbar">
+                <div class="navbar-brand">
+                    <div class="navbar-item">
+                        <h2 class="title is-4">Dashboard</h2>
+                    </div>
+                </div>
+                <div class="navbar-menu">
+                    <div class="navbar-end">
+                        <div class="navbar-item">
+                            <span class="tag is-light is-medium">
+                                <i class="fas fa-building mr-2"></i> ABC Construction Co.
+                            </span>
+                        </div>
+                        <div class="navbar-item">
+                            <div class="dropdown is-hoverable is-right">
+                                <div class="dropdown-trigger">
+                                    <button class="button is-light" aria-haspopup="true">
+                                        <span class="icon">
+                                            <i class="fas fa-user-circle"></i>
+                                        </span>
+                                        <span>Admin</span>
+                                    </button>
+                                </div>
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-content">
+                                        <a href="settings.html" class="dropdown-item">
+                                            <i class="fas fa-cog mr-2"></i> Settings
+                                        </a>
+                                        <hr class="dropdown-divider">
+                                        <a href="index.html" class="dropdown-item">
+                                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Dashboard Content -->
+            <section class="section">
+                <div class="container-fluid">
+                    <!-- KPI Cards -->
+                    <div class="columns is-multiline">
+                        <div class="column is-3">
+                            <div class="box kpi-card">
+                                <div class="level">
+                                    <div class="level-left">
+                                        <div>
+                                            <p class="heading">Total Employees</p>
+                                            <p class="title">156</p>
+                                        </div>
+                                    </div>
+                                    <div class="level-right">
+                                        <span class="icon is-large has-text-info">
+                                            <i class="fas fa-users fa-2x"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="tags has-addons">
+                                    <span class="tag is-success">+12</span>
+                                    <span class="tag is-light">this month</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="column is-3">
+                            <div class="box kpi-card">
+                                <div class="level">
+                                    <div class="level-left">
+                                        <div>
+                                            <p class="heading">Active Today</p>
+                                            <p class="title">89</p>
+                                        </div>
+                                    </div>
+                                    <div class="level-right">
+                                        <span class="icon is-large has-text-success">
+                                            <i class="fas fa-user-check fa-2x"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="tags has-addons">
+                                    <span class="tag is-info">57%</span>
+                                    <span class="tag is-light">engagement</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="column is-3">
+                            <div class="box kpi-card">
+                                <div class="level">
+                                    <div class="level-left">
+                                        <div>
+                                            <p class="heading">Avg. Progress</p>
+                                            <p class="title">68%</p>
+                                        </div>
+                                    </div>
+                                    <div class="level-right">
+                                        <span class="icon is-large has-text-warning">
+                                            <i class="fas fa-chart-line fa-2x"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <progress class="progress is-warning" value="68" max="100">68%</progress>
+                            </div>
+                        </div>
+
+                        <div class="column is-3">
+                            <div class="box kpi-card">
+                                <div class="level">
+                                    <div class="level-left">
+                                        <div>
+                                            <p class="heading">Training Hours</p>
+                                            <p class="title">2,340</p>
+                                        </div>
+                                    </div>
+                                    <div class="level-right">
+                                        <span class="icon is-large has-text-primary">
+                                            <i class="fas fa-clock fa-2x"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="tags has-addons">
+                                    <span class="tag is-success">+180</span>
+                                    <span class="tag is-light">this week</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Row -->
+                    <div class="columns">
+                        <div class="column is-8">
+                            <div class="box">
+                                <h3 class="title is-5">User Activity (Last 7 Days)</h3>
+                                <canvas id="activityChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="column is-4">
+                            <div class="box">
+                                <h3 class="title is-5">Training Progress</h3>
+                                <canvas id="progressChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions & Recent Activity -->
+                    <div class="columns">
+                        <div class="column is-6">
+                            <div class="box">
+                                <h3 class="title is-5">
+                                    <i class="fas fa-bolt mr-2"></i> Quick Actions
+                                </h3>
+                                <div class="buttons">
+                                    <button class="button is-primary" onclick="location.href='employees.html'">
+                                        <i class="fas fa-user-plus mr-2"></i> Add Employee
+                                    </button>
+                                    <button class="button is-info" onclick="location.href='voice.html'">
+                                        <i class="fas fa-microphone mr-2"></i> Upload Voice
+                                    </button>
+                                    <button class="button is-info" onclick="location.href='content-management.html'">
+                                        <i class="fas fa-folder-open mr-2"></i> Manage Content
+                                    </button>
+                                    <button class="button is-success">
+                                        <i class="fas fa-download mr-2"></i> Export Report
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="box mt-4">
+                                <h3 class="title is-5">
+                                    <i class="fas fa-fire mr-2"></i> Popular Topics
+                                </h3>
+                                <table class="table is-fullwidth is-hoverable">
+                                    <thead>
+                                        <tr>
+                                            <th>Topic</th>
+                                            <th>Learners</th>
+                                            <th>Progress</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><i class="fas fa-comments mr-2"></i> Basic Phrases</td>
+                                            <td>124</td>
+                                            <td><progress class="progress is-success is-small" value="85"
+                                                    max="100">85%</progress></td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fas fa-exclamation-triangle mr-2"></i> Emergency</td>
+                                            <td>98</td>
+                                            <td><progress class="progress is-warning is-small" value="72"
+                                                    max="100">72%</progress></td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fas fa-briefcase mr-2"></i> Business Norms</td>
+                                            <td>87</td>
+                                            <td><progress class="progress is-info is-small" value="65"
+                                                    max="100">65%</progress></td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fas fa-utensils mr-2"></i> Food & Dining</td>
+                                            <td>76</td>
+                                            <td><progress class="progress is-primary is-small" value="58"
+                                                    max="100">58%</progress></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="column is-6">
+                            <div class="box" style="height: 100%;">
+                                <h3 class="title is-5">
+                                    <i class="fas fa-history mr-2"></i> Recent Activity
+                                </h3>
+                                <div class="timeline">
+                                    <div class="timeline-item">
+                                        <div class="timeline-marker is-success"></div>
+                                        <div class="timeline-content">
+                                            <p class="heading">2 minutes ago</p>
+                                            <p><strong>John Tanaka</strong> completed "Basic Greetings" module</p>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-marker is-info"></div>
+                                        <div class="timeline-content">
+                                            <p class="heading">15 minutes ago</p>
+                                            <p><strong>Admin</strong> added 5 new employees</p>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-marker is-warning"></div>
+                                        <div class="timeline-content">
+                                            <p class="heading">1 hour ago</p>
+                                            <p><strong>Sarah Williams</strong> started "Emergency Phrases" training</p>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-marker is-primary"></div>
+                                        <div class="timeline-content">
+                                            <p class="heading">2 hours ago</p>
+                                            <p><strong>Admin</strong> updated voice sample with Tokyo accent</p>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-marker"></div>
+                                        <div class="timeline-content">
+                                            <p class="heading">3 hours ago</p>
+                                            <p><strong>Mike Chen</strong> completed 30 minutes of training</p>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-marker"></div>
+                                        <div class="timeline-content">
+                                            <p class="heading">5 hours ago</p>
+                                            <p><strong>Admin</strong> exported monthly progress report</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Analytics Section -->
+                    <div class="columns mt-5">
+                        <div class="column is-12">
+                            <div class="box">
+                                <div class="level mb-4">
+                                    <div class="level-left">
+                                        <div class="level-item">
+                                            <h3 class="title is-4">
+                                                <i class="fas fa-chart-bar mr-2"></i> Content Analytics
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="level-right">
+                                        <div class="level-item">
+                                            <button class="button is-light"
+                                                onclick="location.href='content-management.html?tab=analytics'">
+                                                <span class="icon"><i class="fas fa-external-link-alt"></i></span>
+                                                <span>View Full Report</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Content Stats Cards -->
+                                <div class="columns is-multiline mb-4">
+                                    <div class="column is-3">
+                                        <div class="box">
+                                            <div class="level">
+                                                <div class="level-left">
+                                                    <div>
+                                                        <p class="heading">Total Materials</p>
+                                                        <p class="title is-4">48</p>
+                                                    </div>
+                                                </div>
+                                                <div class="level-right">
+                                                    <span class="icon is-large">
+                                                        <i class="fas fa-2x fa-file-alt"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="column is-3">
+                                        <div class="box">
+                                            <div class="level">
+                                                <div class="level-left">
+                                                    <div>
+                                                        <p class="heading">Active Topics</p>
+                                                        <p class="title is-4">12</p>
+                                                    </div>
+                                                </div>
+                                                <div class="level-right">
+                                                    <span class="icon is-large">
+                                                        <i class="fas fa-2x fa-tags"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="column is-3">
+                                        <div class="box">
+                                            <div class="level">
+                                                <div class="level-left">
+                                                    <div>
+                                                        <p class="heading">Avg. Engagement</p>
+                                                        <p class="title is-4">78%</p>
+                                                    </div>
+                                                </div>
+                                                <div class="level-right">
+                                                    <span class="icon is-large">
+                                                        <i class="fas fa-2x fa-heart"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="column is-3">
+                                        <div class="box">
+                                            <div class="level">
+                                                <div class="level-left">
+                                                    <div>
+                                                        <p class="heading">URL Resources</p>
+                                                        <p class="title is-4">15</p>
+                                                    </div>
+                                                </div>
+                                                <div class="level-right">
+                                                    <span class="icon is-large">
+                                                        <i class="fas fa-2x fa-link"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Content Details -->
+                                <div class="columns">
+                                    <div class="column is-6">
+                                        <h4 class="title is-6 mb-3">
+                                            <i class="fas fa-star mr-2"></i> Most Used Training Materials
+                                        </h4>
+                                        <table class="table is-fullwidth is-striped is-hoverable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Material</th>
+                                                    <th>Type</th>
+                                                    <th>Views</th>
+                                                    <th>Engagement</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <span class="icon-text">
+                                                            <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                                                            <span>Emergency Phrases</span>
+                                                        </span>
+                                                    </td>
+                                                    <td><span class="tag">PDF</span></td>
+                                                    <td>156</td>
+                                                    <td><progress class="progress is-success is-small" value="92"
+                                                            max="100">92%</progress></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span class="icon-text">
+                                                            <span class="icon"><i class="fas fa-file-audio"></i></span>
+                                                            <span>Common Greetings</span>
+                                                        </span>
+                                                    </td>
+                                                    <td><span class="tag">Audio</span></td>
+                                                    <td>145</td>
+                                                    <td><progress class="progress is-success is-small" value="88"
+                                                            max="100">88%</progress></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span class="icon-text">
+                                                            <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                                                            <span>Safety Guide</span>
+                                                        </span>
+                                                    </td>
+                                                    <td><span class="tag">PDF</span></td>
+                                                    <td>120</td>
+                                                    <td><progress class="progress is-warning is-small" value="75"
+                                                            max="100">75%</progress></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span class="icon-text">
+                                                            <span class="icon"><i class="fas fa-file-word"></i></span>
+                                                            <span>Etiquette Manual</span>
+                                                        </span>
+                                                    </td>
+                                                    <td><span class="tag">DOCX</span></td>
+                                                    <td>98</td>
+                                                    <td><progress class="progress is-info is-small" value="68"
+                                                            max="100">68%</progress></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="column is-6">
+                                        <h4 class="title is-6 mb-3">
+                                            <i class="fas fa-chart-pie mr-2"></i> Content by Category
+                                        </h4>
+                                        <div class="content">
+                                            <div class="mb-3">
+                                                <div class="level is-mobile mb-1">
+                                                    <div class="level-left">
+                                                        <span class="icon-text">
+                                                            <span class="icon"><i class="fas fa-hard-hat"></i></span>
+                                                            <span><strong>Safety & Emergency</strong></span>
+                                                        </span>
+                                                    </div>
+                                                    <div class="level-right">
+                                                        <span class="tag">18 items</span>
+                                                    </div>
+                                                </div>
+                                                <progress class="progress is-primary" value="38"
+                                                    max="100">38%</progress>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="level is-mobile mb-1">
+                                                    <div class="level-left">
+                                                        <span class="icon-text">
+                                                            <span class="icon"><i class="fas fa-comments"></i></span>
+                                                            <span><strong>Basic Phrases</strong></span>
+                                                        </span>
+                                                    </div>
+                                                    <div class="level-right">
+                                                        <span class="tag">15 items</span>
+                                                    </div>
+                                                </div>
+                                                <progress class="progress is-info" value="31" max="100">31%</progress>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="level is-mobile mb-1">
+                                                    <div class="level-left">
+                                                        <span class="icon-text">
+                                                            <span class="icon"><i class="fas fa-briefcase"></i></span>
+                                                            <span><strong>Business Norms</strong></span>
+                                                        </span>
+                                                    </div>
+                                                    <div class="level-right">
+                                                        <span class="tag">10 items</span>
+                                                    </div>
+                                                </div>
+                                                <progress class="progress is-success" value="21"
+                                                    max="100">21%</progress>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="level is-mobile mb-1">
+                                                    <div class="level-left">
+                                                        <span class="icon-text">
+                                                            <span class="icon"><i class="fas fa-tools"></i></span>
+                                                            <span><strong>Custom Topics</strong></span>
+                                                        </span>
+                                                    </div>
+                                                    <div class="level-right">
+                                                        <span class="tag">5 items</span>
+                                                    </div>
+                                                </div>
+                                                <progress class="progress is-warning" value="10"
+                                                    max="100">10%</progress>
+                                            </div>
+                                        </div>
+
+                                        <div class="notification is-light mt-4">
+                                            <p class="has-text-weight-semibold mb-2">
+                                                <i class="fas fa-lightbulb mr-2"></i> Content Insights
+                                            </p>
+                                            <ul style="font-size: 0.9rem;">
+                                                <li>Emergency content has 92% engagement rate</li>
+                                                <li>Audio materials are most popular format</li>
+                                                <li>3 new materials added this week</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Quick Actions -->
+                                <div class="buttons mt-4">
+                                    <button class="button is-primary"
+                                        onclick="location.href='content-management.html?tab=upload'">
+                                        <span class="icon"><i class="fas fa-upload"></i></span>
+                                        <span>Upload Content</span>
+                                    </button>
+                                    <button class="button is-info"
+                                        onclick="location.href='content-management.html?tab=topics'">
+                                        <span class="icon"><i class="fas fa-tags"></i></span>
+                                        <span>Manage Topics</span>
+                                    </button>
+                                    <button class="button is-light"
+                                        onclick="location.href='content-management.html?tab=analytics'">
+                                        <span class="icon"><i class="fas fa-chart-line"></i></span>
+                                        <span>View All Analytics</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+</body>
+
+</html>

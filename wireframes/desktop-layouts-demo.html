@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WaGo Desktop Layout Options</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/user-new.css">
+    <style>
+        .layout-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            gap: 10px;
+        }
+        .layout-btn {
+            padding: 8px 16px;
+            background: #000;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .layout-btn.active {
+            background: #666;
+        }
+        .demo-label {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 5px 10px;
+            font-size: 12px;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <div class="layout-selector">
+        <button class="layout-btn active" onclick="setLayout('two-column')">Two-Column</button>
+        <button class="layout-btn" onclick="setLayout('dashboard')">Dashboard</button>
+        <button class="layout-btn" onclick="setLayout('horizontal')">Horizontal</button>
+    </div>
+
+    <div class="app-container" id="appContainer">
+        <div class="demo-label" id="demoLabel">Layout 1: Two-Column Split (RECOMMENDED)</div>
+        
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <div class="logo">WaGo</div>
+            </div>
+            <div class="header-center">
+                <div class="topic-selector">
+                    <i class="fas fa-book"></i>
+                    <span>Basic Phrases</span>
+                    <span class="progress-badge">45%</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="icon-btn"><i class="fas fa-fire"></i> 3</button>
+                <button class="icon-btn"><i class="fas fa-gem"></i> 120</button>
+            </div>
+        </header>
+
+        <!-- Main Training Area -->
+        <main class="training-main" id="trainingMain">
+            <!-- Phrase Section (Left Column) -->
+            <div class="phrase-section">
+                <div class="phrase-card" id="phraseCard">
+                    <div class="japanese-text">日本語を練習するのが楽しいです</div>
+                    <div class="romanization">Nihongo wo renshuu suru no ga tanoshii desu</div>
+                    <div class="english-translation">"I enjoy practicing Japanese"</div>
+                    <div class="phrase-context">
+                        <i class="fas fa-info-circle"></i> Use when expressing enjoyment in learning
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interaction Panel (Right Column) -->
+            <div class="interaction-panel">
+                <!-- Mic Zone -->
+                <div class="mic-zone" id="micZone">
+                    <button class="mic-button" id="micButton">
+                        <div class="mic-icon">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                        <div class="mic-hint" id="micHint">Tap to speak</div>
+                    </button>
+                </div>
+
+                <!-- Live Feedback -->
+                <div class="live-feedback" id="liveFeedback" style="display: none;">
+                    <div class="feedback-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="feedback-content">
+                        <div class="feedback-title">Great!</div>
+                        <div class="feedback-message">Keep practicing</div>
+                    </div>
+                </div>
+
+                <!-- Progress Container -->
+                <div class="progress-container" id="progressContainer">
+                    <div class="session-progress">
+                        <div class="progress-header">
+                            <span class="progress-title">Session Progress</span>
+                            <span class="phrases-count">1/20 phrases</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 5%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="daily-goal">
+                        <div class="goal-header">
+                            <i class="fas fa-target"></i>
+                            <span>Daily Goal</span>
+                        </div>
+                        <div class="goal-progress">
+                            <span class="goal-text">1/5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Layout Elements (Hidden by default) -->
+            <div class="left-sidebar" style="display: none;">
+                <div class="sidebar-section">
+                    <h3>Today's Progress</h3>
+                    <div class="stat-card">
+                        <i class="fas fa-clock"></i>
+                        <span>15 min</span>
+                    </div>
+                </div>
+                <div class="sidebar-section">
+                    <h3>Streak</h3>
+                    <div class="stat-card">
+                        <i class="fas fa-fire"></i>
+                        <span>3 days</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-content" style="display: none;">
+                <!-- Main phrase content goes here -->
+            </div>
+
+            <div class="right-sidebar" style="display: none;">
+                <div class="sidebar-section">
+                    <h3>Quick Actions</h3>
+                    <button class="action-btn">Skip Phrase</button>
+                    <button class="action-btn">Bookmark</button>
+                </div>
+            </div>
+
+            <!-- Horizontal Layout Elements -->
+            <div class="main-row" style="display: none;">
+                <!-- Content will be rearranged here -->
+            </div>
+
+            <div class="controls-zone" style="display: none;">
+                <button class="control-btn">Play Audio</button>
+                <button class="control-btn">Slow Speed</button>
+                <button class="control-btn">Repeat</button>
+            </div>
+        </main>
+
+        <!-- Fixed Audio Player -->
+        <div class="fixed-audio-player">
+            <div class="audio-player-info">
+                <div class="audio-player-icon">
+                    <i class="fas fa-volume-up"></i>
+                </div>
+                <div class="audio-player-text">
+                    <div class="audio-title">日本語を練習するのが楽しいです</div>
+                    <div class="audio-subtitle">Native Speaker - Tokyo Accent</div>
+                </div>
+            </div>
+            <div class="audio-player-controls">
+                <button class="player-btn">
+                    <i class="fas fa-play"></i>
+                </button>
+                <div class="audio-progress-bar">
+                    <div class="audio-progress-fill" style="width: 30%"></div>
+                    <input type="range" class="audio-seek-bar" min="0" max="100" value="30">
+                </div>
+                <div class="audio-time">
+                    <span>0:15</span>
+                    <span class="time-separator">/</span>
+                    <span>0:50</span>
+                </div>
+                <button class="player-btn">
+                    <i class="fas fa-redo"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-item active">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Learn</span>
+            </button>
+            <button class="nav-item">
+                <i class="fas fa-torii-gate"></i>
+                <span>Culture</span>
+            </button>
+            <button class="nav-item">
+                <i class="fas fa-briefcase"></i>
+                <span>Work</span>
+            </button>
+            <button class="nav-item">
+                <i class="fas fa-route"></i>
+                <span>Path</span>
+            </button>
+            <button class="nav-item">
+                <i class="fas fa-trophy"></i>
+                <span>Progress</span>
+            </button>
+        </nav>
+    </div>
+
+    <script>
+        function setLayout(layout) {
+            const container = document.getElementById('appContainer');
+            const label = document.getElementById('demoLabel');
+            const buttons = document.querySelectorAll('.layout-btn');
+            
+            // Remove all layout classes
+            container.className = 'app-container';
+            
+            // Remove active from all buttons
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            // Add new layout class and set active button
+            switch(layout) {
+                case 'two-column':
+                    // Default layout - no extra class needed
+                    label.textContent = 'Layout 1: Two-Column Split (RECOMMENDED)';
+                    buttons[0].classList.add('active');
+                    break;
+                case 'dashboard':
+                    container.classList.add('layout-dashboard');
+                    label.textContent = 'Layout 2: Three-Column Dashboard';
+                    buttons[1].classList.add('active');
+                    break;
+                case 'horizontal':
+                    container.classList.add('layout-horizontal');
+                    label.textContent = 'Layout 3: Horizontal Flow';
+                    buttons[2].classList.add('active');
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>

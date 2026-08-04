@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Onboarding - Japanese Training App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/enterprise-theme.css">
+    <style>
+        .onboarding-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            color: var(--text-main);
+            padding: 2rem 0;
+        }
+
+        .onboarding-box {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .wizard-step {
+            display: none;
+        }
+
+        .wizard-step.is-active {
+            display: block;
+        }
+
+        /* Chip Styling */
+        .chip {
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .chip:hover {
+            border-color: var(--primary-accent);
+            background: rgba(59, 130, 246, 0.1);
+            color: #fff;
+        }
+
+        .chip.is-selected {
+            background: var(--primary-accent);
+            color: #fff;
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+        }
+
+        .chip i {
+            margin-right: 6px;
+            color: inherit;
+        }
+
+        /* Accent Card Selection Styling */
+        .accent-card-radio {
+            cursor: pointer;
+            display: block;
+        }
+
+        .accent-card-radio input[type="radio"] {
+            display: none;
+        }
+
+        .accent-selection {
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .accent-selection:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .accent-card-radio input[type="radio"]:checked+.accent-selection {
+            border-color: var(--primary-accent);
+            background: rgba(59, 130, 246, 0.1);
+            transform: scale(1.02);
+        }
+
+        .accent-selection .icon {
+            color: var(--text-main);
+        }
+
+        .accent-card-radio input[type="radio"]:checked+.accent-selection .title,
+        .accent-card-radio input[type="radio"]:checked+.accent-selection .icon {
+            color: var(--primary-accent);
+        }
+
+        /* File upload styling */
+        .file.is-large .file-cta {
+            padding: 2rem 1.5rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+        }
+
+        .file.is-large .file-icon i {
+            font-size: 2.5rem;
+        }
+
+        /* Voice source card styling */
+        .voice-source-card {
+            display: block;
+            cursor: pointer;
+        }
+
+        .voice-source-card input[type="radio"] {
+            display: none;
+        }
+
+        .voice-source-box {
+            transition: all 0.3s ease;
+            border: 2px solid transparent !important;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .voice-source-box:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .voice-source-card input[type="radio"]:checked+.voice-source-box {
+            border-color: var(--primary-accent) !important;
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .voice-source-card input[type="radio"]:checked+.voice-source-box .icon {
+            color: var(--primary-accent);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="onboarding-container">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-6">
+                    <div class="onboarding-box p-6">
+                        <!-- Company Info Extraction Step -->
+                        <div id="companyInfoExtraction">
+                            <div class="has-text-centered mb-5">
+                                <i class="fas fa-magic fa-3x has-text-primary"></i>
+                                <h1 class="title is-3 mt-3">Quick Company Setup</h1>
+                                <p class="subtitle is-6">Auto-fill your company information from a website or document
+                                </p>
+                            </div>
+
+                            <div class="content">
+                                <!-- Step 1: Source Selection -->
+                                <div class="box mb-4">
+                                    <h3 class="title is-5 mb-4">
+                                        <i class="fas fa-download mr-2"></i>Step 1: Load Company Information (Optional)
+                                    </h3>
+                                    <p class="mb-4">Extract text from your website or document to auto-fill the text
+                                        area below</p>
+
+                                    <!-- Website URL Section -->
+                                    <div class="mb-4 pb-4" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                        <label class="label is-size-5 mb-3">
+                                            <i class="fas fa-globe mr-2"></i>From Website URL
+                                        </label>
+                                        <div class="field has-addons">
+                                            <div class="control is-expanded has-icons-left">
+                                                <input id="companyWebsiteInput" class="input is-large" type="url"
+                                                    placeholder="https://www.yourcompany.com">
+                                                <span class="icon is-left">
+                                                    <i class="fas fa-link"></i>
+                                                </span>
+                                            </div>
+                                            <div class="control">
+                                                <button class="button is-primary is-large"
+                                                    onclick="extractTextFromWebsite()">
+                                                    <span class="icon">
+                                                        <i class="fas fa-download"></i>
+                                                    </span>
+                                                    <span>Load</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- OR Divider -->
+                                    <div class="has-text-centered my-4">
+                                        <span class="tag is-medium">OR</span>
+                                    </div>
+
+                                    <!-- PDF Upload Section -->
+                                    <div class="pt-4">
+                                        <label class="label is-size-5 mb-3">
+                                            <i class="fas fa-file-pdf mr-2"></i>From PDF Document
+                                        </label>
+                                        <div class="file has-name is-fullwidth is-large mb-3">
+                                            <label class="file-label">
+                                                <input class="file-input" type="file" accept=".pdf,application/pdf"
+                                                    onchange="handlePDFSelect(event)">
+                                                <span class="file-cta">
+                                                    <span class="file-icon">
+                                                        <i class="fas fa-upload"></i>
+                                                    </span>
+                                                    <span class="file-label">
+                                                        Choose PDF File
+                                                    </span>
+                                                </span>
+                                                <span class="file-name" id="pdfFileName">
+                                                    No file selected
+                                                </span>
+                                            </label>
+                                        </div>
+                                        <button id="extractFromPDFBtn" class="button is-primary is-large is-fullwidth"
+                                            onclick="extractTextFromPDF()" style="display: none;">
+                                            <span class="icon">
+                                                <i class="fas fa-download"></i>
+                                            </span>
+                                            <span>Load Text from PDF</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Step 2: Review & Edit Text -->
+                                <div class="box mb-4">
+                                    <h3 class="title is-6 mb-3">
+                                        <i class="fas fa-edit mr-2"></i>Step 2: Review & Edit Company Introduction
+                                    </h3>
+                                    <p class="mb-3">Review the loaded text or paste/type your company introduction
+                                        directly</p>
+                                    <div class="field">
+                                        <div class="control">
+                                            <textarea id="companyIntroText" class="textarea" rows="6"
+                                                placeholder="Example: ABC Construction Co., Ltd. is a leading construction company based in Tokyo, Japan. Established in 1985, we specialize in residential and commercial building projects across the Kanto region. Our headquarters is located at 1-2-3 Shibuya, Tokyo 150-0002. We employ over 500 skilled workers and manage construction projects of all sizes..."></textarea>
+                                        </div>
+                                        <p class="help">
+                                            <i class="fas fa-lightbulb mr-1"></i>
+                                            <strong>Tip:</strong> Include company name, location, industry type, and any
+                                            other relevant details. The more information you provide, the better the
+                                            extraction.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- Step 3: Extract Button -->
+                                <button class="button is-primary is-large is-fullwidth mb-4"
+                                    onclick="extractFromText()">
+                                    <span class="icon"><i class="fas fa-magic"></i></span>
+                                    <span>Extract Company Information</span>
+                                </button>
+
+                                <!-- Loading Indicator -->
+                                <div id="extractionLoading" class="notification is-info is-light"
+                                    style="display: none;">
+                                    <p class="has-text-centered">
+                                        <i class="fas fa-spinner fa-spin mr-2"></i>
+                                        Extracting company information...
+                                    </p>
+                                </div>
+
+                                <!-- Success Message -->
+                                <div id="extractionSuccess" class="notification is-success is-light"
+                                    style="display: none;">
+                                    <button class="delete" onclick="this.parentElement.style.display='none'"></button>
+                                    <p><strong>Success!</strong> Company information extracted. Review and edit the
+                                        details in the next step.</p>
+                                </div>
+
+                                <!-- Error Message -->
+                                <div id="extractionError" class="notification is-danger is-light"
+                                    style="display: none;">
+                                    <button class="delete" onclick="this.parentElement.style.display='none'"></button>
+                                    <p id="extractionErrorMessage">Failed to extract information. Please try again or
+                                        enter manually.</p>
+                                </div>
+                            </div>
+
+                            <div class="field is-grouped is-grouped-right mt-5">
+                                <div class="control">
+                                    <button class="button" onclick="location.href='index.html'">Cancel</button>
+                                </div>
+                                <div class="control">
+                                    <button class="button is-light" onclick="skipToManualEntry()">
+                                        <span class="icon"><i class="fas fa-keyboard"></i></span>
+                                        <span>Skip & Enter Manually</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sign Up Form -->
+                        <div id="signupForm" style="display: none;">
+                            <div class="has-text-centered mb-5">
+                                <i class="fas fa-building fa-3x has-text-primary"></i>
+                                <h1 class="title is-3 mt-3">Company Registration</h1>
+                                <p class="subtitle is-6">Create your company account to get started</p>
+                            </div>
+
+                            <!-- Auto-populated indicator -->
+                            <div id="autoPopulatedNotice" class="notification is-success is-light"
+                                style="display: none;">
+                                <p class="is-size-7">
+                                    <i class="fas fa-check-circle mr-2"></i>
+                                    <strong>Auto-populated!</strong> Review the extracted information below and edit as
+                                    needed.
+                                </p>
+                            </div>
+
+                            <form onsubmit="handleSignup(event)">
+                                <div class="field">
+                                    <label class="label">Company Name *</label>
+                                    <div class="control has-icons-left">
+                                        <input id="companyNameInput" class="input" type="text"
+                                            placeholder="ABC Construction Co." required>
+                                        <span class="icon is-small is-left">
+                                            <i class="fas fa-building"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <label class="label">Company Address *</label>
+                                    <div class="control has-icons-left">
+                                        <input id="companyAddressInput" class="input" type="text"
+                                            placeholder="Tokyo, Japan" required>
+                                        <span class="icon is-small is-left">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <label class="label">Industry Category *</label>
+                                    <div class="control has-icons-left">
+                                        <div class="select is-fullwidth">
+                                            <select id="industrySelect" required>
+                                                <option value="">Select Industry</option>
+                                                <option>Construction</option>
+                                                <option>Transportation</option>
+                                                <option>Manufacturing</option>
+                                                <option>Healthcare</option>
+                                                <option>Hospitality</option>
+                                                <option>Food Service</option>
+                                                <option>Retail</option>
+                                                <option>Other</option>
+                                            </select>
+                                        </div>
+                                        <span class="icon is-small is-left">
+                                            <i class="fas fa-industry"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <label class="label">Admin Email Address *</label>
+                                    <div class="control has-icons-left">
+                                        <input class="input" type="email" placeholder="admin@company.com" required>
+                                        <span class="icon is-small is-left">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <label class="label">Admin Password *</label>
+                                    <div class="control has-icons-left">
+                                        <input class="input" type="password" placeholder="••••••••" required
+                                            minlength="8">
+                                        <span class="icon is-small is-left">
+                                            <i class="fas fa-lock"></i>
+                                        </span>
+                                    </div>
+                                    <p class="help">Minimum 8 characters</p>
+                                </div>
+
+                                <div class="field">
+                                    <label class="label">Confirm Password *</label>
+                                    <div class="control has-icons-left">
+                                        <input class="input" type="password" placeholder="••••••••" required
+                                            minlength="8">
+                                        <span class="icon is-small is-left">
+                                            <i class="fas fa-lock"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <label class="checkbox">
+                                        <input type="checkbox" required>
+                                        I agree to the <a href="#">Terms and Conditions</a>
+                                    </label>
+                                </div>
+
+                                <div class="field is-grouped is-grouped-right mt-5">
+                                    <div class="control">
+                                        <button type="button" class="button" id="backToExtractionBtn"
+                                            onclick="backToExtraction()" style="display: none;">
+                                            <i class="fas fa-arrow-left mr-2"></i>Back
+                                        </button>
+                                    </div>
+                                    <div class="control">
+                                        <button type="button" class="button"
+                                            onclick="location.href='index.html'">Cancel</button>
+                                    </div>
+                                    <div class="control">
+                                        <button type="submit" class="button is-primary">
+                                            <span class="icon"><i class="fas fa-arrow-right"></i></span>
+                                            <span>Create Account</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div class="has-text-centered mt-4">
+                                <p>Already have an account? <a href="index.html"
+                                        onclick="event.preventDefault(); location.href='index.html';">Login here</a></p>
+                            </div>
+                        </div>
+
+                        <!-- Wizard Steps (Hidden initially, shown after signup) -->
+                        <div id="wizardSteps" style="display: none;">
+                            <!-- Step 1: Training Topics -->
+                            <div class="wizard-step is-active" id="step1">
+                                <div class="has-text-centered mb-4">
+                                    <h2 class="title is-4">Step 1: Select Training Topics</h2>
+                                    <p class="subtitle is-6">Choose topics your employees will learn</p>
+                                    <progress class="progress is-primary" value="33" max="100">33%</progress>
+                                </div>
+
+                                <div class="content">
+                                    <p class="has-text-weight-semibold mb-3">Select all that apply:</p>
+                                    <div class="mb-4">
+                                        <span class="chip" onclick="toggleChip(this)">
+                                            <i class="fas fa-comments"></i> Basic Japanese Phrases
+                                        </span>
+                                        <span class="chip" onclick="toggleChip(this)">
+                                            <i class="fas fa-toolbox"></i> Industry-Specific Keywords
+                                        </span>
+                                        <span class="chip" onclick="toggleChip(this)">
+                                            <i class="fas fa-hand-wave"></i> Introduction & Greetings
+                                        </span>
+                                        <span class="chip" onclick="toggleChip(this)">
+                                            <i class="fas fa-briefcase"></i> Japanese Business Norms
+                                        </span>
+                                        <span class="chip" onclick="toggleChip(this)">
+                                            <i class="fas fa-heart"></i> Cultural Etiquette
+                                        </span>
+                                        <span class="chip" onclick="toggleChip(this)">
+                                            <i class="fas fa-exclamation-triangle"></i> Emergency Phrases
+                                        </span>
+                                        <span class="chip" onclick="toggleChip(this)">
+                                            <i class="fas fa-utensils"></i> Food & Dining
+                                        </span>
+                                        <span class="chip" onclick="toggleChip(this)">
+                                            <i class="fas fa-train"></i> Transportation
+                                        </span>
+                                        <span class="chip" onclick="toggleChip(this)">
+                                            <i class="fas fa-calendar"></i> Daily Routines
+                                        </span>
+                                        <span class="chip" onclick="toggleChip(this)">
+                                            <i class="fas fa-users"></i> Workplace Communication
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="field is-grouped is-grouped-right mt-5">
+                                    <div class="control">
+                                        <button class="button is-primary" onclick="nextStep()">
+                                            Next <i class="fas fa-arrow-right ml-2"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Step 2: Voice Setup -->
+                            <div class="wizard-step" id="step2">
+                                <div class="has-text-centered mb-5">
+                                    <h2 class="title is-4">Step 2: Voice Setup</h2>
+                                    <p class="subtitle is-6">Upload company voice and select Japanese accent</p>
+                                    <progress class="progress is-primary" value="66" max="100">66%</progress>
+                                </div>
+
+                                <div class="content">
+                                    <!-- Step A: Choose Voice Source -->
+                                    <div class="box mb-5">
+                                        <h3 class="title is-5 mb-4">
+                                            <span class="tag is-dark is-medium mr-2">Step 1</span>
+                                            <i class="fas fa-headphones mr-2"></i>Choose Voice Source
+                                        </h3>
+
+                                        <div class="columns">
+                                            <!-- Standard Voice Option -->
+                                            <div class="column is-6">
+                                                <label class="voice-source-card">
+                                                    <input type="radio" name="voiceSource" value="standard" checked
+                                                        onchange="selectVoiceSource('standard')">
+                                                    <div class="box has-text-centered voice-source-box"
+                                                        id="source-standard"
+                                                        style="cursor: pointer; min-height: 160px; display: flex; flex-direction: column; justify-content: center;">
+                                                        <span class="icon is-large mb-3">
+                                                            <i class="fas fa-volume-up fa-3x"></i>
+                                                        </span>
+                                                        <h4 class="title is-5 mb-2">Standard Voice</h4>
+                                                        <p class="is-size-7">Use our pre-configured Japanese voices</p>
+                                                        <span class="tag is-success mt-3">Recommended for most
+                                                            users</span>
+                                                    </div>
+                                                </label>
+                                            </div>
+
+                                            <!-- Custom Voice Option -->
+                                            <div class="column is-6">
+                                                <label class="voice-source-card">
+                                                    <input type="radio" name="voiceSource" value="custom"
+                                                        onchange="selectVoiceSource('custom')">
+                                                    <div class="box has-text-centered voice-source-box"
+                                                        id="source-custom"
+                                                        style="cursor: pointer; min-height: 160px; display: flex; flex-direction: column; justify-content: center;">
+                                                        <span class="icon is-large mb-3">
+                                                            <i class="fas fa-microphone fa-3x"></i>
+                                                        </span>
+                                                        <h4 class="title is-5 mb-2">Custom Voice</h4>
+                                                        <p class="is-size-7">Clone a voice from your audio file</p>
+                                                        <span class="tag is-light mt-3">Advanced option</span>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Step B: Standard Voice Accent Selection -->
+                                    <div id="standardVoiceSection" class="box mb-4">
+                                        <h3 class="title is-5 mb-4">
+                                            <span class="tag is-dark is-medium mr-2">Step 2</span>
+                                            <i class="fas fa-language mr-2"></i>Select Japanese Accent
+                                        </h3>
+                                        <p class="mb-4">Choose the regional accent for your training</p>
+
+                                        <div class="columns is-multiline">
+                                            <!-- Tokyo Accent -->
+                                            <div class="column is-4">
+                                                <label class="accent-card-radio">
+                                                    <input type="radio" name="accent" value="tokyo" checked
+                                                        onchange="selectAccent('tokyo')">
+                                                    <div class="box accent-selection" id="accent-tokyo">
+                                                        <div class="has-text-centered mb-2">
+                                                            <span class="icon is-large">
+                                                                <i class="fas fa-building fa-2x"></i>
+                                                            </span>
+                                                        </div>
+                                                        <h4 class="title is-6 has-text-centered">Tokyo</h4>
+                                                        <p class="is-size-7 has-text-centered mb-2">Standard Japanese
+                                                        </p>
+                                                        <span class="tag is-primary is-light"
+                                                            style="width: 100%; justify-content: center;">Recommended</span>
+                                                    </div>
+                                                </label>
+                                            </div>
+
+                                            <!-- Kansai Accent -->
+                                            <div class="column is-4">
+                                                <label class="accent-card-radio">
+                                                    <input type="radio" name="accent" value="kansai"
+                                                        onchange="selectAccent('kansai')">
+                                                    <div class="box accent-selection" id="accent-kansai">
+                                                        <div class="has-text-centered mb-2">
+                                                            <span class="icon is-large">
+                                                                <i class="fas fa-torii-gate fa-2x"></i>
+                                                            </span>
+                                                        </div>
+                                                        <h4 class="title is-6 has-text-centered">Kansai</h4>
+                                                        <p class="is-size-7 has-text-centered">Osaka/Kyoto</p>
+                                                    </div>
+                                                </label>
+                                            </div>
+
+                                            <!-- Kyushu Accent -->
+                                            <div class="column is-4">
+                                                <label class="accent-card-radio">
+                                                    <input type="radio" name="accent" value="kyushu"
+                                                        onchange="selectAccent('kyushu')">
+                                                    <div class="box accent-selection" id="accent-kyushu">
+                                                        <div class="has-text-centered mb-2">
+                                                            <span class="icon is-large">
+                                                                <i class="fas fa-mountain fa-2x"></i>
+                                                            </span>
+                                                        </div>
+                                                        <h4 class="title is-6 has-text-centered">Kyushu</h4>
+                                                        <p class="is-size-7 has-text-centered">Southern Japan</p>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Step B: Custom Voice Upload & Accent Selection -->
+                                    <div id="customVoiceSection" class="box mb-4" style="display: none;">
+                                        <h3 class="title is-5 mb-4">
+                                            <span class="tag is-dark is-medium mr-2">Step 2</span>
+                                            <i class="fas fa-cloud-upload-alt mr-2"></i>Upload Voice Sample
+                                        </h3>
+                                        <p class="mb-4">Upload a clear audio recording (30-60 seconds recommended)</p>
+
+                                        <div class="mb-4">
+                                            <div class="file is-boxed is-fullwidth has-name is-large">
+                                                <label class="file-label">
+                                                    <input class="file-input" id="voiceFileInput" type="file"
+                                                        accept="audio/*,.mp3,.wav,.m4a"
+                                                        onchange="handleFileSelect(event)">
+                                                    <span class="file-cta">
+                                                        <span class="file-icon">
+                                                            <i class="fas fa-cloud-upload-alt fa-2x"></i>
+                                                        </span>
+                                                        <span class="file-label">
+                                                            Choose audio file
+                                                        </span>
+                                                    </span>
+                                                    <span class="file-name" id="fileName"
+                                                        style="max-width: 400px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                                        No file selected
+                                                    </span>
+                                                </label>
+                                            </div>
+                                            <button class="button is-danger mt-2" id="clearFileButton"
+                                                style="display: none;" onclick="clearVoiceFile()">
+                                                <span class="icon">
+                                                    <i class="fas fa-times"></i>
+                                                </span>
+                                                <span>Remove File</span>
+                                            </button>
+                                        </div>
+
+                                        <div class="notification is-info is-light mb-4">
+                                            <p class="is-size-7">
+                                                <i class="fas fa-info-circle mr-1"></i>
+                                                <strong>Supported:</strong> MP3, WAV, M4A |
+                                                <strong>Quality:</strong> Clear speech, minimal background noise
+                                            </p>
+                                        </div>
+
+                                        <!-- Accent Selection for Custom Voice -->
+                                        <div id="customAccentSection" style="display: none;">
+                                            <hr>
+                                            <h4 class="title is-6 mb-3 mt-4">
+                                                <i class="fas fa-language mr-2"></i>Select Accent Style
+                                            </h4>
+                                            <p class="mb-4">Choose the accent style to apply to your cloned voice</p>
+
+                                            <div class="columns is-multiline">
+                                                <!-- Tokyo -->
+                                                <div class="column is-6">
+                                                    <label class="accent-card-radio">
+                                                        <input type="radio" name="customAccent" value="tokyo" checked
+                                                            onchange="selectCustomAccent('tokyo')">
+                                                        <div class="box accent-selection" id="custom-accent-tokyo">
+                                                            <div class="has-text-centered mb-2">
+                                                                <span class="icon">
+                                                                    <i class="fas fa-building fa-2x"></i>
+                                                                </span>
+                                                            </div>
+                                                            <h5 class="title is-6 has-text-centered">Tokyo Style</h5>
+                                                            <p class="is-size-7 has-text-centered">Standard Japanese</p>
+                                                        </div>
+                                                    </label>
+                                                </div>
+
+                                                <!-- Kansai -->
+                                                <div class="column is-6">
+                                                    <label class="accent-card-radio">
+                                                        <input type="radio" name="customAccent" value="kansai"
+                                                            onchange="selectCustomAccent('kansai')">
+                                                        <div class="box accent-selection" id="custom-accent-kansai">
+                                                            <div class="has-text-centered mb-2">
+                                                                <span class="icon">
+                                                                    <i class="fas fa-torii-gate fa-2x"></i>
+                                                                </span>
+                                                            </div>
+                                                            <h5 class="title is-6 has-text-centered">Kansai Style</h5>
+                                                            <p class="is-size-7 has-text-centered">Osaka/Kyoto</p>
+                                                        </div>
+                                                    </label>
+                                                </div>
+
+                                                <!-- Kyushu -->
+                                                <div class="column is-6">
+                                                    <label class="accent-card-radio">
+                                                        <input type="radio" name="customAccent" value="kyushu"
+                                                            onchange="selectCustomAccent('kyushu')">
+                                                        <div class="box accent-selection" id="custom-accent-kyushu">
+                                                            <div class="has-text-centered mb-2">
+                                                                <span class="icon">
+                                                                    <i class="fas fa-mountain fa-2x"></i>
+                                                                </span>
+                                                            </div>
+                                                            <h5 class="title is-6 has-text-centered">Kyushu Style</h5>
+                                                            <p class="is-size-7 has-text-centered">Southern Japan</p>
+                                                        </div>
+                                                    </label>
+                                                </div>
+
+                                                <!-- Neutral -->
+                                                <div class="column is-6">
+                                                    <label class="accent-card-radio">
+                                                        <input type="radio" name="customAccent" value="neutral"
+                                                            onchange="selectCustomAccent('neutral')">
+                                                        <div class="box accent-selection" id="custom-accent-neutral">
+                                                            <div class="has-text-centered mb-2">
+                                                                <span class="icon">
+                                                                    <i class="fas fa-robot fa-2x"></i>
+                                                                </span>
+                                                            </div>
+                                                            <h5 class="title is-6 has-text-centered">Neutral Style</h5>
+                                                            <p class="is-size-7 has-text-centered">No regional accent
+                                                            </p>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="field is-grouped is-grouped-right mt-5">
+                                    <div class="control">
+                                        <button class="button" onclick="prevStep()">
+                                            <i class="fas fa-arrow-left mr-2"></i> Back
+                                        </button>
+                                    </div>
+                                    <div class="control">
+                                        <button class="button is-primary" onclick="nextStep()">
+                                            Next <i class="fas fa-arrow-right ml-2"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Step 3: Add Employees -->
+                            <div class="wizard-step" id="step3">
+                                <div class="has-text-centered mb-4">
+                                    <h2 class="title is-4">Step 3: Add Employees</h2>
+                                    <p class="subtitle is-6">Add your first employees or skip for now</p>
+                                    <progress class="progress is-primary" value="100" max="100">100%</progress>
+                                </div>
+
+                                <div class="content">
+                                    <div class="tabs is-centered">
+                                        <ul>
+                                            <li class="is-active" onclick="showEmployeeTab('single')">
+                                                <a><i class="fas fa-user mr-2"></i>Single Employee</a>
+                                            </li>
+                                            <li onclick="showEmployeeTab('bulk')">
+                                                <a><i class="fas fa-file-csv mr-2"></i>Bulk Upload (CSV)</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div id="singleEmployeeTab">
+                                        <div class="field">
+                                            <label class="label">Employee Name</label>
+                                            <div class="control">
+                                                <input class="input" type="text" placeholder="John Doe">
+                                            </div>
+                                        </div>
+
+                                        <div class="field">
+                                            <label class="label">Email Address</label>
+                                            <div class="control">
+                                                <input class="input" type="email" placeholder="john@company.com">
+                                            </div>
+                                        </div>
+
+                                        <div class="field">
+                                            <label class="label">Password</label>
+                                            <div class="control">
+                                                <input class="input" type="password" placeholder="••••••••"
+                                                    minlength="8">
+                                            </div>
+                                            <p class="help">Minimum 8 characters</p>
+                                        </div>
+
+                                        <div class="field">
+                                            <label class="label">Department</label>
+                                            <div class="control">
+                                                <input class="input" type="text" placeholder="Operations">
+                                            </div>
+                                        </div>
+
+                                        <button class="button is-light is-fullwidth">
+                                            <i class="fas fa-plus mr-2"></i> Add Employee
+                                        </button>
+                                    </div>
+
+                                    <div id="bulkEmployeeTab" style="display: none;">
+                                        <div class="notification is-info is-light">
+                                            <p><strong>CSV Format:</strong> Name, Email, Password, Department</p>
+                                            <p class="is-size-7 mt-2">Example: John Doe, john@company.com,
+                                                SecurePass123, Operations</p>
+                                            <p class="is-size-7 mt-1"><i class="fas fa-info-circle"></i> Password must
+                                                be at least 8 characters</p>
+                                        </div>
+
+                                        <div class="file is-boxed is-fullwidth has-name">
+                                            <label class="file-label">
+                                                <input class="file-input" type="file" accept=".csv"
+                                                    onchange="handleCSVSelect(event)">
+                                                <span class="file-cta">
+                                                    <span class="file-icon">
+                                                        <i class="fas fa-file-csv"></i>
+                                                    </span>
+                                                    <span class="file-label">
+                                                        Upload CSV file
+                                                    </span>
+                                                </span>
+                                                <span class="file-name" id="csvFileName">
+                                                    No file selected
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="field is-grouped is-grouped-right mt-5">
+                                    <div class="control">
+                                        <button class="button" onclick="prevStep()">
+                                            <i class="fas fa-arrow-left mr-2"></i> Back
+                                        </button>
+                                    </div>
+                                    <div class="control">
+                                        <button class="button is-light" onclick="completeWizard()">
+                                            Skip for Now
+                                        </button>
+                                    </div>
+                                    <div class="control">
+                                        <button class="button is-success" onclick="completeWizard()">
+                                            <i class="fas fa-check mr-2"></i> Complete Setup
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/onboarding.js"></script>
+</body>
+
+</html>

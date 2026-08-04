@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management - Japanese Training App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/admin-styles.css">
+    <link rel="stylesheet" href="css/enterprise-theme.css">
+</head>
+
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="menu admin-sidebar">
+            <div class="sidebar-header p-4">
+                <h1 class="title is-5 has-text-white">
+                    <i class="fas fa-graduation-cap"></i> 日本語 Training
+                </h1>
+                <p class="subtitle is-7 has-text-light">Admin Panel</p>
+            </div>
+
+            <ul class="menu-list">
+                <li><a href="dashboard.html">
+                        <i class="fas fa-chart-line"></i> Dashboard
+                    </a></li>
+                <li><a href="employees.html" class="is-active">
+                        <i class="fas fa-users"></i> Employees
+                    </a></li>
+                <li><a href="voice.html">
+                        <i class="fas fa-microphone"></i> Voice Management
+                    </a></li>
+                <li><a href="content-management.html">
+                        <i class="fas fa-folder-open"></i> Content Management
+                    </a></li>
+                <li><a href="settings.html">
+                        <i class="fas fa-cog"></i> Settings
+                    </a></li>
+                <li><a href="index.html" class="has-text-danger">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="admin-content">
+            <!-- Top Navigation -->
+            <nav class="navbar">
+                <div class="navbar-brand">
+                    <div class="navbar-item">
+                        <h2 class="title is-4">Employee Management</h2>
+                    </div>
+                </div>
+                <div class="navbar-menu">
+                    <div class="navbar-end">
+                        <div class="navbar-item">
+                            <span class="tag is-light is-medium">
+                                <i class="fas fa-building mr-2"></i> ABC Construction Co.
+                            </span>
+                        </div>
+                        <div class="navbar-item">
+                            <div class="dropdown is-hoverable is-right">
+                                <div class="dropdown-trigger">
+                                    <button class="button is-light" aria-haspopup="true">
+                                        <span class="icon">
+                                            <i class="fas fa-user-circle"></i>
+                                        </span>
+                                        <span>Admin</span>
+                                    </button>
+                                </div>
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-content">
+                                        <a href="settings.html" class="dropdown-item">
+                                            <i class="fas fa-cog mr-2"></i> Settings
+                                        </a>
+                                        <hr class="dropdown-divider">
+                                        <a href="index.html" class="dropdown-item">
+                                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <section class="section">
+                <div class="container-fluid">
+                    <!-- Summary Cards -->
+                    <div class="columns">
+                        <div class="column is-3">
+                            <div class="box has-text-centered">
+                                <p class="heading">Total Employees</p>
+                                <p class="title is-3 has-text-info">156</p>
+                            </div>
+                        </div>
+                        <div class="column is-3">
+                            <div class="box has-text-centered">
+                                <p class="heading">Active This Week</p>
+                                <p class="title is-3 has-text-success">124</p>
+                            </div>
+                        </div>
+                        <div class="column is-3">
+                            <div class="box has-text-centered">
+                                <p class="heading">Avg. Completion</p>
+                                <p class="title is-3 has-text-warning">68%</p>
+                            </div>
+                        </div>
+                        <div class="column is-3">
+                            <div class="box has-text-centered">
+                                <p class="heading">New This Month</p>
+                                <p class="title is-3 has-text-primary">12</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add Employee Section -->
+                    <div class="box">
+                        <h3 class="title is-5">
+                            <i class="fas fa-user-plus mr-2"></i> Add New Employee
+                        </h3>
+
+                        <div class="tabs">
+                            <ul>
+                                <li class="is-active" onclick="switchTab('single')">
+                                    <a><i class="fas fa-user mr-2"></i>Single Employee</a>
+                                </li>
+                                <li onclick="switchTab('bulk')">
+                                    <a><i class="fas fa-file-csv mr-2"></i>Bulk Upload (CSV)</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Single Employee Form -->
+                        <div id="singleEmployeeForm">
+                            <div class="columns">
+                                <div class="column is-3">
+                                    <div class="field">
+                                        <label class="label">Employee Name *</label>
+                                        <div class="control has-icons-left">
+                                            <input class="input" type="text" placeholder="John Tanaka">
+                                            <span class="icon is-small is-left">
+                                                <i class="fas fa-user"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="column is-3">
+                                    <div class="field">
+                                        <label class="label">Email Address *</label>
+                                        <div class="control has-icons-left">
+                                            <input class="input" type="email" placeholder="john@company.com">
+                                            <span class="icon is-small is-left">
+                                                <i class="fas fa-envelope"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="column is-3">
+                                    <div class="field">
+                                        <label class="label">Password *</label>
+                                        <div class="control has-icons-left">
+                                            <input class="input" type="password" placeholder="••••••••">
+                                            <span class="icon is-small is-left">
+                                                <i class="fas fa-lock"></i>
+                                            </span>
+                                        </div>
+                                        <p class="help">Min. 8 characters</p>
+                                    </div>
+                                </div>
+                                <div class="column is-3">
+                                    <div class="field">
+                                        <label class="label">Department</label>
+                                        <div class="control has-icons-left">
+                                            <div class="select is-fullwidth">
+                                                <select>
+                                                    <option>Operations</option>
+                                                    <option>Construction</option>
+                                                    <option>Transportation</option>
+                                                    <option>Administration</option>
+                                                    <option>Safety</option>
+                                                    <option>Other</option>
+                                                </select>
+                                            </div>
+                                            <span class="icon is-small is-left">
+                                                <i class="fas fa-briefcase"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field is-grouped">
+                                <div class="control">
+                                    <button class="button is-primary" onclick="addEmployee()">
+                                        <i class="fas fa-plus mr-2"></i> Add Employee
+                                    </button>
+                                </div>
+                                <div class="control">
+                                    <button class="button is-light" onclick="clearForm()">Clear</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bulk Upload Form -->
+                        <div id="bulkUploadForm" style="display: none;">
+                            <div class="notification is-info is-light">
+                                <p><strong>CSV Format Requirements:</strong></p>
+                                <p class="is-size-7 mt-2">Columns: Name, Email, Password, Department</p>
+                                <p class="is-size-7">Example: John Tanaka, john@company.com, SecurePass123, Operations
+                                </p>
+                                <p class="is-size-7 mt-1"><i class="fas fa-info-circle"></i> Password must be at least 8
+                                    characters</p>
+                                <a href="#" class="button is-small is-info mt-2">
+                                    <i class="fas fa-download mr-2"></i> Download Template
+                                </a>
+                            </div>
+
+                            <div class="file is-boxed is-large has-name is-fullwidth">
+                                <label class="file-label">
+                                    <input class="file-input" type="file" accept=".csv"
+                                        onchange="handleCSVUpload(event)">
+                                    <span class="file-cta">
+                                        <span class="file-icon">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                        </span>
+                                        <span class="file-label">
+                                            Choose CSV file…
+                                        </span>
+                                    </span>
+                                    <span class="file-name" id="csvFileName">
+                                        No file selected
+                                    </span>
+                                </label>
+                            </div>
+
+                            <div class="field mt-4">
+                                <button class="button is-primary is-fullwidth" onclick="uploadCSV()">
+                                    <i class="fas fa-upload mr-2"></i> Upload Employees
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Employee List -->
+                    <div class="box">
+                        <div class="level">
+                            <div class="level-left">
+                                <div class="level-item">
+                                    <h3 class="title is-5">
+                                        <i class="fas fa-list mr-2"></i> Employee List
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="level-right">
+                                <div class="level-item">
+                                    <div class="field has-addons">
+                                        <div class="control has-icons-left">
+                                            <input class="input" type="text" placeholder="Search employees...">
+                                            <span class="icon is-small is-left">
+                                                <i class="fas fa-search"></i>
+                                            </span>
+                                        </div>
+                                        <div class="control">
+                                            <div class="select">
+                                                <select>
+                                                    <option>All Departments</option>
+                                                    <option>Operations</option>
+                                                    <option>Construction</option>
+                                                    <option>Transportation</option>
+                                                    <option>Administration</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="control">
+                                            <div class="select">
+                                                <select>
+                                                    <option>All Topics</option>
+                                                    <option>Safety Procedures</option>
+                                                    <option>Greetings</option>
+                                                    <option>Business Norms</option>
+                                                    <option>Emergency Phrases</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <table class="table is-fullwidth is-hoverable is-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 40px;"><input type="checkbox"
+                                                onclick="toggleAllCheckboxes(this)"></th>
+                                        <th style="width: 20%;">Employee</th>
+                                        <th style="width: 12%;">Department</th>
+                                        <th style="width: 15%;">Training Topics</th>
+                                        <th style="width: 18%;">Progress</th>
+                                        <th style="width: 10%;">Status</th>
+                                        <th style="width: 15%;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td>
+                                            <div>
+                                                <strong class="has-text-weight-semibold">John Tanaka</strong>
+                                                <br>
+                                                <span class="is-size-7 has-text-grey">john.tanaka@company.com</span>
+                                            </div>
+                                        </td>
+                                        <td><span class="tag is-info">Operations</span></td>
+                                        <td>
+                                            <div class="level is-mobile">
+                                                <div class="level-left">
+                                                    <span class="icon-text">
+                                                        <span class="icon has-text-grey"><i
+                                                                class="fas fa-tasks"></i></span>
+                                                        <span class="has-text-weight-semibold">3 Topics</span>
+                                                    </span>
+                                                </div>
+                                                <div class="level-right">
+                                                    <button class="button is-small is-light"
+                                                        onclick="manageTopics(1, 'John Tanaka')"
+                                                        title="Manage assigned topics">
+                                                        <span class="icon is-small"><i class="fas fa-cog"></i></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="is-size-7 has-text-grey mt-1">
+                                                Safety, Greetings, Emergency
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="mb-1">
+                                                <span class="has-text-weight-semibold">85%</span>
+                                                <span class="is-size-7 has-text-grey">overall</span>
+                                            </div>
+                                            <progress class="progress is-success is-small" value="85"
+                                                max="100">85%</progress>
+                                        </td>
+                                        <td><span class="tag is-success">Active</span></td>
+                                        <td>
+                                            <div class="buttons are-small">
+                                                <button class="button is-info is-small" title="View training details"
+                                                    onclick="viewEmployeeDetails(1)">
+                                                    <span class="icon"><i class="fas fa-chart-line"></i></span>
+                                                    <span>Details</span>
+                                                </button>
+                                                <button class="button is-light is-small" title="Edit employee"
+                                                    onclick="editEmployee(1)">
+                                                    <span class="icon"><i class="fas fa-edit"></i></span>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td>
+                                            <div>
+                                                <strong class="has-text-weight-semibold">Sarah Williams</strong>
+                                                <br>
+                                                <span class="is-size-7 has-text-grey">sarah.w@company.com</span>
+                                            </div>
+                                        </td>
+                                        <td><span class="tag is-primary">Construction</span></td>
+                                        <td>
+                                            <div class="level is-mobile">
+                                                <div class="level-left">
+                                                    <span class="icon-text">
+                                                        <span class="icon has-text-grey"><i
+                                                                class="fas fa-tasks"></i></span>
+                                                        <span class="has-text-weight-semibold">2 Topics</span>
+                                                    </span>
+                                                </div>
+                                                <div class="level-right">
+                                                    <button class="button is-small is-light"
+                                                        onclick="manageTopics(2, 'Sarah Williams')"
+                                                        title="Manage assigned topics">
+                                                        <span class="icon is-small"><i class="fas fa-cog"></i></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="is-size-7 has-text-grey mt-1">
+                                                Safety, Emergency
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="mb-1">
+                                                <span class="has-text-weight-semibold">62%</span>
+                                                <span class="is-size-7 has-text-grey">overall</span>
+                                            </div>
+                                            <progress class="progress is-warning is-small" value="62"
+                                                max="100">62%</progress>
+                                        </td>
+                                        <td><span class="tag is-success">Active</span></td>
+                                        <td>
+                                            <div class="buttons are-small">
+                                                <button class="button is-info is-small" title="View training details"
+                                                    onclick="viewEmployeeDetails(2)">
+                                                    <span class="icon"><i class="fas fa-chart-line"></i></span>
+                                                    <span>Details</span>
+                                                </button>
+                                                <button class="button is-light is-small" title="Edit employee"
+                                                    onclick="editEmployee(2)">
+                                                    <span class="icon"><i class="fas fa-edit"></i></span>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td>
+                                            <div>
+                                                <strong class="has-text-weight-semibold">Mike Chen</strong>
+                                                <br>
+                                                <span class="is-size-7 has-text-grey">mike.chen@company.com</span>
+                                            </div>
+                                        </td>
+                                        <td><span class="tag is-success">Transportation</span></td>
+                                        <td>
+                                            <div class="level is-mobile">
+                                                <div class="level-left">
+                                                    <span class="icon-text">
+                                                        <span class="icon has-text-grey"><i
+                                                                class="fas fa-tasks"></i></span>
+                                                        <span class="has-text-weight-semibold">4 Topics</span>
+                                                    </span>
+                                                </div>
+                                                <div class="level-right">
+                                                    <button class="button is-small is-light"
+                                                        onclick="manageTopics(3, 'Mike Chen')"
+                                                        title="Manage assigned topics">
+                                                        <span class="icon is-small"><i class="fas fa-cog"></i></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="is-size-7 has-text-grey mt-1">
+                                                Safety, Greetings, Business, +1
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="mb-1">
+                                                <span class="has-text-weight-semibold">92%</span>
+                                                <span class="is-size-7 has-text-grey">overall</span>
+                                            </div>
+                                            <progress class="progress is-success is-small" value="92"
+                                                max="100">92%</progress>
+                                        </td>
+                                        <td><span class="tag is-success">Active</span></td>
+                                        <td>
+                                            <div class="buttons are-small">
+                                                <button class="button is-info is-small" title="View training details"
+                                                    onclick="viewEmployeeDetails(3)">
+                                                    <span class="icon"><i class="fas fa-chart-line"></i></span>
+                                                    <span>Details</span>
+                                                </button>
+                                                <button class="button is-light is-small" title="Edit employee"
+                                                    onclick="editEmployee(3)">
+                                                    <span class="icon"><i class="fas fa-edit"></i></span>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td>
+                                            <div>
+                                                <strong class="has-text-weight-semibold">Yuki Sato</strong>
+                                                <br>
+                                                <span class="is-size-7 has-text-grey">yuki.sato@company.com</span>
+                                            </div>
+                                        </td>
+                                        <td><span class="tag is-warning">Administration</span></td>
+                                        <td>
+                                            <div class="level is-mobile">
+                                                <div class="level-left">
+                                                    <span class="icon-text">
+                                                        <span class="icon has-text-grey"><i
+                                                                class="fas fa-tasks"></i></span>
+                                                        <span class="has-text-weight-semibold">2 Topics</span>
+                                                    </span>
+                                                </div>
+                                                <div class="level-right">
+                                                    <button class="button is-small is-light"
+                                                        onclick="manageTopics(4, 'Yuki Sato')"
+                                                        title="Manage assigned topics">
+                                                        <span class="icon is-small"><i class="fas fa-cog"></i></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="is-size-7 has-text-grey mt-1">
+                                                Business, Greetings
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="mb-1">
+                                                <span class="has-text-weight-semibold">45%</span>
+                                                <span class="is-size-7 has-text-grey">overall</span>
+                                            </div>
+                                            <progress class="progress is-info is-small" value="45"
+                                                max="100">45%</progress>
+                                        </td>
+                                        <td><span class="tag is-success">Active</span></td>
+                                        <td>
+                                            <div class="buttons are-small">
+                                                <button class="button is-info is-small" title="View training details"
+                                                    onclick="viewEmployeeDetails(4)">
+                                                    <span class="icon"><i class="fas fa-chart-line"></i></span>
+                                                    <span>Details</span>
+                                                </button>
+                                                <button class="button is-light is-small" title="Edit employee"
+                                                    onclick="editEmployee(4)">
+                                                    <span class="icon"><i class="fas fa-edit"></i></span>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td>
+                                            <div>
+                                                <strong class="has-text-weight-semibold">David Kim</strong>
+                                                <br>
+                                                <span class="is-size-7 has-text-grey">david.kim@company.com</span>
+                                            </div>
+                                        </td>
+                                        <td><span class="tag is-info">Operations</span></td>
+                                        <td>
+                                            <div class="level is-mobile">
+                                                <div class="level-left">
+                                                    <span class="icon-text">
+                                                        <span class="icon has-text-grey"><i
+                                                                class="fas fa-tasks"></i></span>
+                                                        <span class="has-text-weight-semibold">2 Topics</span>
+                                                    </span>
+                                                </div>
+                                                <div class="level-right">
+                                                    <button class="button is-small is-light"
+                                                        onclick="manageTopics(5, 'David Kim')"
+                                                        title="Manage assigned topics">
+                                                        <span class="icon is-small"><i class="fas fa-cog"></i></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="is-size-7 has-text-grey mt-1">
+                                                Safety, Greetings
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="mb-1">
+                                                <span class="has-text-weight-semibold">28%</span>
+                                                <span class="is-size-7 has-text-grey">overall</span>
+                                            </div>
+                                            <progress class="progress is-danger is-small" value="28"
+                                                max="100">28%</progress>
+                                        </td>
+                                        <td><span class="tag is-warning">Inactive</span></td>
+                                        <td>
+                                            <div class="buttons are-small">
+                                                <button class="button is-info is-small" title="View training details"
+                                                    onclick="viewEmployeeDetails(5)">
+                                                    <span class="icon"><i class="fas fa-chart-line"></i></span>
+                                                    <span>Details</span>
+                                                </button>
+                                                <button class="button is-light is-small" title="Edit employee"
+                                                    onclick="editEmployee(5)">
+                                                    <span class="icon"><i class="fas fa-edit"></i></span>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <nav class="pagination is-centered mt-4" role="navigation">
+                            <a class="pagination-previous">Previous</a>
+                            <a class="pagination-next">Next</a>
+                            <ul class="pagination-list">
+                                <li><a class="pagination-link is-current">1</a></li>
+                                <li><a class="pagination-link">2</a></li>
+                                <li><a class="pagination-link">3</a></li>
+                                <li><span class="pagination-ellipsis">&hellip;</span></li>
+                                <li><a class="pagination-link">12</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Edit Employee Modal -->
+    <div class="modal" id="editModal">
+        <div class="modal-background" onclick="closeEditModal()"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Edit Employee</p>
+                <button class="delete" aria-label="close" onclick="closeEditModal()"></button>
+            </header>
+            <section class="modal-card-body">
+                <div class="field">
+                    <label class="label">Name</label>
+                    <div class="control">
+                        <input class="input" type="text" value="John Tanaka">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Email</label>
+                    <div class="control">
+                        <input class="input" type="email" value="john.tanaka@company.com">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">New Password</label>
+                    <div class="control">
+                        <input class="input" type="password" placeholder="Leave blank to keep current password">
+                    </div>
+                    <p class="help">Only fill this if you want to change the employee's password</p>
+                </div>
+                <div class="field">
+                    <label class="label">Department</label>
+                    <div class="control">
+                        <div class="select is-fullwidth">
+                            <select>
+                                <option selected>Operations</option>
+                                <option>Construction</option>
+                                <option>Transportation</option>
+                                <option>Administration</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <footer class="modal-card-foot">
+                <button class="button is-success">Save Changes</button>
+                <button class="button" onclick="closeEditModal()">Cancel</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Manage Topics Modal -->
+    <div class="modal" id="manageTopicsModal">
+        <div class="modal-background" onclick="closeManageTopicsModal()"></div>
+        <div class="modal-card" style="width: 600px;">
+            <header class="modal-card-head">
+                <p class="modal-card-title">
+                    <i class="fas fa-tasks mr-2"></i>Manage Topics - <span id="employeeName"></span>
+                </p>
+                <button class="delete" aria-label="close" onclick="closeManageTopicsModal()"></button>
+            </header>
+            <section class="modal-card-body">
+                <div class="notification is-info is-light mb-4">
+                    <p class="is-size-7"><strong>Assign Training Topics:</strong> Select which topics this employee
+                        should train on. Only active topics from Content Management are available.</p>
+                </div>
+
+                <div class="field">
+                    <label class="label">Available Topics</label>
+                    <div class="control">
+                        <label class="checkbox">
+                            <input type="checkbox" checked>
+                            <strong>Safety Procedures</strong> (安全手順)
+                            <br><span class="has-text-grey is-size-7 ml-4">12 materials | Status: Active</span>
+                        </label>
+                    </div>
+                    <div class="control mt-2">
+                        <label class="checkbox">
+                            <input type="checkbox" checked>
+                            <strong>Greetings & Introductions</strong> (挨拶と自己紹介)
+                            <br><span class="has-text-grey is-size-7 ml-4">8 materials | Status: Active</span>
+                        </label>
+                    </div>
+                    <div class="control mt-2">
+                        <label class="checkbox">
+                            <input type="checkbox" checked>
+                            <strong>Japanese Etiquette</strong> (日本のエチケット)
+                            <br><span class="has-text-grey is-size-7 ml-4">15 materials | Status: Active</span>
+                        </label>
+                    </div>
+                    <div class="control mt-2">
+                        <label class="checkbox">
+                            <input type="checkbox">
+                            <strong>Emergency Phrases</strong> (緊急時のフレーズ)
+                            <br><span class="has-text-grey is-size-7 ml-4">6 materials | Status: Active</span>
+                        </label>
+                    </div>
+                    <div class="control mt-2">
+                        <label class="checkbox">
+                            <input type="checkbox">
+                            <strong>Construction Terms</strong> (建設用語)
+                            <br><span class="has-text-grey is-size-7 ml-4">20 materials | Status: Active</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="notification is-warning is-light mt-4">
+                    <p class="is-size-7"><i class="fas fa-exclamation-circle mr-2"></i><strong>Note:</strong>
+                        Unassigning a topic will preserve the employee's progress but they won't be able to continue
+                        training on it.</p>
+                </div>
+            </section>
+            <footer class="modal-card-foot">
+                <button class="button is-primary" onclick="saveTopicAssignments()">
+                    <span class="icon"><i class="fas fa-save"></i></span>
+                    <span>Save Changes</span>
+                </button>
+                <button class="button" onclick="closeManageTopicsModal()">Cancel</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- View Employee Details Modal -->
+    <div class="modal" id="employeeDetailsModal">
+        <div class="modal-background" onclick="closeEmployeeDetailsModal()"></div>
+        <div class="modal-card" style="width: 800px;">
+            <header class="modal-card-head">
+                <p class="modal-card-title">
+                    <i class="fas fa-user-graduate mr-2"></i>Employee Training Details - <span
+                        id="detailEmployeeName"></span>
+                </p>
+                <button class="delete" aria-label="close" onclick="closeEmployeeDetailsModal()"></button>
+            </header>
+            <section class="modal-card-body">
+                <!-- Employee Overview -->
+                <div class="columns mb-4">
+                    <div class="column">
+                        <div class="box">
+                            <p class="heading">Overall Progress</p>
+                            <p class="title is-4">85%</p>
+                            <progress class="progress is-success" value="85" max="100">85%</progress>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="box">
+                            <p class="heading">Topics Assigned</p>
+                            <p class="title is-4">3 Topics</p>
+                            <p class="has-text-grey">3 Active, 0 Completed</p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="box">
+                            <p class="heading">Training Hours</p>
+                            <p class="title is-4">24.5h</p>
+                            <p class="has-text-grey">Last 30 days</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Topic-wise Progress -->
+                <h4 class="title is-5 mb-3"><i class="fas fa-chart-line mr-2"></i>Progress by Topic</h4>
+
+                <div class="box mb-3">
+                    <div class="level is-mobile mb-2">
+                        <div class="level-left">
+                            <div>
+                                <p class="has-text-weight-bold">
+                                    <i class="fas fa-hard-hat mr-2"></i>Safety Procedures
+                                </p>
+                                <p class="is-size-7 has-text-grey">安全手順</p>
+                            </div>
+                        </div>
+                        <div class="level-right">
+                            <span class="tag is-success is-large">95%</span>
+                        </div>
+                    </div>
+                    <progress class="progress is-success" value="95" max="100">95%</progress>
+                    <div class="content is-small mt-2">
+                        <p><strong>Materials Completed:</strong> 11 of 12</p>
+                        <p><strong>Time Spent:</strong> 8.5 hours</p>
+                        <p><strong>Last Activity:</strong> 2 hours ago</p>
+                        <p class="has-text-success"><i class="fas fa-check-circle mr-1"></i>Performing excellently</p>
+                    </div>
+                </div>
+
+                <div class="box mb-3">
+                    <div class="level is-mobile mb-2">
+                        <div class="level-left">
+                            <div>
+                                <p class="has-text-weight-bold">
+                                    <i class="fas fa-comments mr-2"></i>Greetings & Introductions
+                                </p>
+                                <p class="is-size-7 has-text-grey">挨拶と自己紹介</p>
+                            </div>
+                        </div>
+                        <div class="level-right">
+                            <span class="tag is-info is-large">88%</span>
+                        </div>
+                    </div>
+                    <progress class="progress is-info" value="88" max="100">88%</progress>
+                    <div class="content is-small mt-2">
+                        <p><strong>Materials Completed:</strong> 7 of 8</p>
+                        <p><strong>Time Spent:</strong> 6.2 hours</p>
+                        <p><strong>Last Activity:</strong> 1 day ago</p>
+                        <p class="has-text-info"><i class="fas fa-thumbs-up mr-1"></i>Good progress</p>
+                    </div>
+                </div>
+
+                <div class="box mb-3">
+                    <div class="level is-mobile mb-2">
+                        <div class="level-left">
+                            <div>
+                                <p class="has-text-weight-bold">
+                                    <i class="fas fa-exclamation-triangle mr-2"></i>Emergency Phrases
+                                </p>
+                                <p class="is-size-7 has-text-grey">緊急時のフレーズ</p>
+                            </div>
+                        </div>
+                        <div class="level-right">
+                            <span class="tag is-warning is-large">70%</span>
+                        </div>
+                    </div>
+                    <progress class="progress is-warning" value="70" max="100">70%</progress>
+                    <div class="content is-small mt-2">
+                        <p><strong>Materials Completed:</strong> 4 of 6</p>
+                        <p><strong>Time Spent:</strong> 4.8 hours</p>
+                        <p><strong>Last Activity:</strong> 3 days ago</p>
+                        <p class="has-text-warning"><i class="fas fa-clock mr-1"></i>Needs more practice</p>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="buttons mt-4">
+                    <button class="button is-primary" onclick="location.href='content-management.html'">
+                        <span class="icon"><i class="fas fa-folder-open"></i></span>
+                        <span>View Content Library</span>
+                    </button>
+                    <button class="button is-light"
+                        onclick="manageTopics(1, 'John Tanaka'); closeEmployeeDetailsModal();">
+                        <span class="icon"><i class="fas fa-tasks"></i></span>
+                        <span>Manage Topics</span>
+                    </button>
+                </div>
+            </section>
+            <footer class="modal-card-foot">
+                <button class="button" onclick="closeEmployeeDetailsModal()">Close</button>
+            </footer>
+        </div>
+    </div>
+
+    <script src="js/employees.js"></script>
+</body>
+
+</html>

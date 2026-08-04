@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Japanese Training App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/enterprise-theme.css">
+    <style>
+        .login-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            padding: 2.5rem;
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .login-logo {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="login-logo">
+                <i class="fas fa-graduation-cap fa-3x has-text-primary mb-3"></i>
+                <h1 class="title is-4 has-text-white">Enterprise Login</h1>
+                <p class="subtitle is-6 has-text-grey-light">Japanese Training Platform</p>
+            </div>
+
+            <form onsubmit="handleLogin(event)">
+                <div class="field">
+                    <label class="label has-text-grey-light">Email</label>
+                    <div class="control has-icons-left">
+                        <input class="input is-medium" type="email" placeholder="name@company.com" required>
+                        <span class="icon is-left">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label has-text-grey-light">Password</label>
+                    <div class="control has-icons-left">
+                        <input class="input is-medium" type="password" placeholder="••••••••" required>
+                        <span class="icon is-left">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="checkbox has-text-grey-light">
+                        <input type="checkbox">
+                        Remember me
+                    </label>
+                </div>
+
+                <button class="button is-primary is-fullwidth is-medium mt-5">
+                    Sign In
+                </button>
+
+                <div class="has-text-centered mt-4">
+                    <a href="forgot-password.html" class="is-size-7 has-text-grey-light hover:has-text-primary">Forgot
+                        password?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function handleLogin(e) {
+            e.preventDefault();
+            // In a real app, validate credentials here
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+</body>
+
+</html>

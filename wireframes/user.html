@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>WaGo - Japanese Training</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/user-new.css">
+    <link rel="stylesheet" href="css/learning-theme.css">
+</head>
+
+<body>
+    <!-- Main App Container - No Scroll Design -->
+    <div class="app-container">
+
+        <!-- Compact Header with Mini Stats -->
+        <header class="header-bar">
+            <div class="header-left">
+                <span class="logo">
+                    <span class="logo-icon">◉</span>
+                    <span class="logo-text">WaGo</span>
+                </span>
+                <div class="session-timer" id="sessionTimer">
+                    <i class="fas fa-clock"></i> <span id="timerText">05:32</span>
+                </div>
+            </div>
+            <div class="header-stats">
+                <div class="stat-mini streak-stat" title="Day Streak">
+                    <div class="streak-flame">🔥</div>
+                    <strong>3</strong>
+                </div>
+                <span class="stat-mini">⭐ <strong>120</strong></span>
+                <div class="stat-mini goal-stat" title="Daily Goal">
+                    <svg class="goal-ring" width="32" height="32">
+                        <circle cx="16" cy="16" r="14" stroke="rgba(255,255,255,0.2)" stroke-width="3" fill="none" />
+                        <circle cx="16" cy="16" r="14" stroke="#4a90e2" stroke-width="3" fill="none"
+                            stroke-dasharray="87.96" stroke-dashoffset="0" transform="rotate(-90 16 16)"
+                            class="goal-progress" />
+                    </svg>
+                    <span class="goal-text">0/5</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn-notification" id="notificationBtn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">2</span>
+                </button>
+                <button class="btn-profile" id="profileBtn">
+                    <i class="fas fa-user-circle"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Training Content - Two Column Desktop Layout -->
+        <main class="training-main" id="trainingMain">
+
+            <!-- LEFT COLUMN: Phrase Section -->
+            <div class="phrase-section">
+                <!-- Topic Selector -->
+                <div class="topic-selector">
+                    <button class="topic-selector-btn" id="topicSelectorBtn">
+                        <div class="topic-current">
+                            <span class="topic-icon">📚</span>
+                            <div class="topic-info">
+                                <span class="topic-label">Current Topic:</span>
+                                <div class="topic-name-row">
+                                    <span class="topic-name" id="currentTopicName">Basic Phrases</span>
+                                    <span class="topic-progress-mini" id="topicProgressMini">45%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+
+                <!-- Current Training Phrase -->
+                <div class="phrase-container">
+                    <div class="phrase-header">
+                        <div class="phrase-meta">
+                            <span class="category-badge" id="categoryBadge">Basic Phrases</span>
+                            <span class="difficulty-badge">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </span>
+                        </div>
+                        <div class="phrase-actions">
+                            <button class="btn-icon" id="prevPhrase" title="Previous sentence">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                            <button class="btn-icon" id="playAudio" title="Listen">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+                            <button class="btn-icon" id="bookmarkPhrase" title="Bookmark">
+                                <i class="far fa-bookmark"></i>
+                            </button>
+                            <button class="btn-icon" id="nextPhrase" title="Next sentence">
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Training Mode Selector -->
+                    <div class="training-mode-pills">
+                        <button class="mode-pill active" data-mode="listen-repeat" id="modeListenRepeat">
+                            <i class="fas fa-headphones"></i>
+                            <span>Listen & Repeat</span>
+                        </button>
+                        <button class="mode-pill" data-mode="test" id="modeTest">
+                            <i class="fas fa-microphone-alt"></i>
+                            <span>Test Yourself</span>
+                        </button>
+                        <button class="mode-pill" data-mode="free-talk" id="modeFreeTalk">
+                            <i class="fas fa-comments"></i>
+                            <span>Free Talk</span>
+                        </button>
+                    </div>
+
+                    <div class="phrase-card" id="phraseCard">
+                        <div class="phrase-japanese" id="phraseJapanese">日本語を練習するのが楽しいです</div>
+                        <div class="phrase-romaji" id="phraseRomaji">Nihongo wo renshuu suru no ga tanoshii desu</div>
+                        <div class="phrase-english" id="phraseEnglish">"I enjoy practicing Japanese"</div>
+
+                        <!-- Visual Waveform Comparison -->
+                        <div class="waveform-comparison" id="waveformBox" style="display: none;">
+                            <div class="waveform-section">
+                                <span class="waveform-label">Native:</span>
+                                <div class="waveform native-wave">
+                                    <div class="wave-bar" style="height: 60%"></div>
+                                    <div class="wave-bar" style="height: 80%"></div>
+                                    <div class="wave-bar" style="height: 100%"></div>
+                                    <div class="wave-bar" style="height: 75%"></div>
+                                    <div class="wave-bar" style="height: 90%"></div>
+                                    <div class="wave-bar" style="height: 70%"></div>
+                                    <div class="wave-bar" style="height: 85%"></div>
+                                    <div class="wave-bar" style="height: 95%"></div>
+                                </div>
+                            </div>
+                            <div class="waveform-section">
+                                <span class="waveform-label">You:</span>
+                                <div class="waveform user-wave">
+                                    <div class="wave-bar" style="height: 55%"></div>
+                                    <div class="wave-bar" style="height: 75%"></div>
+                                    <div class="wave-bar" style="height: 95%"></div>
+                                    <div class="wave-bar" style="height: 70%"></div>
+                                    <div class="wave-bar" style="height: 85%"></div>
+                                    <div class="wave-bar" style="height: 65%"></div>
+                                    <div class="wave-bar" style="height: 80%"></div>
+                                    <div class="wave-bar" style="height: 90%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="phrase-context">
+                            <i class="fas fa-info-circle"></i> Use when expressing enjoyment in learning
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: Interaction Panel -->
+            <div class="interaction-panel">
+                <!-- Live Feedback Indicator -->
+                <div class="live-feedback" id="liveFeedback" style="display: none;">
+                    <div class="feedback-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="feedback-content">
+                        <div class="feedback-title" id="feedbackTitle">Great!</div>
+                        <div class="feedback-message" id="feedbackMessage">Keep practicing</div>
+                    </div>
+                </div>
+
+                <!-- Giant Mic Button - Primary Action -->
+                <div class="mic-zone" id="micZone">
+                    <div class="pronunciation-score" id="pronScore" style="display: none;">
+                        <div class="score-circle">
+                            <span class="score-value" id="scoreValue">85</span>
+                            <span class="score-label">%</span>
+                        </div>
+                        <p class="score-feedback" id="scoreFeedback">Great job!</p>
+                        <div class="best-score" id="bestScoreBadge" style="display:none;">
+                            <i class="fas fa-trophy"></i> Best: <span id="bestScoreValue">0</span>%
+                        </div>
+                    </div>
+
+                    <button class="mic-button" id="micButton" aria-label="Tap to speak">
+                        <div class="mic-ripple"></div>
+                        <div class="mic-ripple-2"></div>
+                        <span class="mic-icon">
+                            <i class="fas fa-microphone"></i>
+                        </span>
+                        <div class="mic-pulse"></div>
+                        <div class="mic-pulse-2"></div>
+                    </button>
+                    <p class="mic-label" id="micHint">Tap to speak</p>
+
+                    <!-- Recording Animation -->
+                    <div class="recording-indicator" id="recordingIndicator" style="display: none;">
+                        <div class="sound-wave">
+                            <span class="bar"></span>
+                            <span class="bar"></span>
+                            <span class="bar"></span>
+                            <span class="bar"></span>
+                            <span class="bar"></span>
+                        </div>
+                        <p>Listening...</p>
+                    </div>
+
+                    <!-- Voice Indicator -->
+                    <div class="voice-indicator">
+                        <i class="fas fa-building"></i> Using <strong>Tokyo Accent</strong>
+                        <button class="btn-change-voice" id="changeVoice" title="Change accent">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Free Conversation Interface (Card-Based Design) -->
+                <div class="conversation-interface" id="conversationInterface" style="display: none;">
+                    <!-- Left Column: Conversation Content -->
+                    <div class="conversation-left">
+                        <!-- Header with Live Status -->
+                        <div class="free-talk-header">
+                            <div class="free-talk-title">
+                                <i class="fas fa-comments"></i>
+                                <span>Free Talk: <strong id="conversationTopic">Basic Phrases</strong></span>
+                            </div>
+                            <div class="live-status" id="liveStatus">
+                                <span class="status-dot"></span>
+                                <span class="status-text" id="statusText">Ready</span>
+                            </div>
+                        </div>
+
+                        <!-- Large Current Transcription Card -->
+                        <div class="current-card" id="currentCard">
+                            <div class="card-speaker" id="cardSpeaker">
+                                <span class="speaker-icon">🎯</span>
+                                <span class="speaker-label">Ready to start</span>
+                            </div>
+                            <div class="card-content" id="cardContent">
+                                <div class="card-prompt">
+                                    <i class="fas fa-microphone-alt"></i>
+                                    <p>Press "Start Talking" to begin your Japanese conversation practice</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Compact Recent Exchanges -->
+                        <div class="recent-exchanges">
+                            <div class="exchanges-header">
+                                <i class="fas fa-history"></i>
+                                <span>Recent Exchanges</span>
+                            </div>
+                            <div class="exchanges-list" id="exchangesList">
+                                <div class="empty-state">
+                                    <i class="fas fa-comment-dots"></i>
+                                    <p>Your conversation will appear here</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Action Button -->
+                    <div class="conversation-right">
+                        <div class="action-button-zone">
+                            <button class="main-action-button" id="mainActionButton">
+                                <i class="fas fa-play" id="actionIcon"></i>
+                                <span id="actionText">Start Talking</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skills Breakdown -->
+                <div class="skills-breakdown" id="skillsBreakdown">
+                    <div class="skills-header">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Skills Breakdown</span>
+                    </div>
+                    <div class="skills-grid">
+                        <div class="skill-item">
+                            <div class="skill-circle" data-progress="72">
+                                <svg width="55" height="55">
+                                    <circle cx="27.5" cy="27.5" r="24" stroke="#e0e0e0" stroke-width="3.5"
+                                        fill="none" />
+                                    <circle cx="27.5" cy="27.5" r="24" stroke="#000000" stroke-width="3.5" fill="none"
+                                        stroke-dasharray="150.8" stroke-dashoffset="42.22"
+                                        transform="rotate(-90 27.5 27.5)" class="skill-progress" />
+                                </svg>
+                                <div class="skill-icon">🗣️</div>
+                                <div class="skill-percent">72%</div>
+                            </div>
+                            <div class="skill-label">Fluency</div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-circle" data-progress="65">
+                                <svg width="55" height="55">
+                                    <circle cx="27.5" cy="27.5" r="24" stroke="#e0e0e0" stroke-width="3.5"
+                                        fill="none" />
+                                    <circle cx="27.5" cy="27.5" r="24" stroke="#000000" stroke-width="3.5" fill="none"
+                                        stroke-dasharray="150.8" stroke-dashoffset="52.78"
+                                        transform="rotate(-90 27.5 27.5)" class="skill-progress" />
+                                </svg>
+                                <div class="skill-icon">📢</div>
+                                <div class="skill-percent">65%</div>
+                            </div>
+                            <div class="skill-label">Pronunciation</div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-circle" data-progress="78">
+                                <svg width="55" height="55">
+                                    <circle cx="27.5" cy="27.5" r="24" stroke="#e0e0e0" stroke-width="3.5"
+                                        fill="none" />
+                                    <circle cx="27.5" cy="27.5" r="24" stroke="#000000" stroke-width="3.5" fill="none"
+                                        stroke-dasharray="150.8" stroke-dashoffset="33.18"
+                                        transform="rotate(-90 27.5 27.5)" class="skill-progress" />
+                                </svg>
+                                <div class="skill-icon">📝</div>
+                                <div class="skill-percent">78%</div>
+                            </div>
+                            <div class="skill-label">Grammar</div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-circle" data-progress="58">
+                                <svg width="55" height="55">
+                                    <circle cx="27.5" cy="27.5" r="24" stroke="#e0e0e0" stroke-width="3.5"
+                                        fill="none" />
+                                    <circle cx="27.5" cy="27.5" r="24" stroke="#000000" stroke-width="3.5" fill="none"
+                                        stroke-dasharray="150.8" stroke-dashoffset="63.34"
+                                        transform="rotate(-90 27.5 27.5)" class="skill-progress" />
+                                </svg>
+                                <div class="skill-icon">🎵</div>
+                                <div class="skill-percent">58%</div>
+                            </div>
+                            <div class="skill-label">Pitch</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Bar with Next Phrase Preview -->
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-info">
+                        <span class="progress-text">45% Complete</span>
+                        <span class="phrases-count">9/20 phrases</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 45%"></div>
+                    </div>
+                    <div class="next-phrase-preview">
+                        <span class="next-label">Next:</span>
+                        <span class="next-phrase">もっと会話の練習をしたいです</span>
+                        <button class="btn-skip" id="skipPhrase" title="Skip to next">
+                            <i class="fas fa-forward"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- End Interaction Panel -->
+
+        </main>
+
+        <!-- Emergency SOS Button (Floating) -->
+        <button class="emergency-sos-btn" id="emergencyBtn">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>SOS</span>
+        </button>
+
+        <!-- Fixed Audio Player -->
+        <div class="fixed-audio-player" id="fixedAudioPlayer">
+            <div class="audio-player-info">
+                <div class="audio-player-icon">
+                    <i class="fas fa-volume-up"></i>
+                </div>
+                <div class="audio-player-text">
+                    <div class="audio-title" id="audioTitle">日本語を練習するのが楽しいです</div>
+                    <div class="audio-subtitle" id="audioSubtitle">Native Speaker - Tokyo Accent</div>
+                </div>
+            </div>
+            <div class="audio-player-controls">
+                <button class="player-btn" id="playerPlayBtn">
+                    <i class="fas fa-play"></i>
+                </button>
+                <div class="audio-progress-bar">
+                    <div class="audio-progress-fill" id="audioProgressFill" style="width: 0%"></div>
+                    <input type="range" class="audio-seek-bar" id="audioSeekBar" min="0" max="100" value="0">
+                </div>
+                <div class="audio-time">
+                    <span id="audioCurrentTime">0:00</span>
+                    <span class="time-separator">/</span>
+                    <span id="audioDuration">0:00</span>
+                </div>
+                <button class="player-btn" id="playerRepeatBtn" title="Repeat">
+                    <i class="fas fa-redo"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Training Steps Modal -->
+        <div class="training-steps-modal" id="trainingStepsModal">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <button class="modal-close" id="closeStepsModal">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="modal-header">
+                    <i class="fas fa-graduation-cap modal-icon"></i>
+                    <h2>Your Learning Journey</h2>
+                    <p>Follow these 3 simple steps to master Japanese</p>
+                </div>
+                <div class="modal-body">
+                    <div class="step-indicator">
+                        <div class="step-item animated" style="animation-delay: 0.2s">
+                            <div class="step-circle">
+                                <i class="fas fa-headphones"></i>
+                            </div>
+                            <span class="step-label">Listen</span>
+                            <p class="step-description">Hear native pronunciation</p>
+                        </div>
+                        <div class="step-connector" style="animation-delay: 0.4s">
+                            <div class="connector-line"></div>
+                        </div>
+                        <div class="step-item animated" style="animation-delay: 0.6s">
+                            <div class="step-circle">
+                                <i class="fas fa-microphone"></i>
+                            </div>
+                            <span class="step-label">Practice</span>
+                            <p class="step-description">Speak and record</p>
+                        </div>
+                        <div class="step-connector" style="animation-delay: 0.8s">
+                            <div class="connector-line"></div>
+                        </div>
+                        <div class="step-item animated" style="animation-delay: 1s">
+                            <div class="step-circle">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <span class="step-label">Test</span>
+                            <p class="step-description">Get instant feedback</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-start-learning" id="startLearningBtn">
+                        <i class="fas fa-play-circle"></i>
+                        Start Learning
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-screen="training" id="navTraining">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Learn</span>
+            </button>
+            <button class="nav-item" data-screen="culture" id="navCulture">
+                <i class="fas fa-torii-gate"></i>
+                <span>Culture</span>
+            </button>
+            <button class="nav-item" data-screen="scenarios" id="navScenarios">
+                <i class="fas fa-briefcase"></i>
+                <span>Work</span>
+            </button>
+            <button class="nav-item" data-screen="paths" id="navPaths">
+                <i class="fas fa-route"></i>
+                <span>Path</span>
+            </button>
+            <button class="nav-item" data-screen="performance" id="navStats">
+                <i class="fas fa-trophy"></i>
+                <span>Progress</span>
+            </button>
+        </nav>
+
+    </div>
+
+    <!-- Emergency SOS Overlay -->
+    <div class="screen-overlay emergency-overlay" id="emergencyScreen">
+        <div class="overlay-header emergency-header">
+            <div style="width: 40px;"></div>
+            <h2 class="overlay-title">🚨 EMERGENCY PHRASES</h2>
+            <button class="btn-close" id="closeEmergency">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="overlay-content">
+            <div class="emergency-grid">
+                <button class="emergency-card" data-phrase="help">
+                    <div class="emergency-icon">🆘</div>
+                    <div class="emergency-text">
+                        <div class="emergency-en">HELP!</div>
+                        <div class="emergency-jp">助けて！</div>
+                        <div class="emergency-rom">Tasukete!</div>
+                    </div>
+                </button>
+
+                <button class="emergency-card" data-phrase="doctor">
+                    <div class="emergency-icon">🏥</div>
+                    <div class="emergency-text">
+                        <div class="emergency-en">Call Doctor</div>
+                        <div class="emergency-jp">医者を呼んで</div>
+                        <div class="emergency-rom">Isha wo yonde</div>
+                    </div>
+                </button>
+
+                <button class="emergency-card" data-phrase="hurt">
+                    <div class="emergency-icon">🤕</div>
+                    <div class="emergency-text">
+                        <div class="emergency-en">I'm hurt</div>
+                        <div class="emergency-jp">怪我をしました</div>
+                        <div class="emergency-rom">Kega wo shimashita</div>
+                    </div>
+                </button>
+
+                <button class="emergency-card" data-phrase="ambulance">
+                    <div class="emergency-icon">🚑</div>
+                    <div class="emergency-text">
+                        <div class="emergency-en">Call Ambulance</div>
+                        <div class="emergency-jp">救急車を呼んで</div>
+                        <div class="emergency-rom">Kyuukyuusha wo yonde</div>
+                    </div>
+                </button>
+
+                <button class="emergency-card" data-phrase="fire">
+                    <div class="emergency-icon">🔥</div>
+                    <div class="emergency-text">
+                        <div class="emergency-en">FIRE!</div>
+                        <div class="emergency-jp">火事だ！</div>
+                        <div class="emergency-rom">Kaji da!</div>
+                    </div>
+                </button>
+
+                <button class="emergency-card" data-phrase="stop">
+                    <div class="emergency-icon">🛑</div>
+                    <div class="emergency-text">
+                        <div class="emergency-en">STOP!</div>
+                        <div class="emergency-jp">止まって！</div>
+                        <div class="emergency-rom">Tomatte!</div>
+                    </div>
+                </button>
+            </div>
+
+            <div class="emergency-note">
+                <i class="fas fa-info-circle"></i>
+                Tap any phrase to hear pronunciation and practice
+            </div>
+        </div>
+    </div>
+
+    <!-- Topic Selection Bottom Sheet -->
+    <div class="bottom-sheet" id="topicSheet">
+        <div class="sheet-header">
+            <h3 class="sheet-title">📚 Select Learning Topic</h3>
+            <button class="btn-close-sheet" id="closeTopicSheet">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="sheet-content">
+            <div class="topic-filter-tabs">
+                <button class="filter-tab active" data-filter="all">All Topics</button>
+                <button class="filter-tab" data-filter="assigned">Assigned to Me</button>
+                <button class="filter-tab" data-filter="completed">Completed</button>
+            </div>
+
+            <div class="topics-list" id="topicsList">
+                <!-- Safety Category -->
+                <div class="topic-category-group">
+                    <h4 class="category-group-title">
+                        <i class="fas fa-hard-hat"></i> Safety
+                    </h4>
+                    <div class="topic-item" data-topic="safety-procedures" data-category="Safety">
+                        <div class="topic-item-icon">⚠️</div>
+                        <div class="topic-item-content">
+                            <div class="topic-item-header">
+                                <h5>Safety Procedures</h5>
+                                <span class="topic-status assigned">Assigned</span>
+                            </div>
+                            <p class="topic-description">安全手順 - Essential workplace safety phrases</p>
+                            <div class="topic-stats">
+                                <span><i class="fas fa-book"></i> 24 phrases</span>
+                                <span><i class="fas fa-clock"></i> 15 min</span>
+                                <span class="topic-progress">85% complete</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="topic-item" data-topic="emergency-phrases" data-category="Safety">
+                        <div class="topic-item-icon">🚨</div>
+                        <div class="topic-item-content">
+                            <div class="topic-item-header">
+                                <h5>Emergency Phrases</h5>
+                                <span class="topic-status assigned">Assigned</span>
+                            </div>
+                            <p class="topic-description">緊急フレーズ - Critical emergency communication</p>
+                            <div class="topic-stats">
+                                <span><i class="fas fa-book"></i> 12 phrases</span>
+                                <span><i class="fas fa-clock"></i> 8 min</span>
+                                <span class="topic-progress">100% complete</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Basic Communication -->
+                <div class="topic-category-group">
+                    <h4 class="category-group-title">
+                        <i class="fas fa-comments"></i> Basic Communication
+                    </h4>
+                    <div class="topic-item active" data-topic="basic-phrases" data-category="Basic">
+                        <div class="topic-item-icon">👋</div>
+                        <div class="topic-item-content">
+                            <div class="topic-item-header">
+                                <h5>Basic Phrases</h5>
+                                <span class="topic-status assigned">Assigned</span>
+                            </div>
+                            <p class="topic-description">基本フレーズ - Daily greetings and common phrases</p>
+                            <div class="topic-stats">
+                                <span><i class="fas fa-book"></i> 20 phrases</span>
+                                <span><i class="fas fa-clock"></i> 12 min</span>
+                                <span class="topic-progress">45% complete</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="topic-item" data-topic="greetings" data-category="Basic">
+                        <div class="topic-item-icon">🙋</div>
+                        <div class="topic-item-content">
+                            <div class="topic-item-header">
+                                <h5>Greetings & Introductions</h5>
+                                <span class="topic-status assigned">Assigned</span>
+                            </div>
+                            <p class="topic-description">挨拶 - Meet and greet coworkers</p>
+                            <div class="topic-stats">
+                                <span><i class="fas fa-book"></i> 15 phrases</span>
+                                <span><i class="fas fa-clock"></i> 10 min</span>
+                                <span class="topic-progress">60% complete</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Business & Culture -->
+                <div class="topic-category-group">
+                    <h4 class="category-group-title">
+                        <i class="fas fa-briefcase"></i> Business & Culture
+                    </h4>
+                    <div class="topic-item" data-topic="business-norms" data-category="Business">
+                        <div class="topic-item-icon">💼</div>
+                        <div class="topic-item-content">
+                            <div class="topic-item-header">
+                                <h5>Business Norms</h5>
+                                <span class="topic-status available">Available</span>
+                            </div>
+                            <p class="topic-description">ビジネスマナー - Japanese workplace etiquette</p>
+                            <div class="topic-stats">
+                                <span><i class="fas fa-book"></i> 18 phrases</span>
+                                <span><i class="fas fa-clock"></i> 12 min</span>
+                                <span class="topic-progress">0% complete</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="topic-item" data-topic="meeting-phrases" data-category="Business">
+                        <div class="topic-item-icon">🤝</div>
+                        <div class="topic-item-content">
+                            <div class="topic-item-header">
+                                <h5>Meeting Phrases</h5>
+                                <span class="topic-status locked">Locked</span>
+                            </div>
+                            <p class="topic-description">会議 - Professional meeting communication</p>
+                            <div class="topic-stats">
+                                <span><i class="fas fa-book"></i> 16 phrases</span>
+                                <span><i class="fas fa-clock"></i> 11 min</span>
+                                <span class="topic-progress">0% complete</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Workplace Specific -->
+                <div class="topic-category-group">
+                    <h4 class="category-group-title">
+                        <i class="fas fa-hard-hat"></i> Workplace Specific
+                    </h4>
+                    <div class="topic-item" data-topic="construction-site" data-category="Workplace">
+                        <div class="topic-item-icon">🏗️</div>
+                        <div class="topic-item-content">
+                            <div class="topic-item-header">
+                                <h5>Construction Site</h5>
+                                <span class="topic-status available">Available</span>
+                            </div>
+                            <p class="topic-description">建設現場 - Construction-specific terminology</p>
+                            <div class="topic-stats">
+                                <span><i class="fas fa-book"></i> 22 phrases</span>
+                                <span><i class="fas fa-clock"></i> 14 min</span>
+                                <span class="topic-progress">0% complete</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="topic-item" data-topic="factory-floor" data-category="Workplace">
+                        <div class="topic-item-icon">🏭</div>
+                        <div class="topic-item-content">
+                            <div class="topic-item-header">
+                                <h5>Factory Floor</h5>
+                                <span class="topic-status assigned">Assigned</span>
+                            </div>
+                            <p class="topic-description">工場 - Manufacturing and production</p>
+                            <div class="topic-stats">
+                                <span><i class="fas fa-book"></i> 19 phrases</span>
+                                <span><i class="fas fa-clock"></i> 13 min</span>
+                                <span class="topic-progress">20% complete</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sheet-footer">
+                <button class="btn-request-topic">
+                    <i class="fas fa-plus-circle"></i>
+                    Request New Topic from Admin
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Workplace Scenarios Screen -->
+    <div class="screen-overlay" id="scenariosScreen">
+        <div class="overlay-header">
+            <button class="btn-back" id="backFromScenarios">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2 class="overlay-title">🏗️ Workplace Scenarios</h2>
+            <div style="width: 40px;"></div>
+        </div>
+
+        <div class="overlay-content">
+            <div class="scenario-note">
+                <i class="fas fa-info-circle"></i>
+                These scenarios are loaded from your assigned topics. Complete basic topics to unlock advanced
+                scenarios.
+            </div>
+
+            <div class="scenario-list" id="scenariosList">
+                <!-- Scenarios will be dynamically loaded based on assigned topics -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Japanese Culture & Etiquette Screen -->
+    <div class="screen-overlay" id="cultureScreen">
+        <div class="overlay-header">
+            <button class="btn-back" id="backFromCulture">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2 class="overlay-title">⛩️ Japanese Culture & Etiquette</h2>
+            <div style="width: 40px;"></div>
+        </div>
+
+        <div class="overlay-content">
+            <div class="culture-intro">
+                <i class="fas fa-info-circle"></i>
+                <p>Learn Japanese workplace culture, business manners, and proper etiquette to work effectively with
+                    Japanese colleagues.</p>
+            </div>
+
+            <div class="culture-sections">
+                <!-- Bowing Section -->
+                <div class="culture-section">
+                    <div class="culture-section-header">
+                        <div class="culture-icon">🙇</div>
+                        <div>
+                            <h3>Bowing (お辞儀 - Ojigi)</h3>
+                            <p class="culture-subtitle">Essential Japanese greeting</p>
+                        </div>
+                        <button class="btn-watch-demo" data-video="bowing">
+                            <i class="fas fa-play"></i> Watch
+                        </button>
+                    </div>
+                    <div class="culture-details">
+                        <div class="culture-types">
+                            <div class="bow-type">
+                                <strong>15° - Casual</strong>
+                                <p>Eshaku (会釈) - Greeting coworkers</p>
+                            </div>
+                            <div class="bow-type">
+                                <strong>30° - Respect</strong>
+                                <p>Keirei (敬礼) - Meeting clients/boss</p>
+                            </div>
+                            <div class="bow-type">
+                                <strong>45° - Deep</strong>
+                                <p>Saikeirei (最敬礼) - Apologies/gratitude</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Business Cards Section -->
+                <div class="culture-section">
+                    <div class="culture-section-header">
+                        <div class="culture-icon">💳</div>
+                        <div>
+                            <h3>Business Cards (名刺 - Meishi)</h3>
+                            <p class="culture-subtitle">Proper exchange etiquette</p>
+                        </div>
+                        <button class="btn-watch-demo" data-video="meishi">
+                            <i class="fas fa-play"></i> Watch
+                        </button>
+                    </div>
+                    <div class="culture-details">
+                        <ul class="culture-rules">
+                            <li><i class="fas fa-check"></i> Present with both hands</li>
+                            <li><i class="fas fa-check"></i> Text facing recipient</li>
+                            <li><i class="fas fa-check"></i> Receive with both hands</li>
+                            <li><i class="fas fa-check"></i> Study the card before putting away</li>
+                            <li><i class="fas fa-times"></i> Never write on someone's card</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Meeting Etiquette -->
+                <div class="culture-section">
+                    <div class="culture-section-header">
+                        <div class="culture-icon">🤝</div>
+                        <div>
+                            <h3>Meeting Etiquette (会議マナー)</h3>
+                            <p class="culture-subtitle">Professional behavior</p>
+                        </div>
+                        <button class="btn-watch-demo" data-video="meetings">
+                            <i class="fas fa-play"></i> Watch
+                        </button>
+                    </div>
+                    <div class="culture-details">
+                        <ul class="culture-rules">
+                            <li><i class="fas fa-check"></i> Arrive 5 minutes early</li>
+                            <li><i class="fas fa-check"></i> Let seniors speak first</li>
+                            <li><i class="fas fa-check"></i> Take notes during meeting</li>
+                            <li><i class="fas fa-check"></i> Say "失礼します" when entering/leaving</li>
+                            <li><i class="fas fa-times"></i> Don't interrupt or argue directly</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Work Communication -->
+                <div class="culture-section">
+                    <div class="culture-section-header">
+                        <div class="culture-icon">💬</div>
+                        <div>
+                            <h3>Communication Style (コミュニケーション)</h3>
+                            <p class="culture-subtitle">Indirect & respectful</p>
+                        </div>
+                        <button class="btn-watch-demo" data-video="communication">
+                            <i class="fas fa-play"></i> Watch
+                        </button>
+                    </div>
+                    <div class="culture-details">
+                        <div class="communication-tips">
+                            <div class="tip-card">
+                                <strong>❌ Don't say:</strong> "No" directly
+                                <strong>✅ Say instead:</strong> "ちょっと難しいですね" (It's a bit difficult)
+                            </div>
+                            <div class="tip-card">
+                                <strong>❌ Don't say:</strong> "I disagree"
+                                <strong>✅ Say instead:</strong> "別の考え方もあります" (There's another way to think about it)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Time & Punctuality -->
+                <div class="culture-section">
+                    <div class="culture-section-header">
+                        <div class="culture-icon">⏰</div>
+                        <div>
+                            <h3>Punctuality (時間厳守)</h3>
+                            <p class="culture-subtitle">Time is sacred in Japan</p>
+                        </div>
+                        <button class="btn-watch-demo" data-video="time">
+                            <i class="fas fa-play"></i> Watch
+                        </button>
+                    </div>
+                    <div class="culture-details">
+                        <ul class="culture-rules">
+                            <li><i class="fas fa-exclamation-triangle"></i> Being late is very disrespectful</li>
+                            <li><i class="fas fa-check"></i> Arrive 5-10 minutes early always</li>
+                            <li><i class="fas fa-check"></i> Notify immediately if delayed</li>
+                            <li><i class="fas fa-check"></i> Apologize profusely if late</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Learning Paths Screen -->
+    <div class="screen-overlay" id="pathsScreen">
+        <div class="overlay-header">
+            <button class="btn-back" id="backFromPaths">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2 class="overlay-title">🗺️ Learning Paths</h2>
+            <div style="width: 40px;"></div>
+        </div>
+
+        <div class="overlay-content">
+            <div class="paths-intro">
+                <i class="fas fa-route"></i>
+                <p>Follow structured learning paths from beginner to advanced. Each path combines Japanese language with
+                    company culture and work skills.</p>
+            </div>
+
+            <div class="learning-paths">
+                <!-- Beginner Path -->
+                <div class="path-card beginner">
+                    <div class="path-header">
+                        <div class="path-badge">初級 Beginner</div>
+                        <h3>Foundation Path</h3>
+                        <p class="path-duration">4 weeks • 40 phrases • 10 cultural lessons</p>
+                    </div>
+                    <div class="path-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 60%"></div>
+                        </div>
+                        <span class="progress-text">60% complete</span>
+                    </div>
+                    <div class="path-modules">
+                        <div class="module-item completed">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Module 1: Greetings & Self-Introduction</span>
+                        </div>
+                        <div class="module-item completed">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Module 2: Basic Workplace Phrases</span>
+                        </div>
+                        <div class="module-item current">
+                            <i class="fas fa-circle"></i>
+                            <span>Module 3: Safety & Emergency</span>
+                        </div>
+                        <div class="module-item locked">
+                            <i class="fas fa-lock"></i>
+                            <span>Module 4: Daily Operations</span>
+                        </div>
+                    </div>
+                    <button class="btn-continue-path">Continue Learning</button>
+                </div>
+
+                <!-- Intermediate Path -->
+                <div class="path-card intermediate">
+                    <div class="path-header">
+                        <div class="path-badge">中級 Intermediate</div>
+                        <h3>Workplace Integration</h3>
+                        <p class="path-duration">6 weeks • 60 phrases • 15 cultural lessons</p>
+                    </div>
+                    <div class="path-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-text">Locked - Complete Beginner Path first</span>
+                    </div>
+                    <div class="path-modules">
+                        <div class="module-item locked">
+                            <i class="fas fa-lock"></i>
+                            <span>Module 1: Business Communication</span>
+                        </div>
+                        <div class="module-item locked">
+                            <i class="fas fa-lock"></i>
+                            <span>Module 2: Meeting & Reporting</span>
+                        </div>
+                        <div class="module-item locked">
+                            <i class="fas fa-lock"></i>
+                            <span>Module 3: Customer Interaction</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Path -->
+                <div class="path-card advanced">
+                    <div class="path-header">
+                        <div class="path-badge">上級 Advanced</div>
+                        <h3>Professional Mastery</h3>
+                        <p class="path-duration">8 weeks • 80 phrases • 20 cultural lessons</p>
+                    </div>
+                    <div class="path-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-text">Locked - Complete Intermediate Path first</span>
+                    </div>
+                    <div class="path-modules">
+                        <div class="module-item locked">
+                            <i class="fas fa-lock"></i>
+                            <span>Module 1: Leadership Communication</span>
+                        </div>
+                        <div class="module-item locked">
+                            <i class="fas fa-lock"></i>
+                            <span>Module 2: Negotiation & Problem Solving</span>
+                        </div>
+                        <div class="module-item locked">
+                            <i class="fas fa-lock"></i>
+                            <span>Module 3: Team Management</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visual Learning Screen -->
+    <div class="screen-overlay" id="visualScreen">
+        <div class="overlay-header">
+            <button class="btn-back" id="backFromVisual">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2 class="overlay-title">📸 Visual Learning</h2>
+            <div style="width: 40px;"></div>
+        </div>
+
+        <div class="overlay-content">
+            <div class="visual-note">
+                <i class="fas fa-lightbulb"></i>
+                <p>Tap any card to hear pronunciation and see it used in context. Visual learning helps remember words
+                    faster!</p>
+            </div>
+
+            <div class="visual-grid" id="visualCardsGrid">
+                <!-- Visual cards will be loaded from assigned topics -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Team Leaderboard Screen -->
+    <div class="screen-overlay" id="teamScreen">
+        <div class="overlay-header">
+            <button class="btn-back" id="backFromTeam">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2 class="overlay-title">👥 Team Progress</h2>
+            <div style="width: 40px;"></div>
+        </div>
+
+        <div class="overlay-content">
+            <div class="company-banner">
+                <div class="company-logo">🏢</div>
+                <div class="company-details">
+                    <h3>ABC Construction Co.</h3>
+                    <p>15 team members learning</p>
+                </div>
+            </div>
+
+            <div class="leaderboard-tabs">
+                <button class="tab-btn active">This Week</button>
+                <button class="tab-btn">All Time</button>
+            </div>
+
+            <div class="leaderboard-list">
+                <div class="leaderboard-item rank-1">
+                    <div class="rank-badge">🥇</div>
+                    <div class="member-info">
+                        <div class="member-name">Tanaka-san</div>
+                        <div class="member-stats">45 phrases • 2.5 hrs</div>
+                    </div>
+                    <div class="member-score">2,450</div>
+                </div>
+
+                <div class="leaderboard-item rank-2">
+                    <div class="rank-badge">🥈</div>
+                    <div class="member-info">
+                        <div class="member-name">Kim-san</div>
+                        <div class="member-stats">42 phrases • 2.2 hrs</div>
+                    </div>
+                    <div class="member-score">2,280</div>
+                </div>
+
+                <div class="leaderboard-item rank-3">
+                    <div class="rank-badge">🥉</div>
+                    <div class="member-info">
+                        <div class="member-name">Rodriguez-san</div>
+                        <div class="member-stats">38 phrases • 2.0 hrs</div>
+                    </div>
+                    <div class="member-score">2,100</div>
+                </div>
+
+                <div class="leaderboard-item current-user">
+                    <div class="rank-badge">#7</div>
+                    <div class="member-info">
+                        <div class="member-name">You (John)</div>
+                        <div class="member-stats">20 phrases • 1.2 hrs</div>
+                    </div>
+                    <div class="member-score">1,450</div>
+                </div>
+            </div>
+
+            <div class="team-motivation">
+                <p>💪 Keep practicing to reach top 3!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Conversation Overlay (Hidden by default) -->
+    <div class="screen-overlay" id="conversationScreen">
+        <div class="overlay-header">
+            <button class="btn-back" id="backFromConversation">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2 class="overlay-title">Conversation</h2>
+            <button class="btn-close" id="closeConversation">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="overlay-content">
+            <div class="conversation-messages">
+
+                <!-- System Message -->
+                <div class="message system-msg">
+                    <div class="message-avatar">🤖</div>
+                    <div class="message-bubble">
+                        <div class="message-header">
+                            <span class="message-sender">System</span>
+                            <span class="message-time">04:50 PM</span>
+                        </div>
+                        <div class="message-text">
+                            In Japanese, "good morning" is said as <strong>おはようございます</strong> (Ohayou gozaimasu). Try
+                            saying it!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Message -->
+                <div class="message user-msg">
+                    <div class="message-bubble">
+                        <div class="message-header">
+                            <span class="message-sender">You</span>
+                            <span class="message-time">04:51 PM</span>
+                        </div>
+                        <div class="message-text">
+                            おはよう
+                        </div>
+                    </div>
+                    <div class="message-avatar">👤</div>
+                </div>
+
+                <!-- System Response -->
+                <div class="message system-msg">
+                    <div class="message-avatar">🤖</div>
+                    <div class="message-bubble">
+                        <div class="message-header">
+                            <span class="message-sender">System</span>
+                            <span class="message-time">04:51 PM</span>
+                        </div>
+                        <div class="message-text">
+                            ✓ Great job! Perfect pronunciation!
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Tips Bottom Sheet (Hidden by default) -->
+    <div class="bottom-sheet" id="tipsSheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+            <h3 class="sheet-title">💡 Quick Phrases to Try</h3>
+            <button class="btn-close-sheet" id="closeTips">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="sheet-content">
+
+            <!-- Tip Card 1 -->
+            <div class="tip-card">
+                <div class="tip-text">
+                    <div class="tip-japanese">日本語を練習するのが楽しいです</div>
+                    <div class="tip-romaji">Nihongo wo renshuu suru no ga tanoshii desu</div>
+                    <div class="tip-english">"I enjoy practicing Japanese"</div>
+                </div>
+                <div class="tip-actions">
+                    <button class="btn-practice">
+                        <i class="fas fa-microphone"></i> Practice
+                    </button>
+                    <button class="btn-info">
+                        <i class="fas fa-info-circle"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tip Card 2 -->
+            <div class="tip-card">
+                <div class="tip-text">
+                    <div class="tip-japanese">もっと会話の練習をしたいです</div>
+                    <div class="tip-romaji">Motto kaiwa no renshuu wo shitai desu</div>
+                    <div class="tip-english">"I want more conversation practice"</div>
+                </div>
+                <div class="tip-actions">
+                    <button class="btn-practice">
+                        <i class="fas fa-microphone"></i> Practice
+                    </button>
+                    <button class="btn-info">
+                        <i class="fas fa-info-circle"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tip Card 3 -->
+            <div class="tip-card">
+                <div class="tip-text">
+                    <div class="tip-japanese">わかりました、ありがとうございます</div>
+                    <div class="tip-romaji">Wakarimashita, arigatou gozaimasu</div>
+                    <div class="tip-english">"I understand, thank you"</div>
+                </div>
+                <div class="tip-actions">
+                    <button class="btn-practice">
+                        <i class="fas fa-microphone"></i> Practice
+                    </button>
+                    <button class="btn-info">
+                        <i class="fas fa-info-circle"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Performance Screen (Hidden by default) -->
+    <div class="screen-overlay" id="performanceScreen">
+        <div class="overlay-header">
+            <button class="btn-back" id="backFromPerformance">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2 class="overlay-title">Your Progress</h2>
+            <div style="width: 40px;"></div>
+        </div>
+
+        <div class="overlay-content">
+
+            <!-- Today's Performance Card -->
+            <div class="stats-card">
+                <h3 class="card-title">Today's Performance</h3>
+                <div class="stats-grid">
+                    <div class="stat-item-large">
+                        <span class="stat-icon">🔥</span>
+                        <span class="stat-value">3</span>
+                        <span class="stat-label">Day Streak</span>
+                    </div>
+                    <div class="stat-item-large">
+                        <span class="stat-icon">⭐</span>
+                        <span class="stat-value">120</span>
+                        <span class="stat-label">Points</span>
+                    </div>
+                    <div class="stat-item-large">
+                        <span class="stat-icon">🎯</span>
+                        <span class="stat-value">68%</span>
+                        <span class="stat-label">Accuracy</span>
+                    </div>
+                    <div class="stat-item-large">
+                        <span class="stat-icon">⏱️</span>
+                        <span class="stat-value">15</span>
+                        <span class="stat-label">Minutes</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills Breakdown -->
+            <div class="stats-card">
+                <h3 class="card-title">Skills Breakdown</h3>
+                <div class="skill-list">
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">🗣️ Fluency</span>
+                            <span class="skill-percent">72%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 72%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">📢 Pronunciation</span>
+                            <span class="skill-percent">65%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 65%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">📝 Grammar</span>
+                            <span class="skill-percent">78%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 78%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">🎵 Pitch</span>
+                            <span class="skill-percent">58%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 58%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weekly Progress -->
+            <div class="stats-card">
+                <h3 class="card-title">This Week</h3>
+                <div class="week-chart">
+                    <div class="week-bar" style="height: 40%"><span>M</span></div>
+                    <div class="week-bar" style="height: 65%"><span>T</span></div>
+                    <div class="week-bar" style="height: 80%"><span>W</span></div>
+                    <div class="week-bar" style="height: 55%"><span>T</span></div>
+                    <div class="week-bar" style="height: 90%"><span>F</span></div>
+                    <div class="week-bar" style="height: 30%"><span>S</span></div>
+                    <div class="week-bar" style="height: 45%"><span>S</span></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Resources Screen (Hidden by default) -->
+    <div class="screen-overlay" id="resourcesScreen">
+        <div class="overlay-header">
+            <button class="btn-back" id="backFromResources">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2 class="overlay-title">Training Resources</h2>
+            <div style="width: 40px;"></div>
+        </div>
+
+        <div class="overlay-content">
+
+            <!-- Topics Section -->
+            <div class="resource-section">
+                <h3 class="section-title">📑 Topics</h3>
+                <div class="topic-tags">
+                    <span class="topic-tag">Basic Phrases</span>
+                    <span class="topic-tag">Emergency</span>
+                    <span class="topic-tag">Business Norms</span>
+                    <span class="topic-tag">Greetings</span>
+                    <span class="topic-tag">Food & Dining</span>
+                    <span class="topic-tag">Transportation</span>
+                    <span class="topic-tag">Safety</span>
+                    <span class="topic-tag">Cultural Etiquette</span>
+                </div>
+            </div>
+
+            <!-- Training Materials -->
+            <div class="resource-section">
+                <h3 class="section-title">📁 Training Materials</h3>
+
+                <div class="resource-item">
+                    <div class="resource-icon">📄</div>
+                    <div class="resource-info">
+                        <div class="resource-name">Emergency Phrases Guide</div>
+                        <div class="resource-meta">PDF · 2.4 MB</div>
+                    </div>
+                    <button class="btn-resource">View</button>
+                </div>
+
+                <div class="resource-item">
+                    <div class="resource-icon">🔊</div>
+                    <div class="resource-info">
+                        <div class="resource-name">Common Greetings Audio</div>
+                        <div class="resource-meta">MP3 · 3.1 MB</div>
+                    </div>
+                    <button class="btn-resource">Listen</button>
+                </div>
+
+                <div class="resource-item">
+                    <div class="resource-icon">📄</div>
+                    <div class="resource-info">
+                        <div class="resource-name">Safety Guidelines</div>
+                        <div class="resource-meta">PDF · 1.8 MB</div>
+                    </div>
+                    <button class="btn-resource">View</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Profile Menu Overlay -->
+    <div class="profile-menu" id="profileMenu">
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-avatar">👤</div>
+                <div class="profile-info">
+                    <div class="profile-name">John Tanaka</div>
+                    <div class="profile-company">ABC Construction Co.</div>
+                </div>
+            </div>
+            <div class="profile-actions">
+                <button class="profile-btn">
+                    <i class="fas fa-cog"></i> Settings
+                </button>
+                <button class="profile-btn">
+                    <i class="fas fa-trophy"></i> Achievements
+                </button>
+                <button class="profile-btn logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/user-new.js"></script>
+</body>
+
+</html>
